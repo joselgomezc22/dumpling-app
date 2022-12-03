@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;600&display=swap");
+html {
+  font-size: 16px;
+}
+
+* {
+  font-family: "Nunito", sans-serif;
+  font-weight: 500;
+}
+
+.text-l {
+  font-size: 24px;
+  font-weight: 600;
+}
+.text-m {
+  font-size: 14px;
+  font-weight: 600;
+}
+.text-s {
+  font-size: 14px;
+}
+
+.btn {
+  transition: all 0.5s ease-in-out;
+  border: none;
+  border-radius: 5px;
+  padding: 3%;
+  width: 100%;
+}
+.btn-primary {
+  background-color: #00A651;
+  color: white;
+  cursor: pointer;
+}
+.btn-disabled {
+  background-color: #E7E7E7;
+  color: #787878;
+}
+
+.login-overlay {
+  width: 100%;
+  height: 97vh;
+  background-image: url("./images/login_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: background-position-x 1s ease-in-out;
+  animation: cloudsMove 5s infinite;
+}
+.login-logo {
+  width: 170px;
+  margin: 10vw 0 6vw 0;
+}
+.login-box {
+  width: 25.69%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.login-form-input {
+  width: 100%;
+  border: 1px solid #E7E7E7;
+  border-radius: 6px;
+  height: 44px;
+}
+.login-form-submit {
+  margin: 48px 0 0 0;
+}
+
+@keyframes cloudsMove {
+  0% {
+    background-position-x: 0vw;
+  }
+  50% {
+    background-position-x: 3vw;
+  }
+  100% {
+    background-position-x: 0vw;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */
