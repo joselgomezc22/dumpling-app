@@ -1,5 +1,6 @@
 {
   "name": "dumpling-app-vite",
+  "homepage": "https://joselgomezc22.github.io/dumpling-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "sass": "sass --watch ./src/sass/index.scss  ./src/index.css",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "localforage": "^1.10.0",
@@ -21,6 +24,7 @@
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",
+    "gh-pages": "^4.0.0",
     "sass": "^1.56.1",
     "vite": "^3.2.3"
   }
