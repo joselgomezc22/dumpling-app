@@ -1,4 +1,6 @@
+/* Font importing */
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;600&display=swap");
+/* Variables */
 html {
   font-size: 16px;
 }
@@ -69,10 +71,16 @@ html {
   border-radius: 6px;
   height: 44px;
 }
+.login-form-input:focus {
+  outline: none !important;
+  border: 1px solid #00A651;
+  box-shadow: 0 0 2px #00A651;
+}
 .login-form-submit {
   margin: 48px 0 0 0;
 }
 
+/* Animations */
 @keyframes cloudsMove {
   0% {
     background-position-x: 0vw;
@@ -83,6 +91,27 @@ html {
   100% {
     background-position-x: 0vw;
   }
+}
+/**
+* @ReactInputVerificationCode Overwriting 
+*/
+:root {
+  --ReactInputVerificationCode-itemWidth: 2.75rem !important;
+  --ReactInputVerificationCode-itemHeight: 2.75rem !important;
+  --ReactInputVerificationCode-itemSpacing: 1rem;
+}
+
+.sc-bcXHqe.ccAhFW.ReactInputVerificationCode__container {
+  margin: auto;
+}
+
+.hMTxQo {
+  font-size: 14px !important;
+}
+
+.hMTxQo.is-active {
+  border: 1px solid #00A651 !important;
+  box-shadow: 0 0 5px #00A651 !important;
 }
 
 /*# sourceMappingURL=index.css.map */
