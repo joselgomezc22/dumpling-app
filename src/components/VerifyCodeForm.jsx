@@ -2,10 +2,10 @@ import {useContext} from "react";
 import { DataContext } from "../context/DataContext";
 import ReactInputVerificationCode from "react-input-verification-code";
 
-const VerifyCodeForm = ({ verifyCode, setVerifyCode }) => {
-  const handleSubmit = (event) => {
+const VerifyCodeForm = ({ verifyCode, setVerifyCode, action, number }) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert("code entered")
+    await action(number, verifyCode);
   };
   
   return (
