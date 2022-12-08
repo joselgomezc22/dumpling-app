@@ -6,8 +6,11 @@ import VerifyCodeForm from "../components/VerifyCodeForm";
 
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
+import { useCookies } from 'react-cookie';
 
 import { Auth } from 'aws-amplify';
+
+import { useNavigate } from "react-router-dom";
 
 const LoginDummy = () => {
   
@@ -18,6 +21,8 @@ const LoginDummy = () => {
   const [verifyCode, setVerifyCode] = useState("");
 
   const [showValidate, setShowValidate] = useState(false);
+
+  const navigate = useNavigate();
 
   const signIn = async (numberPhone) => {
     try {
@@ -32,17 +37,23 @@ const LoginDummy = () => {
   const verifyCodeAction = async (number, code) => {
     try {
       const validate = await Auth.sendCustomChallengeAnswer(auth, code);
-      console.log(validate);
+      const { signInUserSession: { accessToken: { jwtToken }, refreshToken: { token } } } = validate;
+      window.localStorage.setItem("Auth", jwtToken);
+      window.localStorage.setItem("AuthRefresh", token);
+      return navigate("/list");
     } catch(error) {
       console.log({error});
     }
+  };
+
+  const tryGraph = () => {
   };
 
   return (
     <div className="login-overlay">
      
       <div className="login-box">
-        <button onClick={()=>{setUser('77')}}></button>
+        <button onClick={()=>{tryGraph()}}>TRY</button>
         <img className="login-logo" src={logo} />
         <h2 className="text-l">Log in to your account.</h2>
         {!showValidate && <NumberForm number={number} setNumber={setNumber} setShowValidate={setShowValidate} login={signIn} />}
