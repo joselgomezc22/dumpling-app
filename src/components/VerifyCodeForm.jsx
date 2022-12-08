@@ -12,7 +12,6 @@ const VerifyCodeForm = ({ verifyCode, setVerifyCode, action, number }) => {
     <div>
         
       <h3 className="text-m">
-        
         Enter the verification code sent to your phone to log in
       </h3>
       <form className="login-form" onSubmit={handleSubmit}>

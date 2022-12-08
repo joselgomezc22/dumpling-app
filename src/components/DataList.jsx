@@ -30,7 +30,7 @@ const data = [
 
 
 
-export const DataList = () => {
+export const DataList = ({orders}) => {
 
   const [selectedRows, setSelectedRows] = useState({})
 

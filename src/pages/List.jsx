@@ -5,14 +5,15 @@ import { useGetOrders } from '../hooks/useRequest';
 
 const List = () => {
 
-  const { data, error, isLoading, isSuccess } = useGetOrders();
+  const { data, error, isLoading, isSuccess } = useGetOrders(null, 10);
   if (error) return <h1>Something went wrong!</h1>;
   if (isLoading) return <h1>Loading...</h1>;
 
   return (
     isSuccess && (
       <article className="Post">
-        <pre>{JSON.stringify(data)}</pre>
+        <pre>{JSON.stringify(data, null, "\t")}</pre>
+        <DataList orders={data} />
       </article>
     )
   );

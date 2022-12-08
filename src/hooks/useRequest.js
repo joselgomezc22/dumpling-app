@@ -9,21 +9,79 @@ const graphQLClient = new GraphQLClient(API_URL, {
   }
 });
 
-const useGetOrders = () => {
+const useGetOrders = (filter=null, quantity=10) => {
 
-  return useQuery("getOrders", async () => {
-    const { filteredLinkedOrders } = await graphQLClient.request(gql`
-      query getOrders {
-        filteredLinkedOrders(count: 5, filters: []) {
+  if(filter){
+    const { statusOrder, date, shopper } = filter;
+    return useQuery(["getOrders", statusOrder, shopper], async () => {
+      const { filteredLinkedOrders } = await graphQLClient.request(gql`
+      query getOrders($statusOrder: [String!], $shopperId: String!, $quantityResult: Int!) {
+        filteredLinkedOrders(
+          count: $quantityResult,
+          filters: [
+            {operator: EQ, property: "orderStatus", values: $statusOrder}
+          ]
+        ) {
           orders {
+            version,
+            id,
+            clientId,
+            shopperId,
             firstName,
+            lastName,
+            phone,
+            email,
+            clientImage,
+            note,
+            orderStatus,
+            orderDateTime,
+            orderTimestamp,
             deliveryDate,
             deliveryTime,
-            deliveryTimestamp
+            deliveryTimestamp,
+            deliveryStartDateTime,
+            deliveryEndDateTime,
+            feeAndPreGratuityDisplay,
+            deliveryFee
           },
+          nextToken
+        }
+      }`, { statusOrder: ["Complete"], quantityResult: quantity });
+      return filteredLinkedOrders;
+    });
+  }
+
+  return useQuery(["getOrders", quantity], async () => {
+    const { filteredLinkedOrders } = await graphQLClient.request(gql`
+    query getOrders($quantityResult: Int!) {
+      filteredLinkedOrders(
+        count: $quantityResult,
+        filters: []) {
+        orders {
+          version,
+          id,
+          clientId,
+          shopperId,
+          firstName,
+          lastName,
+          phone,
+          email,
+          clientImage,
+          note,
+          orderStatus,
+          orderDateTime,
+          orderTimestamp,
+          deliveryDate,
+          deliveryTime,
+          deliveryTimestamp,
+          deliveryStartDateTime,
+          deliveryEndDateTime,
+          feeAndPreGratuityDisplay,
+          deliveryFee
+        },
         nextToken
       }
-    }`);
+    }`, {quantityResult: quantity});
     return filteredLinkedOrders;
   });
 };
