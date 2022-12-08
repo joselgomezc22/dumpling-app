@@ -12,11 +12,10 @@ const List = () => {
   return (
     isSuccess && (
       <article className="Post">
-        <pre>{JSON.stringify(data, null, "\t")}</pre>
         <DataList orders={data} />
       </article>
-    )
-  );
+    ) 
+  ); 
 }
 
 export default List;

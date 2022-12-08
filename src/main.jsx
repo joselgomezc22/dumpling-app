@@ -8,7 +8,7 @@ import LoginDummy from "./pages/LoginDummy";
 //import PrivateRoute from "./components/PrivateRoute";
 
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
-
+ 
 import awsmobile from "./aws-exports";
 import { Amplify } from 'aws-amplify';
 
