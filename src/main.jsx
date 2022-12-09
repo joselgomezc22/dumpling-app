@@ -2,13 +2,13 @@ import React, {useState, useContext} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { DataProvider } from "./context/DataContext";
-import Login from "./pages/Login";
-import List from "./pages/List";
-import LoginDummy from "./pages/LoginDummy";
+import Login from "./pages/Login.jsx";
+import List from "./pages/List.jsx";
+import LoginDummy from "./pages/LoginDummy.jsx";
 //import PrivateRoute from "./components/PrivateRoute";
 
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
- 
+
 import awsmobile from "./aws-exports";
 import { Amplify } from 'aws-amplify';
 
@@ -32,11 +32,11 @@ const router = createBrowserRouter([
     element: <LoginDummy />,
   },
   {
-    path: "/dumpling-app/",
+    path: "/dumpling-app",
     element: <LoginDummy />,
   },
   {
-    path: "/list/",
+    path: "/list",
     element: <List />,
   },
   {
