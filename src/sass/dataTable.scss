@@ -40,15 +40,47 @@
     &-item {
         display: flex;
         align-items: center;
-        border-radius: 20px;
-        border: 1px solid #E7E7E7;
+        position: relative;
         margin: 0 1rem 0 0;
         padding: 0.1rem 1rem;
+        border-radius: 20px;
+        border: 1px solid #E7E7E7;
         transition: all 0.5s;
 
         &:hover {
             cursor: pointer;
-        } 
+        }
+        &-cl {
+            display: flex;
+            align-items: center;
+        }
+        &.active {
+            border: 1px solid $dumpling;
+            & .dt-filters-arrow-icon{
+                transform: rotate(-180deg);
+            }
+            & .dt-filters__box{
+                opacity: 1;
+                
+                z-index: 1;
+            }
+        }
+    }
+    &__box {
+        width: 100%;
+        padding: 1.1rem 1rem;
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 20px;
+        opacity: 0;
+        top: 105%;
+        right: 0;
+        transition: opacity 0.5s;
+
+        &-buttons {
+            display: flex;
+            width: 100%;
+        }
     }
     &-icon {
         width: 1rem;
@@ -59,6 +91,7 @@
         width: 1rem;
         height: 1rem;
         margin: 0 0 0 1rem;
+        transition: all 0.5s;
     }
     &-search-icon {
         margin: 0 1rem 0 0;
@@ -73,6 +106,16 @@
         border: 1px solid $dumpling-gray;
         border-radius: 20px;
     }
+    &__status {
+        display: flex;
+        align-items: center;
+
+        input[type='checkbox'] { 
+            margin: 0 1rem 0 0;
+        }
+    }
+
+
     &__search-input {
         border: none;
 
