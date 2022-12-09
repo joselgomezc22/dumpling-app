@@ -19,10 +19,9 @@ export const DataList = ({ orders }) => {
 
   const columns = [
     {
-        name: 'Title',
-        selector: row => row.title,
-        sortable: true,
-        sortField: "firstName"
+      name: "Customer",
+      selector: (row) => row.firstName + " " + row.lastName,
+      sortable: true,
     },
     {
       name: "Order status",
