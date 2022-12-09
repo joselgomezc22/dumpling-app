@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const StatusFilters = ({ statusFilters, setStatusFilter }) => {
+const StatusFilters = ({ statusFilters, setStatusFilters }) => {
   return (
     <>
       {statusFilters.filters.map((filter, index) => (
-        <label className="dt-filters__status">
+        <label key={index} className="dt-filters__status">
           <input
-            checked={filter.active}
-            
+            onChange={() => {
+              statusFilters.filters[index].active =
+                !statusFilters.filters[index].active;
+              setStatusFilters({ ...statusFilters });
+            }}
             type="checkbox"
             name=""
             id=""
@@ -21,7 +24,7 @@ const StatusFilters = ({ statusFilters, setStatusFilter }) => {
   );
 };
 
-export const DataListFilter = ({ filters }) => {
+export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
   const [statusFilter, setStatusFilter] = useState({
     filters: [
       {
@@ -48,96 +51,109 @@ export const DataListFilter = ({ filters }) => {
     active: false,
   });
 
+  useEffect(() => {
+    setFilter(statusFilter);
+  }, [statusFilter]);
+
   return (
-    <div className="dt-filters">
-      {JSON.stringify(statusFilter)}
-      <div className="dt-filters__col">
-        <div className="dt-filters__label">
-          <img
-            className="dt-filters-icon"
-            src="src/images/filter-icon.svg"
-            alt=""
-          />
-          <h2 className="text-m-bold">Filters</h2>
-        </div>
-        <div
-          className={"dt-filters-item " + (statusFilter.active ? "active" : "")}
-        >
-          <div
-            className="dt-filters-item-cl"
-            onClick={() => {
-              setStatusFilter({
-                ...statusFilter,
-                active: !statusFilter.active,
-              });
-            }}
-          >
+    <>
+      <div className="dt-filters">
+        <div className="dt-filters__col">
+          <div className="dt-filters__label">
             <img
               className="dt-filters-icon"
               src="src/images/filter-icon.svg"
               alt=""
             />
-            <h2 className="text-m-bold">Order status</h2>
+            <h2 className="text-m-bold">Filters</h2>
+          </div>
+          <div
+            className={
+              "dt-filters-item " + (statusFilter.active ? "active" : "")
+            }
+          >
+            <div
+              className="dt-filters-item-cl"
+              onClick={() => {
+                setStatusFilter({
+                  ...statusFilter,
+                  active: !statusFilter.active,
+                });
+              }}
+            >
+              <img
+                className="dt-filters-icon"
+                src="src/images/filter-icon.svg"
+                alt=""
+              />
+              <h2 className="text-m-bold">Order status</h2>
+              <img
+                className="dt-filters-arrow-icon"
+                src="src/images/filter-arrow.svg"
+                alt=""
+              />
+            </div>
+            <div className="dt-filters__box">
+              <StatusFilters
+                statusFilters={statusFilter}
+                setStatusFilters={setStatusFilter}
+              />
+
+              <div className="dt-filters__box-buttons">
+                <button className="btn text-m-bold">Cancel</button>
+                <button
+                  onClick={() => {
+                    applyStatusFilter();
+                  }}
+                  className="btn btn-primary text-m-bold"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="dt-filters-item">
+            <img
+              className="dt-filters-icon"
+              src="src/images/filter-icon.svg"
+              alt=""
+            />
+            <h2 className="text-m-bold">Delivery date</h2>
             <img
               className="dt-filters-arrow-icon"
               src="src/images/filter-arrow.svg"
               alt=""
             />
           </div>
-          <div className="dt-filters__box">
-            <StatusFilters
-              statusFilters={statusFilter}
-              setStatusFilter={setStatusFilter}
+          <div className="dt-filters-item">
+            <img
+              className="dt-filters-icon"
+              src="src/images/filter-icon.svg"
+              alt=""
             />
-
-            <div className="dt-filters__box-buttons">
-              <button className="btn text-m-bold">Cancel</button>
-              <button className="btn btn-primary text-m-bold">Apply</button>
-            </div>
+            <h2 className="text-m-bold">Assigned shopper</h2>
+            <img
+              className="dt-filters-arrow-icon"
+              src="src/images/filter-arrow.svg"
+              alt=""
+            />
           </div>
         </div>
-        <div className="dt-filters-item">
-          <img
-            className="dt-filters-icon"
-            src="src/images/filter-icon.svg"
-            alt=""
-          />
-          <h2 className="text-m-bold">Delivery date</h2>
-          <img
-            className="dt-filters-arrow-icon"
-            src="src/images/filter-arrow.svg"
-            alt=""
-          />
+        <div className="dt-filters__col">
+          <label className="dt-filters__search">
+            <img
+              className="dt-filters-search-icon"
+              src="src/images/search-icon.svg"
+              alt=""
+            />
+            <input
+              placeholder="Search"
+              className="dt-filters__search-input"
+              type="text"
+            />
+          </label>
         </div>
-        <div className="dt-filters-item">
-          <img
-            className="dt-filters-icon"
-            src="src/images/filter-icon.svg"
-            alt=""
-          />
-          <h2 className="text-m-bold">Assigned shopper</h2>
-          <img
-            className="dt-filters-arrow-icon"
-            src="src/images/filter-arrow.svg"
-            alt=""
-          />
-        </div>
-        <div></div>
       </div>
-      <div className="dt-filters__col">
-        <label className="dt-filters__search">
-          <img
-            className="dt-filters-search-icon"
-            src="src/images/search-icon.svg"
-            alt=""
-          />
-          <input
-            placeholder="Search"
-            className="dt-filters__search-input"
-            type="text"
-          />
-        </label>
-      </div>
-    </div>
+    </>
   );
 };
