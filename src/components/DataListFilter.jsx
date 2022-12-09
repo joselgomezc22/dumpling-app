@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 
+/*Images importing */
+import filterIcon from "/src/images/filter-icon.svg";
+import filterArrow from "/src/images/filter-arrow.svg";
+import searchIcon from "/src/images/search-icon.svg";
+
 const StatusFilters = ({ statusFilters, setStatusFilters }) => {
   return (
     <>
@@ -11,6 +16,7 @@ const StatusFilters = ({ statusFilters, setStatusFilters }) => {
                 !statusFilters.filters[index].active;
               setStatusFilters({ ...statusFilters });
             }}
+            checked={filter.active}
             type="checkbox"
             name=""
             id=""
@@ -24,7 +30,7 @@ const StatusFilters = ({ statusFilters, setStatusFilters }) => {
   );
 };
 
-export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
+export const DataListFilter = ({ setFilter, applyStatusFilter }) => {
   const [statusFilter, setStatusFilter] = useState({
     filters: [
       {
@@ -33,12 +39,12 @@ export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
         active: false,
       },
       {
-        label: "Open",
+        label: "Created",
         count: 30,
-        active: true,
+        active: false,
       },
       {
-        label: "Completed",
+        label: "Complete",
         count: 40,
         active: false,
       },
@@ -60,11 +66,7 @@ export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
-            <img
-              className="dt-filters-icon"
-              src="src/images/filter-icon.svg"
-              alt=""
-            />
+            <img className="dt-filters-icon" src={filterIcon} alt="" />
             <h2 className="text-m-bold">Filters</h2>
           </div>
           <div
@@ -81,17 +83,9 @@ export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
                 });
               }}
             >
-              <img
-                className="dt-filters-icon"
-                src="src/images/filter-icon.svg"
-                alt=""
-              />
+              <img className="dt-filters-icon" src={filterIcon} alt="" />
               <h2 className="text-m-bold">Order status</h2>
-              <img
-                className="dt-filters-arrow-icon"
-                src="src/images/filter-arrow.svg"
-                alt=""
-              />
+              <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
             <div className="dt-filters__box">
               <StatusFilters
@@ -100,10 +94,24 @@ export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
               />
 
               <div className="dt-filters__box-buttons">
-                <button className="btn text-m-bold">Cancel</button>
+                <button
+                  onClick={() => {
+                    setStatusFilter({
+                      ...statusFilter,
+                      active: !statusFilter.active,
+                    });
+                  }}
+                  className="btn text-m-bold"
+                >
+                  Cancel
+                </button>
                 <button
                   onClick={() => {
                     applyStatusFilter();
+                    setStatusFilter({
+                      ...statusFilter,
+                      active: !statusFilter.active,
+                    });
                   }}
                   className="btn btn-primary text-m-bold"
                 >
@@ -113,39 +121,19 @@ export const DataListFilter = ({ setFilter , applyStatusFilter }) => {
             </div>
           </div>
           <div className="dt-filters-item">
-            <img
-              className="dt-filters-icon"
-              src="src/images/filter-icon.svg"
-              alt=""
-            />
+            <img className="dt-filters-icon" src={filterIcon} alt="" />
             <h2 className="text-m-bold">Delivery date</h2>
-            <img
-              className="dt-filters-arrow-icon"
-              src="src/images/filter-arrow.svg"
-              alt=""
-            />
+            <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
           </div>
           <div className="dt-filters-item">
-            <img
-              className="dt-filters-icon"
-              src="src/images/filter-icon.svg"
-              alt=""
-            />
+            <img className="dt-filters-icon" src={filterIcon} alt="" />
             <h2 className="text-m-bold">Assigned shopper</h2>
-            <img
-              className="dt-filters-arrow-icon"
-              src="src/images/filter-arrow.svg"
-              alt=""
-            />
+            <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
           </div>
         </div>
         <div className="dt-filters__col">
           <label className="dt-filters__search">
-            <img
-              className="dt-filters-search-icon"
-              src="src/images/search-icon.svg"
-              alt=""
-            />
+            <img className="dt-filters-search-icon" src={searchIcon} alt="" />
             <input
               placeholder="Search"
               className="dt-filters__search-input"

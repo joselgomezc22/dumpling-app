@@ -32,16 +32,8 @@ const router = createBrowserRouter([
     element: <LoginDummy />,
   },
   {
-    path: "/dumpling-app",
-    element: <LoginDummy />,
-  },
-  {
     path: "/list",
     element: <List />,
-  },
-  {
-    path: "/login-phone",
-    element: <LoginDummy />
   }
 ]);
 

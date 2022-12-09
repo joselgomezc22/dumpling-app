@@ -1,4 +1,4 @@
-import logo from "../images/dumpling_logo.png";
+import logo from "/src/images/dumpling_logo.png";
 import { useState } from "react";
 import { NumberForm } from "../components/NumberForm";
 
