@@ -19,9 +19,10 @@ export const DataList = ({ orders }) => {
 
   const columns = [
     {
-      name: "Customer",
-      selector: (row) => row.firstName + " " + row.lastName,
-      sortable: true,
+        name: 'Title',
+        selector: row => row.title,
+        sortable: true,
+        sortField: "firstName"
     },
     {
       name: "Order status",

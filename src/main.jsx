@@ -29,11 +29,11 @@ Amplify.configure(awsmobile);
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <LoginDummy />,
   },
   {
     path: "/dumpling-app/",
-    element: <Login />,
+    element: <LoginDummy />,
   },
   {
     path: "/list/",
