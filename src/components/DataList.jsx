@@ -43,6 +43,7 @@ export const DataList = ({orders}) => {
         name: 'Title',
         selector: row => row.title,
         sortable: true,
+        sortField: "firstName"
     },
     {
         name: 'Director',

@@ -40,7 +40,7 @@ const LoginDummy = () => {
       const { signInUserSession: { accessToken: { jwtToken }, refreshToken: { token } } } = validate;
       window.localStorage.setItem("Auth", jwtToken);
       window.localStorage.setItem("AuthRefresh", token);
-      return navigate("/list");
+      window.location.href = "/list";
     } catch(error) {
       console.log({error});
     }
