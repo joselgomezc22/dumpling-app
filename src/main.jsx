@@ -2,8 +2,8 @@ import React, {useState, useContext} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { DataProvider } from "./context/DataContext";
-import Login from "./pages/login";
-import List from "./pages/list";
+import Login from "./pages/Login";
+import List from "./pages/List";
 import LoginDummy from "./pages/LoginDummy";
 //import PrivateRoute from "./components/PrivateRoute";
 
