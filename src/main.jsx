@@ -1,0 +1,53 @@
+import React, {useState, useContext} from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { DataProvider } from "./context/DataContext";
+import Login from "./pages/Login.jsx";
+import List from "./pages/List.jsx";
+import LoginDummy from "./pages/LoginDummy.jsx";
+//import PrivateRoute from "./components/PrivateRoute";
+
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+
+import awsmobile from "./aws-exports";
+import { Amplify } from 'aws-amplify';
+
+import { QueryClient, QueryClientProvider } from "react-query";
+
+import { CookiesProvider } from "react-cookie";
+
+Amplify.configure(awsmobile);
+
+/*const Dasboard = () => {
+  return (
+    <PrivateRoute>
+      <List/>
+    </PrivateRoute>
+  );
+};*/
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LoginDummy />,
+  },
+  {
+    path: "/list",
+    element: <List />,
+  }
+]);
+
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <DataProvider>
+          <CookiesProvider>
+            <RouterProvider router={router} />
+          </CookiesProvider>
+      </DataProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
+);

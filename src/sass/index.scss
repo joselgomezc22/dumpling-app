@@ -1,0 +1,18 @@
+/* Font importing */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700&display=swap');
+
+/* Variables */
+$dumpling      :#00A651;
+$dumpling-gray :#E7E7E7;
+
+html {
+    font-size: 16px;
+}
+* {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+}
+
+@import './global.scss';
+@import './login.scss';
+@import './dataTable.scss';

@@ -1,0 +1,36 @@
+.text {
+    &-l {
+        font-size: 24px;
+        font-weight: 600;
+    }
+    &-m {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    &-m-bold {
+        font-size: 14px;
+        font-weight: 700;
+    }
+    &-s {
+        font-size: 14px;
+    }
+}
+
+.btn {
+
+    transition: all 0.5s ease-in-out;
+    border: none;
+    border-radius: 5px;
+    padding: 3%;
+    width: 100%;
+
+    &-primary {
+        background-color: $dumpling;
+        color: white;
+        cursor: pointer;
+    }
+    &-disabled {
+        background-color: $dumpling-gray;
+        color: #787878;
+    }
+}
