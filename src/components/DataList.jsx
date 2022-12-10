@@ -1,41 +1,25 @@
 import DataTable from "react-data-table-component";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import logo from "/src/images/dumpling_logo.png";
 
 import { DataListFilter } from "./DataListFilter";
-
-const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre> ;
+import { useSearchParams } from "react-router-dom";
+const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
 const StatusBox = ({ status }) => {
   return <span className={"dt-status " + status}>{status} </span>;
 };
 
-export const DataList = ({ orders , setFilter , globalFilter , filterChange }) => {
+export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
   const [listData, setListData] = useState(orders.orders);
 
   const [statusFilter, setStatusFilter] = useState({});
 
-  useEffect(() => {
-    
-    //globalFilter
-    //statusFilter
-    /*if (globalFilter.status) {
-      console.log(globalFilter.status);
-      globalFilter.status.map(f=>{
-        if(statusFilter.filters){
-          const index = statusFilter.filters.map(object => object.label).indexOf(f);
-          statusFilter.filters[index].active = true;
-        }
-      })
-      setStatusFilter({...statusFilter})
-    }*/
+  let [searchParams, setSearchParams] = useSearchParams();
 
-
-  }, [globalFilter])
-  
-
+  useEffect(() => {}, [globalFilter]);
 
   const columns = [
     {
@@ -76,26 +60,34 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
   ];
 
   const applyStatusFilter = () => {
-    const statusFilterSet = statusFilter.filters.filter(f=>f.active === true);
-    console.log(statusFilterSet)
+    const statusFilterSet = statusFilter.filters.filter(
+      (f) => f.active === true
+    );
     if (statusFilterSet.length > 0) {
       const statusFilterSetArray = statusFilterSet.map(({ label }) => label);
+      setSearchParams({
+        ...searchParams,
+        status: String(statusFilterSetArray),
+      });
       setFilter({
         status: statusFilterSetArray,
-        shopper: null, 
+        shopper: null,
         date: null,
-      })
+      });
     } else {
-      setFilter(null)
+      setFilter(null);
     }
     filterChange();
-  }
+  };
 
   return (
     <div className="dt-container">
       <img className="" src={logo} />
 
-      <DataListFilter setFilter={setStatusFilter} applyStatusFilter={applyStatusFilter} />
+      <DataListFilter
+        setFilter={setStatusFilter}
+        applyStatusFilter={applyStatusFilter}
+      />
       <DataTable
         columns={columns}
         data={listData}
@@ -105,7 +97,6 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
         onSelectedRowsChange={setSelectedRows}
         expandableRowsComponent={ExpandedComponent}
       />
-     
     </div>
   );
 };
