@@ -1,0 +1,197 @@
+OrderMgmtTool.graphql
+
+
+
+type Address {
+	id: ID
+	addressName: String
+	addressLine1: String
+	addressLine2: String
+	city: String
+	state: String
+	zipcode: String
+	country: String
+}
+​
+input AssignLinkedOrdersToInput {
+	buddyIds: [ID!]!
+	linkedOrderIdentifiers: [LinkedOrderIdentifiersInput!]!
+}
+​
+type BooleanFilterType {
+	name: String!
+}
+​
+type BossBuddyInfo {
+	bossBuddyProfiles: [BossBuddyProfile!]!
+}
+​
+type BossBuddyProfile {
+	id: ID!
+	name: String!
+	phone: String!
+	permissionLevel: BuddyPermissions!
+}
+​
+enum BuddyPermissions {
+	Shop
+	ShopAndClose
+	Admin
+}
+​
+type ChoiceFilterType {
+	options: [ChoiceFilterTypeOption!]!
+	isRadioButton: Boolean!
+}
+​
+type ChoiceFilterTypeOption {
+	name: String!
+	property: String!
+}
+​
+type DateRangeFilterType {
+	minTimestamp: String
+	maxTimestamp: String
+}
+​
+enum FilterOperator {
+	EQ
+	NE
+	IN
+	NIN
+	LT
+	LTE
+	GT
+	GTE
+}
+​
+union FilterType = DateRangeFilterType | IntRangeFilterType | ChoiceFilterType | BooleanFilterType 
+​
+type IntRangeFilterType {
+	minRange: Int
+	minValue: Int
+	maxRange: Int
+	maxValue: Int
+}
+​
+input LinkedOrderIdentifiersInput {
+	id: ID
+	deliveryTimestamp: String
+}
+​
+type ListReference @aws_cognito_user_pools {
+	storeName: String!
+	storeImage: String!
+	storeId: ID!
+	id: ID!
+	listName: String!
+	listItemCount: Int!
+	listVersion: String!
+	lastCompletedOrderId: ID
+	savedListId: ID
+	savedListItemCount: Int!
+	savedListVersion: String
+}
+​
+type Mutation {
+	assignLinkedOrdersTo(assignLinkedOrdersToInput: AssignLinkedOrdersToInput): PaginatedOrders!
+}
+​
+type Order {
+	version: String
+	id: ID
+	clientId: ID
+	shopperId: ID
+	# These next five fields are dynamically added to the lookup when doing linkedOrders.
+	firstName: String
+	lastName: String
+	phone: String
+	email: String
+	clientImage: String
+	note: String
+	orderStatus: String
+	orderDateTime: String
+	orderTimestamp: String
+	deliveryDate: String
+	deliveryTime: String
+	deliveryTimestamp: String
+	deliveryStartDateTime: String
+	deliveryEndDateTime: String
+	deliveryAddress: Address
+	feeAndPreGratuityDisplay: String
+	deliveryFee: Int
+	listReferences: [ListReference!]!
+	assignedTo: [ID!]
+}
+​
+type PaginatedOrders {
+	orders: [Order!]!
+	nextToken: String
+}
+​
+type Query {
+	getBossBuddies: BossBuddyInfo!
+	linkedOrdersSortFilterOptions: QuerySortFilterOptions
+	linkedOrdersSortFilterPresets: [QuerySortFilterPreset!]!
+	filteredLinkedOrders(
+		sort: QuerySortInput,
+		filters: [QueryFilterInput!],
+		count: Int,
+		nextToken: String
+	): PaginatedOrders
+}
+​
+# Used to provide a filter preset to apply to a query
+type QueryFilter {
+	operator: FilterOperator!
+	property: String!
+	values: [String!]!
+}
+​
+input QueryFilterInput {
+	operator: FilterOperator!
+	property: String!
+	values: [String!]!
+}
+​
+type QueryFilterOption {
+	name: String!
+	property: String!
+	type: FilterType!
+}
+​
+# Used to provide a sort preset to apply to a query
+type QuerySort {
+	property: String!
+	direction: SortDirection!
+}
+​
+# Used to create a list of sort and filter options on client side
+type QuerySortFilterOptions {
+	sortOptions: [QuerySortOption!]!
+	filterOptions: [QueryFilterOption!]!
+}
+​
+# A preset sort and filter combo that can be applied to a query
+type QuerySortFilterPreset {
+	name: String!
+	description: String
+	sort: QuerySort
+	filters: [QueryFilter!]!
+	children: [QuerySortFilterPreset!]!
+}
+​
+input QuerySortInput {
+	property: String!
+	direction: SortDirection!
+}
+​
+# A query sort option to display on the client side
+type QuerySortOption {
+	name: String!
+	property: String!
+}
+​
+enum SortDirection {
+	ASC
+	DESC

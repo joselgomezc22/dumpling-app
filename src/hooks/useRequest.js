@@ -40,7 +40,8 @@ const useGetOrders = (filter=null, quantity=10) => {
               deliveryStartDateTime,
               deliveryEndDateTime,
               feeAndPreGratuityDisplay,
-              deliveryFee
+              deliveryFee,
+              assignedTo
             },
             nextToken
           }
