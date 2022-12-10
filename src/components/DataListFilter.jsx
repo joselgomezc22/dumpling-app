@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-<<<<<<< HEAD
-=======
 import { useSearchParams } from "react-router-dom";
->>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
 
 /*Images importing */
 import filterIcon from "/src/images/filter-icon.svg";
@@ -61,16 +58,11 @@ export const DataListFilter = ({ setFilter, applyStatusFilter }) => {
     active: false,
   });
 
-<<<<<<< HEAD
-  useEffect(() => {
-    setFilter(statusFilter);
-=======
   let [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setFilter(statusFilter);
     
->>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
   }, [statusFilter]);
 
   return (
@@ -157,8 +149,6 @@ export const DataListFilter = ({ setFilter, applyStatusFilter }) => {
     </>
   );
 };
-<<<<<<< HEAD
-=======
 
 
 
@@ -189,4 +179,3 @@ export default function GottenPlan() {
 }
 
  */
->>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
