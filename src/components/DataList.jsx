@@ -1,22 +1,36 @@
 import DataTable from "react-data-table-component";
+<<<<<<< HEAD
 import { useState , useEffect } from "react";
 import logo from "/src/images/dumpling_logo.png";
 
 import { DataListFilter } from "./DataListFilter";
 
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre> ;
+=======
+import { useState, useEffect } from "react";
+import logo from "/src/images/dumpling_logo.png";
+
+import { DataListFilter } from "./DataListFilter";
+import { useSearchParams } from "react-router-dom";
+const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
 
 const StatusBox = ({ status }) => {
   return <span className={"dt-status " + status}>{status} </span>;
 };
 
+<<<<<<< HEAD
 export const DataList = ({ orders , setFilter , globalFilter , filterChange }) => {
+=======
+export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
   const [selectedRows, setSelectedRows] = useState({});
 
   const [listData, setListData] = useState(orders.orders);
 
   const [statusFilter, setStatusFilter] = useState({});
 
+<<<<<<< HEAD
   useEffect(() => {
     
     //globalFilter
@@ -36,6 +50,11 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
   }, [globalFilter])
   
 
+=======
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {}, [globalFilter]);
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
 
   const columns = [
     {
@@ -76,6 +95,7 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
   ];
 
   const applyStatusFilter = () => {
+<<<<<<< HEAD
     const statusFilterSet = statusFilter.filters.filter(f=>f.active === true);
     console.log(statusFilterSet)
     if (statusFilterSet.length > 0) {
@@ -90,12 +110,40 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
     }
     filterChange();
   }
+=======
+    const statusFilterSet = statusFilter.filters.filter(
+      (f) => f.active === true
+    );
+    if (statusFilterSet.length > 0) {
+      const statusFilterSetArray = statusFilterSet.map(({ label }) => label);
+      setSearchParams({
+        ...searchParams,
+        status: String(statusFilterSetArray),
+      });
+      setFilter({
+        status: statusFilterSetArray,
+        shopper: null,
+        date: null,
+      });
+    } else {
+      setFilter(null);
+    }
+    filterChange();
+  };
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
 
   return (
     <div className="dt-container">
       <img className="" src={logo} />
 
+<<<<<<< HEAD
       <DataListFilter setFilter={setStatusFilter} applyStatusFilter={applyStatusFilter} />
+=======
+      <DataListFilter
+        setFilter={setStatusFilter}
+        applyStatusFilter={applyStatusFilter}
+      />
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
       <DataTable
         columns={columns}
         data={listData}
@@ -105,7 +153,10 @@ export const DataList = ({ orders , setFilter , globalFilter , filterChange }) =
         onSelectedRowsChange={setSelectedRows}
         expandableRowsComponent={ExpandedComponent}
       />
+<<<<<<< HEAD
      
+=======
+>>>>>>> 4f92c664d2ddce06f066e7c8e7fc00fde91ad9fd
     </div>
   );
 };
