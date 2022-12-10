@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "13ae0c90-b7f9-4bd4-96b4-b1bdd29747c2",
+		"name": "Dumpling",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13832454"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJpb3MrNFFsRU12UkVaZEwwWVlaSjJMQmUwY2dlZG5rNWlZd3JGXC80aEJSQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmZTg4MmRmYy1kN2ZkLTRkMDEtYTUxZS1iODljZjEwMGIxMjYiLCJldmVudF9pZCI6ImQ0OTFhYjNkLWZlOTQtNDBkMS1iZTdjLTI1ZmQ0ZDIwYjM0NyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2NzA3MDQ5NzIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0yX3V1MU5hUWJVZCIsImV4cCI6MTY3MDcwODU3MiwiaWF0IjoxNjcwNzA0OTcyLCJqdGkiOiI5NDYyNTUzNy0wY2IzLTQ5MjYtYTExMS04ZjRjNmEzMzQwZWUiLCJjbGllbnRfaWQiOiIydHNxY3QzcGRxZWtoNW1uOWhsb2RrYm1qZSIsInVzZXJuYW1lIjoiYTdhNWRlMzEtMzQ5Ny00NTMwLWJhMmUtZmM5OGJlZGY5NGI1In0.h0KoYqmt-kge4RgdiKfKh79Gic82meBFkdsSOSD-diqnK0sLDbhoHtoBvTL8_kluE9EoQPL7iF6m1uKhzfIsE_TxZ_jwAKOBgPqOQi_p2dvXzvTFdXhpsQAImp2pWZC3L2ddH8dMwU3TzT-lsL0TGLEC6iw-blHGNQUP0hplnLBBLcQx7-UuzVpkz_GxB5jottKn8jib2g_UaAoo_T-eIzLDvxofM0egUbl6ERW9KBaXmTYIa__4C84nxxiOQbdBLTy7VEkVEyLdQ-FtLEl3MOr-LEzfb_nvXF3XxC0lANoqegmv8e3_UglCQ8zYPjco95mVVY3Fp1u3BHMKj89n2w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getOrders {\r\n  filteredLinkedOrders(\r\n    count: 10,\r\n    filters: [],\r\n    text: \"smith\",\r\n    sort: null\r\n  ) {\r\n    orders {\r\n      version,\r\n      id,\r\n      clientId,\r\n      shopperId,\r\n      firstName,\r\n      lastName,\r\n      phone,\r\n      email,\r\n      clientImage,\r\n      note,\r\n      orderStatus,\r\n      orderDateTime,\r\n      orderTimestamp,\r\n      deliveryDate,\r\n      deliveryTime,\r\n      deliveryTimestamp,\r\n      deliveryStartDateTime,\r\n      deliveryEndDateTime,\r\n      feeAndPreGratuityDisplay,\r\n      deliveryFee,\r\n      assignedTo\r\n    },\r\n    nextToken\r\n  }\r\n}\r\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://bsr67l2a4jdkxci4w4dwdv7mf4.appsync-api.us-east-2.amazonaws.com/graphql",
+					"protocol": "https",
+					"host": [
+						"bsr67l2a4jdkxci4w4dwdv7mf4",
+						"appsync-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Shoppers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJpb3MrNFFsRU12UkVaZEwwWVlaSjJMQmUwY2dlZG5rNWlZd3JGXC80aEJSQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmZTg4MmRmYy1kN2ZkLTRkMDEtYTUxZS1iODljZjEwMGIxMjYiLCJldmVudF9pZCI6IjQ0YWE3Y2JjLTk4NDgtNGY5OC1hMDMwLTBjNDU4Mzc0NDA0MyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2NzA2OTg4ODAsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0yX3V1MU5hUWJVZCIsImV4cCI6MTY3MDcwMjQ4MCwiaWF0IjoxNjcwNjk4ODgwLCJqdGkiOiJkNDBmNTJmMy0zMGZiLTQxYTUtOGMzNi0zMmRhZmVhZDJhNGUiLCJjbGllbnRfaWQiOiIydHNxY3QzcGRxZWtoNW1uOWhsb2RrYm1qZSIsInVzZXJuYW1lIjoiYTdhNWRlMzEtMzQ5Ny00NTMwLWJhMmUtZmM5OGJlZGY5NGI1In0.Cd6RWg1-nW52iFA_HfSctmScNfWy7egAKwgKKjDOe7JLFHSzJa7FLTzs_CRW7enQ6LxVOevN1MBFEC5wQK2Zht7FbsjkGfDM48IR6S2JPjgP5s7G1ILQRkrAT-mklZhTdXuaIW6_eCJlck1-ivV54RdbOi8wvaiZRfYjfftt3ufReKPwOMjcTw9tSfd445woi3Sd6mc41wvXNSNk5bFjGNH31TpX_OWpmGyp4qlfL_tm5s8MbiFtW6rHA7BK9JLNUM2TY6VBJmJcKnO_s95HbURp3evhU0zCePYlAsXnnv0to2T1tN0QiE-o7xiN_Y-hPW0TAcB9Kl2aICUwPmRkqg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getBuddy {\r\n  getBossBuddies {\r\n      bossBuddyProfiles {\r\n          id,\r\n          name,\r\n          permissionLevel,\r\n          phone\r\n       }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://bsr67l2a4jdkxci4w4dwdv7mf4.appsync-api.us-east-2.amazonaws.com/graphql",
+					"protocol": "https",
+					"host": [
+						"bsr67l2a4jdkxci4w4dwdv7mf4",
+						"appsync-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
