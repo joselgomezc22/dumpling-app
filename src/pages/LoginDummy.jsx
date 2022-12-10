@@ -35,7 +35,6 @@ const LoginDummy = () => {
   const verifyCodeAction = async (number, code) => {
     try {
       const validate = await Auth.sendCustomChallengeAnswer(auth, code);
-      const refresh = await Auth.
       const { signInUserSession: { accessToken: { jwtToken }, refreshToken: { token } } } = validate;
       window.localStorage.setItem("Auth", jwtToken);
       window.localStorage.setItem("AuthRefresh", token);
