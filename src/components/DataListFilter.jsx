@@ -9,11 +9,43 @@ import searchIcon from "/src/images/search-icon.svg";
 const StatusFilters = ({ statusFilters, setStatusFilters , openFilter , setOpenFilter , applyFilter }) => {
   const [statusFilterHolder, setStatusFilterHolder] = useState({});
   const [copy, setCopy] = useState(""); 
+
+  let [searchParams, setSearchParams] = useSearchParams();
+  
+  const filterBySearchParams = (statusFilterHolder,setStatusFilterHolder) => {
+  
+    const filter = {};
+    
+    filter.status = searchParams.get("status")? searchParams.get("status").split(",") : null ;
+    
+    if(filter.status && statusFilterHolder.filters) {
+      const def =  statusFilterHolder.filters.filter(item => !filter.status.includes(item.label));
+      const news = statusFilterHolder.filters.map((f)=>{
+        if( filter.status.includes(f.label)) return {...f,active:true}
+        return f
+      } )
+      return news;
+    }
+   
+
+  
+};
+  
   
   useEffect(() => {
-    setStatusFilterHolder(statusFilters);
-    setCopy(JSON.stringify(statusFilters))
-  }, [])
+    
+    setCopy(JSON.stringify(statusFilters));
+    
+    filterBySearchParams(statusFilterHolder,setStatusFilterHolder);
+    const news = filterBySearchParams(statusFilterHolder,setStatusFilterHolder);
+    if(news) {
+      setStatusFilterHolder({...statusFilters, filters: news})
+      return
+    } else {
+      setStatusFilterHolder(statusFilters);
+    }
+
+  }, [copy])
 
   
 
@@ -50,12 +82,11 @@ const StatusFilters = ({ statusFilters, setStatusFilters , openFilter , setOpenF
           Cancel
         </button>
         <button
-          onClick={() => {            
-            setStatusFilters({
-              ...statusFilterHolder,
-              open: false,
-            });
-            applyFilter('status',statusFilters);
+          onClick={() => {      
+              
+            
+            //return; 
+            applyFilter('status',statusFilterHolder);
             setOpenFilter({...openFilter,status:false})
           }}
           className="btn btn-primary text-m-bold"

@@ -81,7 +81,7 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
       filter.status = searchParams.get("status")? searchParams.get("status").split(",") : null ;
       filter.shopper = searchParams.get("shopper")? searchParams.get("shopper").split(",") : null ;
       filter.date = searchParams.get("date")? searchParams.get("date").split(",") : null ;
-      console.log(JSON.stringify(filter));
+      
       setFilter(filter);
 
     
