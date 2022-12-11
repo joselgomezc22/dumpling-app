@@ -82,7 +82,31 @@ export const DataListFilter = ({  }) => {
     ],
     active: false,
   });
-  const [statusFilterHolder , setStatusFilterHolder] = useState(statusFilter);
+  const [statusFilterHolder , setStatusFilterHolder] = useState({
+    filters: [
+      {
+        label: "All",
+        count: 500,
+        active: false,
+      },
+      {
+        label: "Created",
+        count: 30,
+        active: false,
+      },
+      {
+        label: "Complete",
+        count: 40,
+        active: false,
+      },
+      {
+        label: "Canceled",
+        count: 10,
+        open: false,
+      },
+    ],
+    active: false,
+  });
   const [shopperFilter, setShopperFilter] = useState({
     filters: [
       {
