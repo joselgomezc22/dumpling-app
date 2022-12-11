@@ -1,20 +1,17 @@
 import React, {useState, useContext} from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import { DataProvider } from "./context/DataContext";
-import Login from "./pages/Login.jsx";
-import List from "./pages/List.jsx";
-import LoginDummy from "./pages/LoginDummy.jsx";
-//import PrivateRoute from "./components/PrivateRoute";
-
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
-
+import { CookiesProvider } from "react-cookie";
 import awsmobile from "./aws-exports";
 import { Amplify } from 'aws-amplify';
+import { ApolloProvider } from '@apollo/client';
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { DataProvider } from "./context/DataContext";
+import List from "./pages/List.jsx";
+import LoginDummy from "./pages/LoginDummy.jsx";
 
-import { QueryClient, QueryClientProvider } from "react-query";
+import "./index.css";
 
-import { CookiesProvider } from "react-cookie";
+import { apolloClient } from "./hooks/useRequest";
 
 Amplify.configure(awsmobile);
 
@@ -37,17 +34,15 @@ const router = createBrowserRouter([
   }
 ]);
 
-const queryClient = new QueryClient();
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
       <DataProvider>
           <CookiesProvider>
-            <RouterProvider router={router} />
+            <ApolloProvider client={apolloClient}>
+              <RouterProvider router={router} />
+            </ApolloProvider>
           </CookiesProvider>
       </DataProvider>
-    </QueryClientProvider>
   </React.StrictMode>
 );

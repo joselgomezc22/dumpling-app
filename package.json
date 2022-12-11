@@ -13,6 +13,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.2",
     "aws-amplify": "^5.0.5",
     "aws-amplify-react": "^5.1.43",
     "aws-sdk": "^2.1269.0",

@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { GraphQLClient, gql } from "graphql-request";
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const API_URL = `https://bsr67l2a4jdkxci4w4dwdv7mf4.appsync-api.us-east-2.amazonaws.com/graphql`;
 
@@ -241,4 +242,19 @@ const useGetOrders = (filter=null, quantity=10) => {
   });
 };
 
-export { useGetOrders };
+
+const useExecuteQuery = (key, query, variables=null) => {
+  const fetchData = async () => await graphQLClient.request(query, variables);
+  return useQuery([key], fetchData);
+};
+
+const apolloClient = new ApolloClient({
+  uri: API_URL,
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `Bearer ${window.localStorage.getItem("Auth")}`
+  }
+});
+
+
+export { useGetOrders, useExecuteQuery, apolloClient };
