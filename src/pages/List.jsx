@@ -5,6 +5,7 @@ import { useGetOrders, useExecuteQuery } from '../hooks/useRequest';
 import { gql, useQuery } from "@apollo/client";
 
 import { apolloClient } from '../hooks/useRequest';
+import { Link } from 'react-router-dom';
 
 const List = () => {
 
@@ -79,14 +80,62 @@ const List = () => {
     );
   }
 
-  const {error, loading, data} = useQuery(GET_ORDERS, {
+  //const {error, loading, data} = useQuery(GET_ORDERS, {
+  const { error, data, loading } = useQuery(GET_ORDERS, {
     variables: {
       filter: queryFilter,
       term: searchTerm
     }
   });
 
-  if(error) {
+  if(error){
+    console.log("error", {error});
+    return (
+      <>
+        <h1 className="text-center">
+          { error.message }
+        </h1>
+        <Link to="/">Go to back</Link>
+      </>
+    );
+  }
+
+  if(loading) {
+    return (
+      <>
+        <h1>Loading data</h1>
+      </>
+    );
+  } 
+
+  if (data.filteredLinkedOrders.orders.length > 10){
+    return (
+      <>
+        <h1 className="text-center">
+          Error on server
+        </h1>
+        <Link to="/">Go to back</Link>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <pre>
+        {JSON.stringify(filter)}
+      </pre>
+      <DataList
+        orders={data.filteredLinkedOrders}
+        shoppers={data.getBossBuddies.bossBuddyProfiles}
+        globalFilter={[]}
+        setFilter={setFilter}
+        filterChange={filterChange}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm} />
+    </>
+  );
+
+  /*if(error) {
     return (
       <>
         <h1>{ error }</h1>
@@ -116,7 +165,7 @@ const List = () => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm} />
     </>
-  );
+  );*/
 };
 
 /*const List = () => {

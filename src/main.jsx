@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import { DataProvider } from "./context/DataContext";
 import List from "./pages/List.jsx";
 import LoginDummy from "./pages/LoginDummy.jsx";
+import PrivateRoute from "./components/PrivateRoute";
 
 import "./index.css";
 
@@ -15,13 +16,13 @@ import { apolloClient } from "./hooks/useRequest";
 
 Amplify.configure(awsmobile);
 
-/*const Dasboard = () => {
+const Dasboard = () => {
   return (
     <PrivateRoute>
       <List/>
     </PrivateRoute>
   );
-};*/
+};
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/list",
-    element: <List />,
+    element: <Dasboard />,
   }
 ]);
 
