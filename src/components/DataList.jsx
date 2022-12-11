@@ -59,7 +59,9 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
     },
   ];
 
-  const applyStatusFilter = () => {
+  /*const applyStatusFilter = () => {
+    console.log(statusFilter);
+    return;
     const statusFilterSet = statusFilter.filters.filter(
       (f) => f.active === true
     );
@@ -69,24 +71,16 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
         ...searchParams,
         status: String(statusFilterSetArray),
       });
-      setFilter({
-        status: statusFilterSetArray,
-        shopper: null,
-        date: null,
-      });
     } else {
-      setFilter(null);
     }
-    filterChange();
-  };
+  };*/
 
   return (
     <div className="dt-container">
       <img className="" src={logo} />
 
       <DataListFilter
-        setFilter={setStatusFilter}
-        applyStatusFilter={applyStatusFilter}
+
       />
       <DataTable
         columns={columns}
