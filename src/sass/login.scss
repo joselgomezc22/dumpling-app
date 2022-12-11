@@ -30,12 +30,15 @@
         flex-direction: column;
         &-input {
             width: 100%;
+            height: 44px;
+            padding: 0 0.8rem;
             border: 1px solid $dumpling-gray;
             border-radius: 6px;
-            height: 44px;
+            @extend .text-m;
+
             &:focus {
-                outline: none !important;
                 border:1px solid $dumpling;
+                outline: none !important;
                 box-shadow: 0 0 2px $dumpling;
               }
         }

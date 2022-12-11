@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import logo from "/src/images/dumpling_logo.png";
 
 import { DataListFilter } from "./DataListFilter";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams , useNavigate  } from "react-router-dom";
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
 const StatusBox = ({ status }) => {
@@ -19,7 +19,9 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
 
   let [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {}, [globalFilter]);
+  useEffect(() => {
+    filterBySearchParams();
+  }, []);
 
   const columns = [
     {
@@ -59,29 +61,55 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange }) => {
     },
   ];
 
-  /*const applyStatusFilter = () => {
-    console.log(statusFilter);
-    return;
-    const statusFilterSet = statusFilter.filters.filter(
-      (f) => f.active === true
-    );
-    if (statusFilterSet.length > 0) {
-      const statusFilterSetArray = statusFilterSet.map(({ label }) => label);
-      setSearchParams({
-        ...searchParams,
-        status: String(statusFilterSetArray),
-      });
-    } else {
+  const navigate = useNavigate();
+  const filterBySearchParams = () => {
+
+      const filter = {};
+
+
+
+      filter.status = searchParams.get("status")? searchParams.get("status").split(",") : null ;
+      filter.shopper = searchParams.get("shopper")? searchParams.get("shopper").split(",") : null ;
+      filter.date = searchParams.get("date")? searchParams.get("date").split(",") : null ;
+      console.log(JSON.stringify(filter));
+      setFilter(filter);
+
+    
+  };
+
+  /**
+   * 
+   * @param {string} type 
+   * @param {object} object 
+   * @returns 
+   */
+  const applyFilter = (type,object) => {
+    if(type === "status") {
+      const statusFilterSet = object.filters.filter(
+        (f) => f.active === true
+      );
+      if (statusFilterSet.length > 0) {
+        const statusFilterSetArray = statusFilterSet.map(({ label }) => label);
+        const string = String(statusFilterSetArray);
+       
+        setSearchParams({
+          ...searchParams,
+          status: String(statusFilterSetArray),
+        });
+        navigate(0);
+      } else {
+      }
     }
-  };*/
+    
+    
+    
+  };
 
   return (
     <div className="dt-container">
       <img className="" src={logo} />
 
-      <DataListFilter
-
-      />
+      <DataListFilter applyFilter={applyFilter} />
       <DataTable
         columns={columns}
         data={listData}

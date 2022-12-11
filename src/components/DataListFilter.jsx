@@ -6,17 +6,28 @@ import filterIcon from "/src/images/filter-icon.svg";
 import filterArrow from "/src/images/filter-arrow.svg";
 import searchIcon from "/src/images/search-icon.svg";
 
-const StatusFilters = ({ statusFilters, setStatusFilters ,statusFilterHolder , setStatusFilterHolder }) => {
+const StatusFilters = ({ statusFilters, setStatusFilters , openFilter , setOpenFilter , applyFilter }) => {
+  const [statusFilterHolder, setStatusFilterHolder] = useState({});
+  const [copy, setCopy] = useState(""); 
+  
+  useEffect(() => {
+    setStatusFilterHolder(statusFilters);
+    setCopy(JSON.stringify(statusFilters))
+  }, [])
+
+  
+
   return (
     <>
-    {JSON.stringify(statusFilterHolder)}
-      {statusFilterHolder.filters.map((filter, index) => (
+      {statusFilterHolder?.filters && statusFilterHolder?.filters.map((filter, index) => (
         <label key={index} className="dt-filters__status">
           <input
             onChange={() => {
-              statusFilterHolder.filters[index].active =
-                !statusFilterHolder.filters[index].active;
-                setStatusFilterHolder({ ...statusFilterHolder });
+
+
+              statusFilterHolder.filters[index].active = !statusFilterHolder.filters[index].active
+              
+              setStatusFilterHolder({ ...statusFilterHolder });
             }}
             checked={filter.active}
             type="checkbox"
@@ -24,13 +35,38 @@ const StatusFilters = ({ statusFilters, setStatusFilters ,statusFilterHolder , s
             id=""
           />
           <p className="text-m">
-            {filter.label}  ({filter.count})
+            {filter.label} ({filter.count})
           </p>
         </label>
       ))}
+      <div className="dt-filters__box-buttons">
+        <button
+          onClick={() => {
+            setOpenFilter({...openFilter,status:false})
+            setStatusFilters(JSON.parse(copy))
+          }}
+          className="btn text-m-bold"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {            
+            setStatusFilters({
+              ...statusFilterHolder,
+              open: false,
+            });
+            applyFilter('status',statusFilters);
+            setOpenFilter({...openFilter,status:false})
+          }}
+          className="btn btn-primary text-m-bold"
+        >
+          Apply
+        </button>
+      </div>
     </>
   );
 };
+
 const ShopperFilters = ({ shopperFilter, setShopperFilters }) => {
   return (
     <>
@@ -39,7 +75,7 @@ const ShopperFilters = ({ shopperFilter, setShopperFilters }) => {
           <input
             onChange={(e) => {
               shopperFilter.filters[index].active = e.target.checked;
-              setShopperFilters({...shopperFilter})
+              setShopperFilters({ ...shopperFilter });
             }}
             checked={filter.active}
             type="checkbox"
@@ -56,7 +92,13 @@ const ShopperFilters = ({ shopperFilter, setShopperFilters }) => {
   );
 };
 
-export const DataListFilter = ({  }) => {
+export const DataListFilter = ({applyFilter}) => {
+  const [openFilter, setOpenFilter] = useState({
+    status:false,
+    date:false,
+    shopper:false,
+  })
+
   const [statusFilter, setStatusFilter] = useState({
     filters: [
       {
@@ -77,12 +119,12 @@ export const DataListFilter = ({  }) => {
       {
         label: "Canceled",
         count: 10,
-        open: false,
+        active: false,
       },
     ],
     active: false,
   });
-  const [statusFilterHolder , setStatusFilterHolder] = useState(statusFilter);
+
   const [shopperFilter, setShopperFilter] = useState({
     filters: [
       {
@@ -105,13 +147,16 @@ export const DataListFilter = ({  }) => {
     open: false,
   });
   let [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => { 
-    setStatusFilterHolder(statusFilter);
-  }, [statusFilter,shopperFilter]);
+  
+  useEffect(() => {
+    // setStatusFilterHolder(statusFilter);
+  }, [statusFilter, shopperFilter]);
 
   return (
     <>
-      statusFilter:{JSON.stringify(statusFilter)}
+    <pre>
+      StatusFilter:{JSON.stringify(statusFilter)}
+    </pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
@@ -119,14 +164,14 @@ export const DataListFilter = ({  }) => {
             <h2 className="text-m-bold">Filters</h2>
           </div>
           <div
-            className={"dt-filters-item " + (statusFilter.open ? "active" : "")}
+            className={"dt-filters-item " + (openFilter.status ? "active" : "")}
           >
             <div
               className="dt-filters-item-cl"
               onClick={() => {
-                setStatusFilter({
-                  ...statusFilter,
-                  open: !statusFilter.open,
+                setOpenFilter({
+                  ...openFilter,
+                  status: !openFilter.status,
                 });
               }}
             >
@@ -135,38 +180,13 @@ export const DataListFilter = ({  }) => {
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
             <div className="dt-filters__box">
-              <StatusFilters
+              {openFilter.status && <StatusFilters
                 statusFilters={statusFilter}
                 setStatusFilters={setStatusFilter}
-                statusFilterHolder={statusFilterHolder}
-                setStatusFilterHolder={setStatusFilterHolder}
-              />
-
-              <div className="dt-filters__box-buttons">
-                <button
-                  onClick={() => {
-                    setStatusFilter({
-                      ...statusFilter,
-                      active: !statusFilter.active,
-                    });
-                  }}
-                  className="btn text-m-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    applyStatusFilter();
-                    setStatusFilter({
-                      ...statusFilter,
-                      active: !statusFilter.active,
-                    });
-                  }}
-                  className="btn btn-primary text-m-bold"
-                >
-                  Apply
-                </button>
-              </div>
+                setOpenFilter={setOpenFilter}
+                openFilter={openFilter}
+                applyFilter={applyFilter}
+              />}
             </div>
           </div>
           <div
@@ -209,7 +229,7 @@ export const DataListFilter = ({  }) => {
                     });
                   }}
                   className="btn text-m-bold"
-                > 
+                >
                   Cancel
                 </button>
                 <button
@@ -242,29 +262,3 @@ export const DataListFilter = ({  }) => {
     </>
   );
 };
-
-/*
-
-  import { Card, Page, Layout, TextContainer, Heading , List , Button } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-
-export default function GottenPlan() {
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const param = searchParams.get("charge_id");
-
-  return (
-    <Page>
-      <Heading >
-      Congrats, you got your plan {param}
-      </Heading>
-
-      <Button onClick={()=>{}}></Button>
-      
-    </Page>
-  );
-}
-
- */
