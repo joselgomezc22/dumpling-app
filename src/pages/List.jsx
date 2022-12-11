@@ -9,6 +9,8 @@ import { apolloClient } from '../hooks/useRequest';
 const List = () => {
 
   const [filter, setFilter] = useState([]);
+  
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filterChange = async () => {
   }
@@ -16,7 +18,7 @@ const List = () => {
   /**obtener ordenes */
 
   const GET_ORDERS = gql`
-    query getOrders($filter: [QueryFilterInput!]!) {
+    query getOrders($filter: [QueryFilterInput!]!, $term: String!) {
       getBossBuddies {
         bossBuddyProfiles {
             id,
@@ -28,7 +30,7 @@ const List = () => {
       filteredLinkedOrders(
         count: 10,
         filters: $filter,
-        text: "",
+        text: $term,
         sort: null
       ) {
         orders {
@@ -79,7 +81,8 @@ const List = () => {
 
   const {error, loading, data} = useQuery(GET_ORDERS, {
     variables: {
-      filter: queryFilter
+      filter: queryFilter,
+      term: searchTerm
     }
   });
 
@@ -109,7 +112,9 @@ const List = () => {
         shoppers={data.getBossBuddies.bossBuddyProfiles}
         globalFilter={[]}
         setFilter={setFilter}
-        filterChange={filterChange}  />
+        filterChange={filterChange}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm} />
     </>
   );
 };

@@ -92,7 +92,7 @@ const ShopperFilters = ({ shopperFilter, setShopperFilters }) => {
   );
 };
 
-export const DataListFilter = ({ applyFilter, shoppers }) => {
+export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => {
   const [openFilter, setOpenFilter] = useState({
     status:false,
     date:false,
@@ -150,6 +150,14 @@ export const DataListFilter = ({ applyFilter, shoppers }) => {
   useEffect(() => {
     // setStatusFilterHolder(statusFilter);
   }, [statusFilter, shopperFilter]);
+
+  const [inputSearch, setInputSearch] = useState("");
+
+  const onPressSearch = (e) => {
+    if(e.key === "Enter") {
+      setSearch(inputSearch)
+    }
+  };
 
   return (
     <>
@@ -254,6 +262,12 @@ export const DataListFilter = ({ applyFilter, shoppers }) => {
               placeholder="Search"
               className="dt-filters__search-input"
               type="text"
+              value={inputSearch}
+              onChange={(e) => {
+                console.log(e);
+                setInputSearch(e.target.value);
+              }}
+              onKeyDown={onPressSearch}
             />
           </label>
         </div>

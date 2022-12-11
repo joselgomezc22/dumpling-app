@@ -19,7 +19,7 @@ const renderShopper = (buddies, assinedTo) => {
   } ) || "N/A";
 };
 
-export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppers }) => {
+export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppers, searchTerm, setSearchTerm }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
   const [listData, setListData] = useState(orders.orders);
@@ -74,8 +74,9 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
   const filterBySearchParams = () => {
 
       const filter = {};
+      const termSearch = searchParams.get("q") ? searchParams.get("q") : searchTerm;
 
-
+      setSearchTerm(termSearch);
 
       filter.status = searchParams.get("status")? searchParams.get("status").split(",") : null ;
       filter.shopper = searchParams.get("shopper")? searchParams.get("shopper").split(",") : null ;
@@ -114,12 +115,25 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
     
   };
 
+  const applySearch = (value) => {
+    setSearchParams({
+      ...searchParams,
+      q: String(value),
+    });
+    navigate(0);
+  };
+
   return (
     <div className="dt-container">
       <img className="" src={logo} />
 
-      <DataListFilter shoppers={shoppers} applyFilter={applyFilter} />
-      
+      <DataListFilter
+        shoppers={shoppers}
+        applyFilter={applyFilter}
+        search={searchTerm}
+        setSearch={applySearch}
+      />
+
       <DataTable
         columns={columns}
         data={listData}
