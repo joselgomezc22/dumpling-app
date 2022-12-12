@@ -125,6 +125,50 @@
     }
 }
 
+/*modal*/
+.dt-modal {
+    border-radius: 15px;
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    &-header {
+        width: 100%;
+        padding: 0.8rem 1.2rem;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 12px 12px 0 0;
+        color: white;
+        background-color: $dumpling;
+        &-phone {
+            text-align: center;
+            width: 21%;
+        }
+    }
+    &-data {
+        width: 100%;
+        padding: 0.8rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $dumpling-gray;
+
+        &-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}
+
+[data-modal="true"] {
+    & > div:first-child {
+        width: 520px !important;
+        border-radius: 12px;
+        padding: 2rem;
+    }
+  }
+
+
+
 /*  Datable overwriting */
 .sc-jSUZER.guiFfX.rdt_TableHeadRow {
     background-color: $dumpling;

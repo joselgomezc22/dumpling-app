@@ -250,6 +250,45 @@ html {
   outline: none;
 }
 
+/*modal*/
+.dt-modal {
+  border-radius: 15px;
+  display: flex;
+  padding: 2rem;
+  flex-direction: column;
+}
+.dt-modal-header {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 12px 12px 0 0;
+  color: white;
+  background-color: #00A651;
+}
+.dt-modal-header-phone {
+  text-align: center;
+  width: 21%;
+}
+.dt-modal-data {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #E7E7E7;
+}
+.dt-modal-data-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+[data-modal=true] > div:first-child {
+  width: 520px !important;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
 /*  Datable overwriting */
 .sc-jSUZER.guiFfX.rdt_TableHeadRow {
   background-color: #00A651;

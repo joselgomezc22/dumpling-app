@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import CalendarFilter from "./CalendarFilter";
 
 /*Images importing */
 import filterIcon from "/src/images/filter-icon.svg";
@@ -130,6 +131,7 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
     shopper:false,
   })
 
+  const [calendarFilter, setCalendarFilter] = useState(null);
   const [statusFilter, setStatusFilter] = useState({
     filters: [
       {
@@ -217,7 +219,7 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
             <div className="dt-filters__box">
               {openFilter.status && <StatusFilters
                 statusFilters={statusFilter}
-                setStatusFilters={setStatusFilter}
+                setCalendarFilter={setCalendarFilter}
                 setOpenFilter={setOpenFilter}
                 openFilter={openFilter}
                 applyFilter={applyFilter}
@@ -225,11 +227,30 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
             </div>
           </div>
           <div
-            className={"dt-filters-item " + (statusFilter.open ? "active" : "")}
+            className={"dt-filters-item " + (openFilter.date ? "active" : "")}
           >
-            <img className="dt-filters-icon" src={filterIcon} alt="" />
-            <h2 className="text-m-bold">Delivery date</h2>
-            <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
+            <div
+              className="dt-filters-item-cl"
+              onClick={() => {
+                setOpenFilter({
+                  ...openFilter,
+                  date: !openFilter.date,
+                });
+              }}
+            >
+              <img className="dt-filters-icon" src={filterIcon} alt="" />
+              <h2 className="text-m-bold">Delivery date</h2>
+              <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
+            </div>
+            <div className="dt-filters__box">
+              {openFilter.date && <CalendarFilter
+                calendarFilter={calendarFilter}
+                setStatusFilters={setStatusFilter}
+                setOpenFilter={setOpenFilter}
+                openFilter={openFilter}
+                applyFilter={applyFilter}
+              />}
+            </div>
           </div>
           <div
             className={
