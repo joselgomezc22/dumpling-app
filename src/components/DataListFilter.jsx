@@ -254,7 +254,6 @@ export const DataListFilter = ({
   return (
     <>
       <pre>{JSON.stringify(calendarFilter)}</pre>
-      <pre>{JSON.stringify(shopperFilter)}</pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
