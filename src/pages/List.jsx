@@ -1,18 +1,24 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { DataContext } from '../context/DataContext';
 import { DataList } from '../components/DataList'
-import { useGetOrders, useExecuteQuery } from '../hooks/useRequest';
-import { gql, useQuery } from "@apollo/client";
-
+import { gql, useQuery, useMutation } from "@apollo/client";
 import { apolloClient } from '../hooks/useRequest';
+import { Link, useNavigate } from 'react-router-dom';
 
 const List = () => {
 
   const [filter, setFilter] = useState([]);
   
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const filterChange = async () => {
+  }
+
+  const nextPage = (token) => {
+    window.localStorage.setItem('Auth', token);
+    window.location.reload();
   }
   
   /**obtener ordenes */
@@ -61,6 +67,54 @@ const List = () => {
   }
 `;
 
+  const ASSIGNET_SHOPPERS = gql`
+  mutation($shoppers: [ID!]!, $orders: [LinkedOrderIdentifiersInput!]!) {
+    assignLinkedOrdersTo(input: {
+      buddyIds: $shoppers,
+      linkedOrderIdentifiers: $orders
+    }){
+      orders {
+        version,
+        id,
+        clientId,
+        shopperId,
+        firstName,
+        lastName,
+        phone,
+        email,
+        clientImage,
+        note,
+        orderStatus,
+        orderDateTime,
+        orderTimestamp,
+        deliveryDate,
+        deliveryTime,
+        deliveryTimestamp,
+        deliveryStartDateTime,
+        deliveryEndDateTime,
+        feeAndPreGratuityDisplay,
+        deliveryFee,
+        assignedTo
+      },
+    nextToken
+  }
+}`;
+
+  const [updateShoppers, {data: dataMutation, loading: loadingMutation, error: errorMutation, reset}] = useMutation(ASSIGNET_SHOPPERS);
+
+  const assignedShoppers = (orders, shoppers) => {
+    if(orders.length < 1) {
+      return alert('Please select at leat one order');
+    }
+
+    updateShoppers({
+      variables: {
+        orders: orders,
+        shoppers: shoppers
+      }
+    });
+  };
+
   const queryFilter = [];
 
   if(filter['status']?.length){
@@ -79,21 +133,25 @@ const List = () => {
     );
   }
 
-  const {error, loading, data} = useQuery(GET_ORDERS, {
+  const { error, data, loading } = useQuery(GET_ORDERS, {
     variables: {
       filter: queryFilter,
       term: searchTerm
     }
   });
 
-  if(error) {
+  if(error){
+    console.log("error", {error});
     return (
       <>
-        <h1>{ error }</h1>
+        <h1 className="text-center">
+          { error.message }
+        </h1>
+        <Link to="/">Go to back</Link>
       </>
     );
-  } 
-  
+  }
+
   if(loading) {
     return (
       <>
@@ -101,6 +159,17 @@ const List = () => {
       </>
     );
   } 
+
+  if (data.filteredLinkedOrders.orders.length > 10){
+    return (
+      <>
+        <h1 className="text-center">
+          Error on server
+        </h1>
+        <Link to="/">Go to back</Link>
+      </>
+    );
+  }
 
   return (
     <>
@@ -114,7 +183,8 @@ const List = () => {
         setFilter={setFilter}
         filterChange={filterChange}
         searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm} />
+        setSearchTerm={setSearchTerm}
+        assignedAction={assignedShoppers} />
     </>
   );
 };
