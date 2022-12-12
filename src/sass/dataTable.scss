@@ -67,7 +67,6 @@
         }
     }
     &__box {
-        width: 100%;
         padding: 1.1rem 1rem;
         position: absolute;
         background-color: #ffffff;
@@ -126,6 +125,31 @@
 
         &:focus {
             outline: none;
+        }
+    }
+}
+.dt-assign {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    max-height: 0px;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    &.active {
+        max-height: 500px;
+        opacity: 1;
+        margin: 2rem 0 0 0;
+    }
+
+    &__btn {
+        width: auto;
+        margin: 0 0 0 1rem;
+        padding: 0.75rem 0.9375rem;
+        display: flex;
+        align-items: center;
+        border-radius: 1.25rem;
+        &-user-icon {
+            margin: 0 0 0 0.5rem;
         }
     }
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
 import logo from "/src/images/dumpling_logo.png";
+import userIcon from "/src/images/user-icon.svg";
 
 import { DataListFilter } from "./DataListFilter";
 import ShopperAssignModal from "./ShopperAssignModal";
@@ -103,8 +104,6 @@ export const DataList = ({
     filter.date = searchParams.get("date")
       ? searchParams.get("date").split(",")
       : null;
-    
-    console.log(filter);
 
     setFilter(filter);
   };
@@ -116,44 +115,73 @@ export const DataList = ({
    * @returns
    */
   const applyFilter = (type, object) => {
-    if (type === "status") {
-      const statusFilterSet = object.filters.filter((f) => f.active === true);
-      if (statusFilterSet.length > 0) {
-        const statusFilterSetArray = statusFilterSet.map(({ label }) => label);
-        const string = String(statusFilterSetArray);
+    switch (type) {
+      case "status":
+        const statusFilterSet = object.filters.filter((f) => f.active === true);
+        if (statusFilterSet.length > 0) {
+          const statusFilterSetArray = statusFilterSet.map(
+            ({ label }) => label
+          );
+          const string = String(statusFilterSetArray);
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            status: String(statusFilterSetArray),
+          });
+          navigate(0);
+        } else {
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            status: [],
+          });
+          navigate(0);
+        }
+      case "shopper":
+        const shopperFilterSet = object.filter((f) => f.active === true);
+        if (shopperFilterSet.length > 0) {
+          const shopperFilterSetArray = shopperFilterSet.map(
+            ({ id }) => id
+          );
+          const string = String(shopperFilterSetArray);
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            shopper: String(shopperFilterSetArray),
+          });
+          navigate(0);
+        } else {
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            shopper: [],
+          });
+          navigate(0);
+        }
+        break;
 
-        setSearchParams({
-          ...searchParams,
-          status: String(statusFilterSetArray),
-        });
-        navigate(0);
-      } else {
-        setSearchParams({
-          ...searchParams,
-          status: [],
-        });
-        navigate(0);
-      }
-    } else if (type === "date"){
-      if( object.length > 0 ){
-        setSearchParams({
-          ...searchParams,
-          date: String(object),
-        });
-
-      } else {
-        setSearchParams({
-          ...searchParams,
-          date: [],
-        });
-        navigate(0);
-      }
+      default:
+        break;
     }
   };
 
   const applySearch = (value) => {
     setSearchParams({
-      ...searchParams,
+      status: searchParams.getAll("status"),
+      shopper: searchParams.getAll("shopper"),
+      date: searchParams.getAll("date"),
       q: String(value),
     });
     navigate(0);
@@ -164,10 +192,20 @@ export const DataList = ({
     navigate(0);
   };
 
+  const setShopperToOrder = (shoppers) => {
+    assignedAction(
+      selectedRows.selectedRows.map((x) => {
+        return { id: x.id, deliveryTimestamp: x.deliveryTimestamp };
+      }),
+      shoppers
+    );
+    setTimeout(() => {
+      navigate(0);
+    }, 500);
+  };
+
   return (
     <div className="dt-container">
-      {JSON.stringify(selectedRows)}
-      {/*JSON.stringify(shoppers)*/}
       <img className="" src={logo} />
 
       <DataListFilter
@@ -176,41 +214,30 @@ export const DataList = ({
         search={searchTerm}
         setSearch={applySearch}
       />
-      {selectedRows.selectedCount != 0 && (
-        <div className="dt-assign">
-          <span>{selectedRows.selectedCount} selected</span>
-          <button
-          onClick={() =>{
-            setOpenAssignModal(!openAssignModal)
-          }}
-            className={
-              "dt-assign__btn btn btn-primary " +
-              (selectedRows.selectedCount != 0 ? "active" : "")
-            }
-          >
-            assign
-          </button>
-        </div>
-      )}
-
-      <button
-        onClick={() => {
-          assignedAction(
-            [
-              {
-                id: "a7d02a9e-2d49-48cb-accf-5c3d5369e30b",
-                deliveryTimestamp: "1661508000",
-              },
-            ],
-            []
-          );
-          setTimeout(() => {
-            navigate(0);
-          }, 500);
-        }}
+      <div
+        className={
+          "dt-assign " + (selectedRows.selectedCount != 0 ? "active" : "")
+        }
       >
-        Assignar
-      </button>
+        {selectedRows.selectedCount != 0 && (
+          <>
+            <span className="text-m-bold">
+              {selectedRows.selectedCount} selected
+            </span>
+            <button
+              onClick={() => {
+                setOpenAssignModal(!openAssignModal);
+              }}
+              className={
+                "dt-assign__btn btn btn-primary " +
+                (selectedRows.selectedCount != 0 ? "active" : "")
+              }
+            >
+              <img src={userIcon} alt="user icon" /> Assign orders to shopper
+            </button>
+          </>
+        )}
+      </div>
 
       <DataTable
         columns={columns}
@@ -221,9 +248,18 @@ export const DataList = ({
         onSelectedRowsChange={setSelectedRows}
         expandableRowsComponent={ExpandedComponent}
       />
-      <Modal show={openAssignModal} onClose={()=>{setOpenAssignModal(!openAssignModal)}} transitionSpeed={1000}>
-        
-        <ShopperAssignModal shoppers={shoppers} />
+      <Modal
+        show={openAssignModal}
+        onClose={() => {
+          setOpenAssignModal(!openAssignModal);
+        }}
+        transitionSpeed
+      >
+        <ShopperAssignModal
+          setShopperToOrder={setShopperToOrder}
+          shoppers={shoppers}
+          setOpenAssignModal={setOpenAssignModal}
+        />
       </Modal>
     </div>
   );

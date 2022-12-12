@@ -7,88 +7,188 @@ import filterIcon from "/src/images/filter-icon.svg";
 import filterArrow from "/src/images/filter-arrow.svg";
 import searchIcon from "/src/images/search-icon.svg";
 
-const StatusFilters = ({ statusFilters, setStatusFilters , openFilter , setOpenFilter , applyFilter }) => {
+const StatusFilters = ({
+  statusFilters,
+  setStatusFilters,
+  openFilter,
+  setOpenFilter,
+  applyFilter,
+}) => {
   const [statusFilterHolder, setStatusFilterHolder] = useState({});
-  const [copy, setCopy] = useState(""); 
+  const [copy, setCopy] = useState("");
 
   let [searchParams, setSearchParams] = useSearchParams();
-  
-  const filterBySearchParams = (statusFilterHolder,setStatusFilterHolder) => {
-  
+
+  const filterBySearchParams = (statusFilterHolder, setStatusFilterHolder) => {
     const filter = {};
-    
-    filter.status = searchParams.get("status")? searchParams.get("status").split(",") : null ;
-    
-    if(filter.status && statusFilterHolder.filters) {
-      const def =  statusFilterHolder.filters.filter(item => !filter.status.includes(item.label));
-      const news = statusFilterHolder.filters.map((f)=>{
-        if( filter.status.includes(f.label)) return {...f,active:true}
-        return f
-      } )
+
+    filter.status = searchParams.get("status")
+      ? searchParams.get("status").split(",")
+      : null;
+
+    if (filter.status && statusFilterHolder.filters) {
+      const def = statusFilterHolder.filters.filter(
+        (item) => !filter.status.includes(item.label)
+      );
+      const news = statusFilterHolder.filters.map((f) => {
+        if (filter.status.includes(f.label)) return { ...f, active: true };
+        return f;
+      });
       return news;
     }
-   
+  };
 
-  
-};
-  
-  
   useEffect(() => {
-    
     setCopy(JSON.stringify(statusFilters));
-    
-    filterBySearchParams(statusFilterHolder,setStatusFilterHolder);
-    const news = filterBySearchParams(statusFilterHolder,setStatusFilterHolder);
-    if(news) {
-      setStatusFilterHolder({...statusFilters, filters: news})
-      return
+
+    filterBySearchParams(statusFilterHolder, setStatusFilterHolder);
+    const news = filterBySearchParams(
+      statusFilterHolder,
+      setStatusFilterHolder
+    );
+    if (news) {
+      setStatusFilterHolder({ ...statusFilters, filters: news });
+      return;
     } else {
       setStatusFilterHolder(statusFilters);
     }
-
-  }, [copy])
-
-  
+  }, [copy]);
 
   return (
     <>
-      {statusFilterHolder?.filters && statusFilterHolder?.filters.map((filter, index) => (
-        <label key={index} className="dt-filters__status">
-          <input
-            onChange={() => {
+      {statusFilterHolder?.filters &&
+        statusFilterHolder?.filters.map((filter, index) => (
+          <label key={index} className="dt-filters__status">
+            <input
+              onChange={() => {
+                statusFilterHolder.filters[index].active =
+                  !statusFilterHolder.filters[index].active;
 
-
-              statusFilterHolder.filters[index].active = !statusFilterHolder.filters[index].active
-              
-              setStatusFilterHolder({ ...statusFilterHolder });
-            }}
-            checked={filter.active}
-            type="checkbox"
-            name=""
-            id=""
-          />
-          <p className="text-m">
-            {filter.label} ({filter.count})
-          </p>
-        </label>
-      ))}
+                setStatusFilterHolder({ ...statusFilterHolder });
+              }}
+              checked={filter.active}
+              type="checkbox"
+              name=""
+              id=""
+            />
+            <p className="text-m">
+              {filter.label} ({filter.count})
+            </p>
+          </label>
+        ))}
       <div className="dt-filters__box-buttons">
         <button
           onClick={() => {
-            setOpenFilter({...openFilter,status:false})
-            setStatusFilters(JSON.parse(copy))
+            setOpenFilter({ ...openFilter, status: false });
+            setStatusFilters(JSON.parse(copy));
           }}
           className="btn text-m-bold"
         >
           Cancel
         </button>
         <button
-          onClick={() => {      
-              
-            
-            //return; 
-            applyFilter('status',statusFilterHolder);
-            setOpenFilter({...openFilter,status:false})
+          onClick={() => {
+            //return;
+            applyFilter("status", statusFilterHolder);
+            setOpenFilter({ ...openFilter, status: false });
+          }}
+          className="btn btn-primary text-m-bold"
+        >
+          Apply
+        </button>
+      </div>
+    </>
+  );
+};
+const ShopperFilters = ({
+  shopperFilter,
+  setShopperFilter,
+  openFilter,
+  setOpenFilter,
+  applyFilter,
+}) => {
+  const [shopperFilterHolder, setShopperFilterHolder] = useState({});
+  const [copy, setCopy] = useState("");
+
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const filterBySearchParams = (
+    shopperFilterHolder,
+    setShopperFilterHolder
+  ) => {
+    const filter = {};
+
+    filter.shopper = searchParams.get("shopper")
+      ? searchParams.get("shopper").split(",")
+      : null;
+
+    console.log(shopperFilterHolder);
+    if (filter.shopper && shopperFilterHolder.length > 0) {
+      const def = shopperFilterHolder.filter(
+        (item) => !filter.shopper.includes(item.id)
+      );
+      const news = shopperFilterHolder.map((f) => {
+        if (filter.shopper.includes(f.id)) return { ...f, active: true };
+        return f;
+      });
+      return news;
+    }
+  };
+
+  useEffect(() => {
+    setCopy(JSON.stringify(shopperFilter));
+
+    filterBySearchParams(shopperFilterHolder, setShopperFilterHolder);
+    const news = filterBySearchParams(
+      shopperFilterHolder,
+      setShopperFilterHolder
+    );
+    if (news) {
+      setShopperFilterHolder(news);
+      return;
+    } else {
+      setShopperFilterHolder(shopperFilter);
+    }
+  }, [copy]);
+
+  return (
+    <>
+      {shopperFilterHolder.length > 0 &&
+        shopperFilterHolder.map((filter, index) => (
+          <label key={index} className="dt-filters__status">
+            <input
+              onChange={() => {
+                shopperFilterHolder[index].active =
+                  !shopperFilterHolder[index].active;
+
+                setShopperFilterHolder([...shopperFilterHolder]);
+              }}
+              checked={filter.active}
+              type="checkbox"
+              name=""
+              id=""
+            />
+            <span className="d-flex">
+              <p className="text-m">{filter.name}</p>
+              <p className="text-m">{filter.phone}</p>
+            </span>
+          </label>
+        ))}
+      <div className="dt-filters__box-buttons">
+        <button
+          onClick={() => {
+            setOpenFilter({ ...openFilter, shopper: false });
+            setShopperFilter(JSON.parse(copy));
+          }}
+          className="btn text-m-bold"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            //return;
+            applyFilter("shopper", shopperFilterHolder);
+            setOpenFilter({ ...openFilter, shopper: false });
           }}
           className="btn btn-primary text-m-bold"
         >
@@ -99,46 +199,21 @@ const StatusFilters = ({ statusFilters, setStatusFilters , openFilter , setOpenF
   );
 };
 
-const ShopperFilters = ({ shopperFilter, setShopperFilters }) => {
-  return (
-    <>
-      {shopperFilter.filters.map((filter, index) => (
-        <label key={index} className="dt-filters__status">
-          <input
-            onChange={(e) => {
-              shopperFilter.filters[index].active = e.target.checked;
-              setShopperFilters({ ...shopperFilter });
-            }}
-            checked={filter.active}
-            type="checkbox"
-            name=""
-            id=""
-          />
-          <div className="d-flex justify-content-space-between w-100">
-            <p className="text-m">{filter.label}</p>
-            <p className="text-m">{filter.phone}</p>
-          </div>
-        </label>
-      ))}
-    </>
-  );
-};
-
-export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => {
+export const DataListFilter = ({
+  applyFilter,
+  shoppers,
+  search,
+  setSearch,
+}) => {
   const [openFilter, setOpenFilter] = useState({
-    status:false,
-    date:false,
-    shopper:false,
-  })
+    status: false,
+    date: false,
+    shopper: false,
+  });
 
   const [calendarFilter, setCalendarFilter] = useState(null);
   const [statusFilter, setStatusFilter] = useState({
     filters: [
-      {
-        label: "All",
-        count: 500,
-        active: false,
-      },
       {
         label: "Created",
         count: 30,
@@ -157,46 +232,29 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
     ],
     active: false,
   });
-  const [shopperFilter, setShopperFilter] = useState({
-    filters: [
-      {
-        label: "Rj Puma",
-        phone: "914-648-8855",
-      },
-      {
-        label: "Kelley Mauro",
-        phone: "407-325-2156",
-      },
-      {
-        label: "Jordyn Simpson",
-        phone: "720-298-1657",
-      },
-      {
-        label: "Hayley Moss",
-        phone: "336-380-6940",
-      },
-    ],
-    open: false,
-  });
+  const [shopperFilter, setShopperFilter] = useState();
   let [searchParams, setSearchParams] = useSearchParams();
-  
+
   useEffect(() => {
-    // setStatusFilterHolder(statusFilter);
-  }, [statusFilter, shopperFilter]);
+    setShopperFilter(
+      shoppers.map((x) => {
+        return { id: x.id, name: x.name, phone: x.phone, active: false };
+      })
+    );
+  }, []);
 
   const [inputSearch, setInputSearch] = useState("");
 
   const onPressSearch = (e) => {
-    if(e.key === "Enter") {
-      setSearch(inputSearch)
+    if (e.key === "Enter") {
+      setSearch(inputSearch);
     }
   };
 
   return (
     <>
-      <pre>
-        {JSON.stringify(calendarFilter)}
-      </pre>
+      <pre>{JSON.stringify(calendarFilter)}</pre>
+      <pre>{JSON.stringify(shopperFilter)}</pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
@@ -220,13 +278,15 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
             <div className="dt-filters__box">
-              {openFilter.status && <StatusFilters
-                statusFilters={statusFilter}
-                setStatusFilters={setStatusFilter}
-                setOpenFilter={setOpenFilter}
-                openFilter={openFilter}
-                applyFilter={applyFilter}
-              />}
+              {openFilter.status && (
+                <StatusFilters
+                  statusFilters={statusFilter}
+                  setStatusFilters={setStatusFilter}
+                  setOpenFilter={setOpenFilter}
+                  openFilter={openFilter}
+                  applyFilter={applyFilter}
+                />
+              )}
             </div>
           </div>
           <div
@@ -246,26 +306,28 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
             <div className="dt-filters__box dt-filters__box--auto">
-              {openFilter.date && <CalendarFilter
-                calendarFilter={calendarFilter}
-                setCalendarFilter={setCalendarFilter}
-                setOpenFilter={setOpenFilter}
-                openFilter={openFilter}
-                applyFilter={applyFilter}
-              />}
+              {openFilter.date && (
+                <CalendarFilter
+                  calendarFilter={calendarFilter}
+                  setCalendarFilter={setCalendarFilter}
+                  setOpenFilter={setOpenFilter}
+                  openFilter={openFilter}
+                  applyFilter={applyFilter}
+                />
+              )}
             </div>
           </div>
           <div
             className={
-              "dt-filters-item " + (shopperFilter.open ? "active" : "")
+              "dt-filters-item " + (openFilter.shopper ? "active" : "")
             }
           >
             <div
               className="dt-filters-item-cl"
               onClick={() => {
-                setShopperFilter({
-                  ...shopperFilter,
-                  open: !shopperFilter.open,
+                setOpenFilter({
+                  ...openFilter,
+                  shopper: !openFilter.shopper,
                 });
               }}
             >
@@ -274,36 +336,15 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
             <div className="dt-filters__box">
-              <ShopperFilters
-                shopperFilter={shopperFilter}
-                setShopperFilters={setShopperFilter}
-              />
-
-              <div className="dt-filters__box-buttons">
-                <button
-                  onClick={() => {
-                    setShopperFilter({
-                      ...shopperFilter,
-                      open: !shopperFilter.open,
-                    });
-                  }}
-                  className="btn text-m-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    applyStatusFilter();
-                    setShopperFilter({
-                      ...shopperFilter,
-                      open: !shopperFilter.open,
-                    });
-                  }}
-                  className="btn btn-primary text-m-bold"
-                >
-                  Apply
-                </button>
-              </div>
+              {openFilter.shopper && (
+                <ShopperFilters
+                  shopperFilter={shopperFilter}
+                  setShopperFilter={setShopperFilter}
+                  setOpenFilter={setOpenFilter}
+                  openFilter={openFilter}
+                  applyFilter={applyFilter}
+                />
+              )}
             </div>
           </div>
         </div>

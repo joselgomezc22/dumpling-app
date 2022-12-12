@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 
-const ShopperAssignModal = ({ shoppers, setOpenAssignModal , setShopperToOrder }) => {
+const ShopperAssignModal = ({
+  shoppers,
+  setOpenAssignModal,
+  setShopperToOrder,
+}) => {
+  const [selectedShoppers, setSelectedShoppers] = useState([]);
+
   const Apply = () => {
-    setOpenAssignModal(false);
-    setShopperToOrder(shoppers);
+    setShopperToOrder(selectedShoppers);
+   
   };
   const Cancel = () => {
     setOpenAssignModal(false);
-  };
-  const [selectedShoppers, setSelectedShoppers] = useState([]);
+  }; 
+
   return (
     <div className="dt-modal">
-      {JSON.stringify(shoppers)}
-      {JSON.stringify(selectedShoppers)}
       <div className="dt-modal-header">
         <p className="text-m-bold">Assign order to</p>
         <p className="dt-modal-header-phone text-m-bold ">Phone</p>
@@ -20,7 +24,7 @@ const ShopperAssignModal = ({ shoppers, setOpenAssignModal , setShopperToOrder }
       <div className="dt-modal-data">
         {shoppers.map((x) => (
           <>
-            <label className="dt-modal-data-item">
+            <label key={x.id} className="dt-modal-data-item">
               <div>
                 <input
                   onChange={(e) => {
@@ -51,14 +55,24 @@ const ShopperAssignModal = ({ shoppers, setOpenAssignModal , setShopperToOrder }
           </>
         ))}
       </div>
-      <button
-        onClick={() => {
-          Apply();
-        }}
-        className="btn btn-primary"
-      >
-        Apply
-      </button>
+      <div className="d-flex">
+        <button
+          onClick={() => {
+            Cancel();
+          }}
+          className="btn text-m-bold"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            Apply();
+          }}
+          className="btn btn-primary"
+        >
+          Apply
+        </button>
+      </div>
     </div>
   );
 };

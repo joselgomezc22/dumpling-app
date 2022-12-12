@@ -6,10 +6,15 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const List = () => {
 
+  
+  
+
   const [filter, setFilter] = useState([]);
   
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+
+  
 
   const navigate = useNavigate();
 
@@ -104,7 +109,7 @@ const List = () => {
 
   const assignedShoppers = (orders, shoppers) => {
     if(orders.length < 1) {
-      return alert('Please select at leat one order');
+      return alert('Please select at least one order');
     }
 
     updateShoppers({
@@ -148,6 +153,8 @@ const List = () => {
       term: searchTerm
     }
   });
+
+  
 
   if(error){
     console.log("error", {error});
