@@ -11,6 +11,8 @@ import LoginDummy from "./pages/LoginDummy.jsx";
 import PrivateRoute from "./components/PrivateRoute";
 
 import "./index.css";
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import { apolloClient } from "./hooks/useRequest";
 

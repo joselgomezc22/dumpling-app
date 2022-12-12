@@ -103,6 +103,8 @@ export const DataList = ({
     filter.date = searchParams.get("date")
       ? searchParams.get("date").split(",")
       : null;
+    
+    console.log(filter);
 
     setFilter(filter);
   };
@@ -129,6 +131,20 @@ export const DataList = ({
         setSearchParams({
           ...searchParams,
           status: [],
+        });
+        navigate(0);
+      }
+    } else if (type === "date"){
+      if( object.length > 0 ){
+        setSearchParams({
+          ...searchParams,
+          date: String(object),
+        });
+
+      } else {
+        setSearchParams({
+          ...searchParams,
+          date: [],
         });
         navigate(0);
       }

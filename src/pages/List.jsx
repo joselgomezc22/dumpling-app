@@ -132,6 +132,15 @@ const List = () => {
       }
     );
   }
+  
+  if(filter['date']?.length){
+    filter['date']?.map((date, index) => {
+      const operator = index === 0 ? "GTE" : "LTE";
+      queryFilter.push(
+        {property: "deliveryTimestamp", 'operator': operator, values: [parseInt(date)]}
+      );
+    });
+  }
 
   const { error, data, loading } = useQuery(GET_ORDERS, {
     variables: {
