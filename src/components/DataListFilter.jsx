@@ -194,6 +194,9 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
 
   return (
     <>
+      <pre>
+        {JSON.stringify(calendarFilter)}
+      </pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
@@ -219,7 +222,7 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
             <div className="dt-filters__box">
               {openFilter.status && <StatusFilters
                 statusFilters={statusFilter}
-                setCalendarFilter={setCalendarFilter}
+                setStatusFilters={setStatusFilter}
                 setOpenFilter={setOpenFilter}
                 openFilter={openFilter}
                 applyFilter={applyFilter}
@@ -242,10 +245,10 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
               <h2 className="text-m-bold">Delivery date</h2>
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
-            <div className="dt-filters__box">
+            <div className="dt-filters__box dt-filters__box--auto">
               {openFilter.date && <CalendarFilter
                 calendarFilter={calendarFilter}
-                setStatusFilters={setStatusFilter}
+                setCalendarFilter={setCalendarFilter}
                 setOpenFilter={setOpenFilter}
                 openFilter={openFilter}
                 applyFilter={applyFilter}
