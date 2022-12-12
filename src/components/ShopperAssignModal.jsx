@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
 
-const ShopperAssignModal = ({shoppers,setOpenAssignModal}) => {
+const ShopperAssignModal = ({
+  shoppers,
+  setOpenAssignModal,
+  setShopperToOrder,
+}) => {
+  const [selectedShoppers, setSelectedShoppers] = useState([]);
 
-  const Apply = ()=> {
+  const Apply = () => {
+    setShopperToOrder(selectedShoppers);
+   
+  };
+  const Cancel = () => {
     setOpenAssignModal(false);
-  }
-  const Cancel = ()=> {
-    setOpenAssignModal(false);
-  }
+  }; 
 
   return (
     <div className="dt-modal">
@@ -16,19 +22,57 @@ const ShopperAssignModal = ({shoppers,setOpenAssignModal}) => {
         <p className="dt-modal-header-phone text-m-bold ">Phone</p>
       </div>
       <div className="dt-modal-data">
-        <label className="dt-modal-data-item">
-          <div>
-            <input type="checkbox" />
-             Rj Puma
-          </div>
-          <div>
-            <p>914-648-8855</p>
-          </div>
-        </label>
+        {shoppers.map((x) => (
+          <>
+            <label key={x.id} className="dt-modal-data-item">
+              <div>
+                <input
+                  onChange={(e) => {
+                    console.log(e.target.checked);
+                    if (e.target.checked) {
+                      const stateCopy = selectedShoppers.concat([
+                        e.target.value,
+                      ]);
+                      setSelectedShoppers([...stateCopy]);
+                    } else {
+                      //remove from array
+
+                      const stateCopy = selectedShoppers.filter((val) => {
+                        return val !== e.target.value;
+                      });
+                      setSelectedShoppers([...stateCopy]);
+                    }
+                  }}
+                  value={x.id}
+                  type="checkbox"
+                />
+                {x.name}
+              </div>
+              <div>
+                <p>{x.phone}</p>
+              </div>
+            </label>
+          </>
+        ))}
       </div>
-      <button onClick={()=>{Apply()}} className="btn btn-primary">
-        Apply
-      </button>
+      <div className="d-flex">
+        <button
+          onClick={() => {
+            Cancel();
+          }}
+          className="btn text-m-bold"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            Apply();
+          }}
+          className="btn btn-primary"
+        >
+          Apply
+        </button>
+      </div>
     </div>
   );
 };

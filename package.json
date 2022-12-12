@@ -36,7 +36,9 @@
     "react-router-dom": "^6.4.4",
     "simple-react-modal": "^0.5.1",
     "sort-by": "^1.2.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "sweetalert2": "^11.6.15",
+    "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
