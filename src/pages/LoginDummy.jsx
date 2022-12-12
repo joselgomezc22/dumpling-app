@@ -3,6 +3,8 @@ import { useState } from "react";
 import { NumberForm } from "../components/NumberForm";
 
 import VerifyCodeForm from "../components/VerifyCodeForm";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
@@ -13,6 +15,8 @@ import { Auth } from 'aws-amplify';
 import { useNavigate } from "react-router-dom";
 
 const LoginDummy = () => {
+
+  const MySwal = withReactContent(Swal);
   
   const {user, setUser} = useContext(DataContext);
 
@@ -29,6 +33,12 @@ const LoginDummy = () => {
       console.log(userAuth);
     } catch(error) {
       console.log({error});
+      MySwal.fire({
+        title: error.message,
+        icon: 'error'
+      })
+      setShowValidate(false);
+      setNumber("");
     }
   };
 
@@ -41,6 +51,11 @@ const LoginDummy = () => {
       window.location.href = "/list";
     } catch(error) {
       console.log({error});
+      MySwal.fire({
+        title: "Wrong Token",
+        icon: 'error'
+      })
+      setVerifyCode("")
     }
   };
 

@@ -207,7 +207,7 @@ export const DataList = ({
       />
       <Modal show={openAssignModal} onClose={()=>{setOpenAssignModal(!openAssignModal)}} transitionSpeed={1000}>
         
-        <ShopperAssignModal />
+        <ShopperAssignModal shoppers={shoppers} />
       </Modal>
     </div>
   );
