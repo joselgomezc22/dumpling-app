@@ -192,9 +192,6 @@ export const DataListFilter = ({ applyFilter, shoppers, search, setSearch }) => 
 
   return (
     <>
-    <pre>
-      StatusFilter:{JSON.stringify(statusFilter)}
-    </pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">

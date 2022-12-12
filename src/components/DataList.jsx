@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import logo from "/src/images/dumpling_logo.png";
 
 import { DataListFilter } from "./DataListFilter";
+import ShopperAssignModal from "./ShopperAssignModal";
+
 import { useSearchParams , useNavigate  } from "react-router-dom";
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
@@ -108,6 +110,11 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
         });
         navigate(0);
       } else {
+        setSearchParams({
+          ...searchParams,
+          status: [],
+        });
+        navigate(0);
       }
     }
     
@@ -125,6 +132,7 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
 
   return (
     <div className="dt-container">
+      {JSON.stringify(selectedRows)}
       <img className="" src={logo} />
 
       <DataListFilter
@@ -133,7 +141,7 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
         search={searchTerm}
         setSearch={applySearch}
       />
-
+      <button className={'btn btn-primary '+( (selectedRows.selectedCount != 0)? "active" : "")} >assign</button>
       <DataTable
         columns={columns}
         data={listData}
@@ -143,6 +151,7 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
         onSelectedRowsChange={setSelectedRows}
         expandableRowsComponent={ExpandedComponent}
       />
+      <ShopperAssignModal />
     </div>
   );
 };
