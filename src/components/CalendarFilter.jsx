@@ -9,18 +9,28 @@ const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilt
     const [copy, setCopy] = useState(""); 
     let [searchParams, setSearchParams] = useSearchParams();
 
+    const changeTimezone = (date, ianatz) => {
+      var invdate = new Date(date.toLocaleString('en-US', {
+        timeZone: ianatz
+      }));
+
+      var diff = date.getTime() - invdate.getTime();
+      return new Date(date.getTime() - diff);
+    
+    }
+
     const [dateRange, setDaterange] = useState([
       {
-        startDate: subDays(new Date(), 7),
-        endDate: addDays(new Date(), 1),
+        startDate: subDays(changeTimezone(new Date(), 'America/Los_Angeles'), 7),
+        endDate: addDays(changeTimezone(new Date(), 'America/Los_Angeles'), 1),
         key: "selection"
       }
     ]);
     
     const [dateRangeTime, setDateTime] = useState([
       {
-        startDate: new Date().getTime(),
-        endDate: new Date().getTime(),
+        startDate: changeTimezone(new Date(), 'America/Los_Angeles').getTime(),
+        endDate: changeTimezone(new Date(), 'America/Los_Angeles').getTime(),
       }
     ]);
 
@@ -45,6 +55,23 @@ const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilt
 
       applyFilter('date', [startDate.getTime(), endDate.getTime()])
     };
+
+    const clearDateRange = () => {
+      const { endDate, startDate } = dateRange[0];
+
+      setDateTime({
+        startDate: startDate.getTime(),
+        endDate: endDate.getTime(),
+      });
+
+      setCalendarFilter({
+        startDate: startDate.getTime(),
+        endDate: endDate.getTime(),
+      });
+
+      applyFilter('date', [])
+    };
+
 
     useEffect(() => {
     
@@ -88,6 +115,9 @@ const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilt
         onChange={onChangeDates} />
       <div className="dt-filters__box-buttons">
         <button className="btn text-m-bold">Cancel</button>
+        <button onClick={() => {
+          clearDateRange();
+        }} className="btn text-m-bold">Clear</button>
         <button onClick={() => {
           applyDateRange();
         }} className="btn btn-primary text-m-bold">Apply</button>

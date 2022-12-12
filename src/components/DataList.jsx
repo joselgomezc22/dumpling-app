@@ -140,7 +140,7 @@ export const DataList = ({
           ...searchParams,
           date: String(object),
         });
-
+        navigate(0);
       } else {
         setSearchParams({
           ...searchParams,

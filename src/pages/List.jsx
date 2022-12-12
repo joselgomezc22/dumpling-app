@@ -135,7 +135,7 @@ const List = () => {
   
   if(filter['date']?.length){
     filter['date']?.map((date, index) => {
-      const operator = index === 0 ? "GTE" : "LTE";
+      const operator = index === 0 ? "GTE" : "GTE";
       queryFilter.push(
         {property: "deliveryTimestamp", 'operator': operator, values: [parseInt(date)]}
       );
