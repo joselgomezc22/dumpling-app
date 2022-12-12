@@ -19,7 +19,7 @@ const renderShopper = (buddies, assinedTo) => {
   } ) || "N/A";
 };
 
-export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppers, searchTerm, setSearchTerm }) => {
+export const DataList = ({ orders, nextToken, nextPage, setFilter, globalFilter, filterChange, shoppers, searchTerm, setSearchTerm, assignedAction }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
   const [listData, setListData] = useState(orders.orders);
@@ -123,6 +123,11 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
     navigate(0);
   };
 
+  const goNext = () => {
+    window.localStorage.setItem('Auth', nextToken);
+    navigate(0);
+  };
+
   return (
     <div className="dt-container">
       <img className="" src={logo} />
@@ -133,6 +138,13 @@ export const DataList = ({ orders, setFilter, globalFilter, filterChange, shoppe
         search={searchTerm}
         setSearch={applySearch}
       />
+
+      <button onClick={() => {
+        assignedAction([{id: "a7d02a9e-2d49-48cb-accf-5c3d5369e30b", deliveryTimestamp: "1661508000"}], []);
+        setTimeout(() => {
+          navigate(0);
+        }, 500);
+      }}>Assignar</button>
 
       <DataTable
         columns={columns}
