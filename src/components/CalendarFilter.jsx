@@ -49,11 +49,16 @@ const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilt
       });
 
       setCalendarFilter({
-        startDate: startDate.getTime(),
-        endDate: endDate.getTime(),
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
       });
 
-      applyFilter('date', [startDate.getTime(), endDate.getTime()])
+      const dateApply = [
+        Math.floor(startDate.getTime() / 1000),
+        Math.floor(endDate.getTime() / 1000)
+      ];
+
+      applyFilter('date', dateApply)
     };
 
     const clearDateRange = () => {
@@ -112,7 +117,9 @@ const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilt
         moveRangeOnFirstSelection={false}
         months={2}
         ranges={dateRange}
-        onChange={onChangeDates} />
+        onChange={onChangeDates}
+        color="#1b112f"
+        rangeColors={["#046148", "#00ff9d", "#00692c"]} />
       <div className="dt-filters__box-buttons">
         <button className="btn text-m-bold">Cancel</button>
         <button onClick={() => {
