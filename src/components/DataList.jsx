@@ -34,6 +34,7 @@ export const DataList = ({
   searchTerm,
   setSearchTerm,
   assignedAction,
+  handleSort
 }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
@@ -47,7 +48,7 @@ export const DataList = ({
   useEffect(() => {
     filterBySearchParams();
   }, []);
-
+  
   const columns = [
     {
       name: "Customer",
@@ -101,8 +102,8 @@ export const DataList = ({
     filter.shopper = searchParams.get("shopper")
       ? searchParams.get("shopper").split(",")
       : null;
-    filter.date = searchParams.get("date")
-      ? searchParams.get("date").split(",")
+    filter.date = searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
       : null;
 
     setFilter(filter);
@@ -182,7 +183,7 @@ export const DataList = ({
           });
           setSearchParams({
             ...urlParamsCopy,
-            date: String(dateFilterSet),
+            DeliveryDate: String(dateFilterSet),
           });
           navigate(0);
         } else {
@@ -192,7 +193,7 @@ export const DataList = ({
           });
           setSearchParams({
             ...urlParamsCopy,
-            date: [],
+            DeliveryDate: [],
           });
           navigate(0);
         }
@@ -207,7 +208,7 @@ export const DataList = ({
     setSearchParams({
       status: searchParams.getAll("status"),
       shopper: searchParams.getAll("shopper"),
-      date: searchParams.getAll("date"),
+      date: searchParams.getAll("DeliveryDate"),
       q: String(value),
     });
     navigate(0);
@@ -272,6 +273,7 @@ export const DataList = ({
           defaultSortFieldId={1}
           selectableRows
           onSelectedRowsChange={setSelectedRows}
+          onSort={handleSort}
         />
         <Modal
           show={openAssignModal}

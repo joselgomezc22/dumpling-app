@@ -65,6 +65,9 @@
             display: flex;
             align-items: center;
         }
+        &.highlight {
+            border: 1px solid $dumpling;
+        }
         &.active {
             border: 1px solid $dumpling;
             & .dt-filters-arrow-icon{

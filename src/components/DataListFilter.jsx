@@ -231,17 +231,20 @@ export const DataListFilter = ({
   const [statusFilter, setStatusFilter] = useState({
     filters: [
       {
-        label: "Created",
+        label: "Open",
+        key: "Created",
         count: 30,
         active: false,
       },
       {
         label: "Complete",
+        key: "Complete",
         count: 40,
         active: false,
       },
       {
         label: "Canceled",
+        key: "Canceled",
         count: 10,
         active: false,
       },
@@ -259,7 +262,7 @@ export const DataListFilter = ({
     );
   }, []);
 
-  const [inputSearch, setInputSearch] = useState("");
+  const [inputSearch, setInputSearch] = useState(searchParams.get("q") || '');
 
   const onPressSearch = (e) => {
     if (e.key === "Enter") {
@@ -276,7 +279,7 @@ export const DataListFilter = ({
             <h2 className="text-m-bold">Filters</h2>
           </div>
           <div
-            className={"dt-filters-item " + (openFilter.status ? "active" : "")}
+            className={"dt-filters-item " + (openFilter.status ? "active" : "")+(searchParams.get("status") ? " highlight":" ") }
           >
             <div
               className="dt-filters-item-cl"
@@ -304,7 +307,7 @@ export const DataListFilter = ({
             </div>
           </div>
           <div
-            className={"dt-filters-item " + (openFilter.date ? "active" : "")}
+            className={"dt-filters-item " + (openFilter.date ? "active" : "")+(searchParams.get("DeliveryDate") ? " highlight":" ") }
           >
             <div
               className="dt-filters-item-cl"
@@ -333,7 +336,7 @@ export const DataListFilter = ({
           </div>
           <div
             className={
-              "dt-filters-item " + (openFilter.shopper ? "active" : "")
+              "dt-filters-item " + (openFilter.shopper ? "active" : "")+(searchParams.get("shopper") ? " highlight":" ") 
             }
           >
             <div

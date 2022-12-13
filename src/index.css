@@ -214,6 +214,9 @@ input[type=number] {
   display: flex;
   align-items: center;
 }
+.dt-filters-item.highlight {
+  border: 1px solid #00A651;
+}
 .dt-filters-item.active {
   border: 1px solid #00A651;
 }

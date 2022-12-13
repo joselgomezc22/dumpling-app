@@ -107,8 +107,8 @@ const CalendarFilter = ({
   ) => {
     const filter = {};
 
-    filter.date = searchParams.get("date")
-      ? searchParams.get("date").split(",")
+    filter.date = searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
       : null;
 
     if (filter.date) {
