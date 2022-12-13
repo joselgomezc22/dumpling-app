@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-export const NumberForm = ({ number, setNumber, setShowValidate }) => {
-  const handleSubmit = (event) => {
+export const NumberForm = ({ number, setNumber, setShowValidate, login }) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    login(number);
     setShowValidate(true);
-    alert(`Number: ${number}`);
   };
 
   return (

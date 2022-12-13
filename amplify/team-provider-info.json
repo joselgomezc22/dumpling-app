@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-dumplingapp-dev-153700-authRole",
+      "UnauthRoleArn": "arn:aws:iam::229239797903:role/amplify-dumplingapp-dev-153700-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::229239797903:role/amplify-dumplingapp-dev-153700-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-dumplingapp-dev-153700-deployment",
+      "UnauthRoleName": "amplify-dumplingapp-dev-153700-unauthRole",
+      "StackName": "amplify-dumplingapp-dev-153700",
+      "StackId": "arn:aws:cloudformation:us-east-2:229239797903:stack/amplify-dumplingapp-dev-153700/bec49000-75a5-11ed-b28f-0a49de36cbec",
+      "AmplifyAppId": "d27jsmp50ly6j1"
+    },
+    "categories": {
+      "auth": {
+        "dumplingapp74507e7574507e75": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}

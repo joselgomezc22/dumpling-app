@@ -7,10 +7,15 @@
         font-size: 14px;
         font-weight: 600;
     }
+    &-m-bold {
+        font-size: 14px;
+        font-weight: 700;
+    }
     &-s {
         font-size: 14px;
     }
 }
+
 
 .btn {
 
@@ -28,5 +33,23 @@
     &-disabled {
         background-color: $dumpling-gray;
         color: #787878;
+    }
+}
+
+
+.w-100 {
+    width: 100%;
+}
+.d {
+    &-flex{
+        display: flex;
+    }
+}
+.justify-content {
+    &-center {
+        justify-content: center;
+    }
+    &-space-between {
+        justify-content: space-between;
     }
 }

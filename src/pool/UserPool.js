@@ -1,0 +1,7 @@
+
+
+const settingsAmplify = () => {
+  
+};
+
+export { settingsAmplify }
