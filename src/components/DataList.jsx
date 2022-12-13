@@ -233,7 +233,7 @@ export const DataList = ({
   return (
     <div className="dt-overlay">
       
-      <img className="dt-logo" src={logo} />
+      <img onClick={()=>{setSearchParams({});navigate(0)}} className="dt-logo" src={logo} />
       <div className="dt-container">
         <DataListFilter
           shoppers={shoppers}
@@ -269,11 +269,9 @@ export const DataList = ({
         <DataTable
           columns={columns}
           data={listData}
-          expandableRows
           defaultSortFieldId={1}
           selectableRows
           onSelectedRowsChange={setSelectedRows}
-          expandableRowsComponent={ExpandedComponent}
         />
         <Modal
           show={openAssignModal}
