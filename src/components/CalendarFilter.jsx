@@ -116,11 +116,11 @@ const CalendarFilter = ({
       console.log("HOLa", filter);
       setDateRange([
         {
-          startDate: new Date( parseInt(filter.date[0])) ,
-          endDate: new Date( parseInt(filter.date[1])) ,
+          startDate: new Date( parseInt(filter.date[0]) * 1000) ,
+          endDate: new Date( parseInt(filter.date[1])* 1000) ,
           key: 'selection'
-        },
-      ]);
+        },
+      ]);
     }
   };
 
