@@ -1,4 +1,14 @@
 .dt {
+
+    &-logo{
+        width: 15.75rem;
+    }
+    &-overlay{
+        width: 100%;
+        height: 91vh;
+        padding: 2% 0;
+        background-color: #FAFAFA;
+    }
     &-container {
         width: 87vw;
         margin: 2% auto;
@@ -23,8 +33,8 @@
 }
 
 .dt-filters {
-    margin: 52px 0 0 0;
-    padding: 52px 0 0 0;
+    margin: 2.5rem 0 0 0;
+    padding: 1.5rem 0 0 0;
     border-top: 1px solid $dumpling-gray;
     display: flex;
     justify-content: space-between;
@@ -38,13 +48,14 @@
         border-right: 1px solid $dumpling-gray;
     }
     &-item {
+        margin: 0 1rem 0 0;
+        padding: 0.1rem 1rem;
+        border: 1px solid #E7E7E7;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         position: relative;
-        margin: 0 1rem 0 0;
-        padding: 0.1rem 1rem;
-        border-radius: 20px;
-        border: 1px solid #E7E7E7;
+        background-color: #ffffff;
         transition: all 0.5s;
 
         &:hover {
@@ -67,23 +78,57 @@
         }
     }
     &__box {
-        padding: 1.1rem 1rem;
+        
         position: absolute;
         background-color: #ffffff;
         border-radius: 20px;
+        border: 1px solid #E7E7E7;
         opacity: 0;
         top: 105%;
         right: 0;
         transition: opacity 0.5s;
+        overflow: hidden;
+        filter: drop-shadow(0px 20px 30px rgba(190, 193, 197, 0.2));
+        
+        &.status {
+            width: 15.25rem;
+        }
+        &.shopper {
+            width: 23.75rem;
+        }
+        &.date {
+            right: -205%;
+        }
 
         &--auto {
             width: auto !important;
             left: 0;
         }
 
+        &-items {
+            
+        }
+        &-item {
+            padding: 1rem 1rem;
+            transition: all 0.5s ease-in-out;
+
+            &.active {
+                background-color: #F8F8F8;
+            }
+            p {
+                margin: 0;
+            }
+        }
         &-buttons {
+            border-top: 1px solid #E7E7E7;
+            padding: 1rem;
             display: flex;
-            width: 100%;
+            /*gap property doesnt work on safari, this is the way to replace it*/
+            &>*+* { margin-left: 0.75rem;}
+            & button {
+                border-radius: 20px;
+                padding: 12px 0 !important;
+            }
         }
     }
     &-icon {
@@ -104,11 +149,12 @@
         display: flex;
     }
     &__search {
-        display: flex;
-        justify-content: center;
         padding: 0.7rem 0.8rem;
+        display: flex;
         border: 1px solid $dumpling-gray;
         border-radius: 20px;
+        justify-content: center;
+        background-color: #ffffff;
     }
     &__status {
         display: flex;
@@ -161,7 +207,6 @@
     padding: 2rem;
     flex-direction: column;
     &-header {
-        width: 100%;
         padding: 0.8rem 1.2rem;
         display: flex;
         justify-content: space-between;
@@ -174,7 +219,6 @@
         }
     }
     &-data {
-        width: 100%;
         padding: 0.8rem 1.2rem;
         display: flex;
         flex-direction: column;
@@ -186,9 +230,21 @@
             align-items: center;
         }
     }
+    &-buttons{
+        margin: 2.25rem 0 0 0;
+        justify-content: flex-end;
+        &>*+* { margin-left: 0.75rem;}
+
+        & button {
+            width: 22%;
+            border-radius: 20px;
+            padding: 12px 0 !important;
+        }
+    }
 }
 
 [data-modal="true"] {
+    background: #00000024 !important;
     & > div:first-child {
         width: 520px !important;
         border-radius: 12px;
@@ -202,8 +258,16 @@
 .rdt_TableHeadRow {
     background-color: $dumpling !important;
     color: white;
-    border-radius: 12px 12px 0 0;
+    
+}
+.rdt_Table {
+    padding: 0;
     margin: 50px 0 0 0;
+    
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0px 20px 30px -4px rgba(190, 193, 197, 0.1);
+    
 }
 .ljzry {
     @extend .text-m;

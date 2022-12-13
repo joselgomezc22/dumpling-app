@@ -189,9 +189,9 @@ const List = () => {
 
   return (
     <>
-      <pre>
-        {JSON.stringify(filter)}
-      </pre>
+      
+        {/*JSON.stringify(filter)*/}
+      
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}

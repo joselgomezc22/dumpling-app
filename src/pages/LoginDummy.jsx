@@ -35,6 +35,8 @@ const LoginDummy = () => {
       console.log({error});
       MySwal.fire({
         title: error.message,
+        text: 'Wrong phone number',
+        confirmButtonColor: '#00A651',
         icon: 'error'
       })
       setShowValidate(false);
@@ -52,7 +54,8 @@ const LoginDummy = () => {
     } catch(error) {
       console.log({error});
       MySwal.fire({
-        title: "Wrong Token",
+        title: "Wrong Code",
+        confirmButtonColor: '#00A651',
         icon: 'error'
       })
       setVerifyCode("")
