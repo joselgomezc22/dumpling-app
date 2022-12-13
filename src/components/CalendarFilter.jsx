@@ -1,136 +1,156 @@
-import {useEffect , useState} from 'react'
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { DateRangePicker } from 'react-date-range';
+import { DateRangePicker } from "react-date-range";
 import { addDays, subDays } from "date-fns";
 
+const CalendarFilter = ({
+  calendarFilter,
+  setCalendarFilter,
+  setOpenFilter,
+  openFilter,
+  applyFilter,
+}) => {
+  const [calendarFilterHolder, setCalendarFilterHolder] = useState({});
+  const [copy, setCopy] = useState("");
+  let [searchParams, setSearchParams] = useSearchParams();
 
-const CalendarFilter = ({calendarFilter,setCalendarFilter,setOpenFilter,openFilter,applyFilter}) => {
-    const [calendarFilterHolder, setCalendarFilterHolder] = useState({});
-    const [copy, setCopy] = useState(""); 
-    let [searchParams, setSearchParams] = useSearchParams();
+  const changeTimezone = (date, ianatz) => {
+    var invdate = new Date(
+      date.toLocaleString("en-US", {
+        timeZone: ianatz,
+      })
+    );
 
-    const changeTimezone = (date, ianatz) => {
-      var invdate = new Date(date.toLocaleString('en-US', {
-        timeZone: ianatz
-      }));
+    var diff = date.getTime() - invdate.getTime();
+    return new Date(date.getTime() - diff);
+  };
 
-      var diff = date.getTime() - invdate.getTime();
-      return new Date(date.getTime() - diff);
-    
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: subDays(changeTimezone(new Date(), "America/Los_Angeles"), 7),
+      endDate: addDays(changeTimezone(new Date(), "America/Los_Angeles"), 1),
+      key: "selection",
+    },
+  ]);
+
+  const [dateRangeTime, setDateTime] = useState([
+    {
+      startDate: changeTimezone(new Date(), "America/Los_Angeles").getTime(),
+      endDate: changeTimezone(new Date(), "America/Los_Angeles").getTime(),
+    },
+  ]);
+
+  const onChangeDates = (ranges) => {
+    const { selection } = ranges;
+    console.log(selection);
+    setDateRange([selection]);
+  };
+
+  const applyDateRange = () => {
+    const { endDate, startDate } = dateRange[0];
+
+    setDateTime({
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+    });
+
+    setCalendarFilter({
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+    });
+
+    const dateApply = [
+      Math.floor(startDate.getTime() / 1000),
+      Math.floor(endDate.getTime() / 1000)
+    ];
+
+    applyFilter("date", dateApply);
+    filterBySearchParams(null, null);
+  };
+
+  const clearDateRange = () => {
+    const { endDate, startDate } = dateRange[0];
+
+    setDateTime({
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+    });
+
+    setCalendarFilter({
+      startDate: startDate.getTime(),
+      endDate: endDate.getTime(),
+    });
+
+    applyFilter("date", []);
+  };
+
+  useEffect(() => {
+    setCopy(JSON.stringify(calendarFilter));
+
+    filterBySearchParams(calendarFilterHolder, setCalendarFilterHolder);
+
+    const news = filterBySearchParams(
+      calendarFilterHolder,
+      setCalendarFilterHolder
+    );
+    if (news) {
+      setCalendarFilterHolder({ ...calendarFilter, filters: news });
+      return;
+    } else {
+      setCalendarFilterHolder(calendarFilter);
     }
+  }, []);
 
-    const [dateRange, setDaterange] = useState([
-      {
-        startDate: subDays(changeTimezone(new Date(), 'America/Los_Angeles'), 7),
-        endDate: addDays(changeTimezone(new Date(), 'America/Los_Angeles'), 1),
-        key: "selection"
-      }
-    ]);
-    
-    const [dateRangeTime, setDateTime] = useState([
-      {
-        startDate: changeTimezone(new Date(), 'America/Los_Angeles').getTime(),
-        endDate: changeTimezone(new Date(), 'America/Los_Angeles').getTime(),
-      }
-    ]);
+  const filterBySearchParams = (
+    calendarFilterHolder,
+    setCalendarFilterHolder
+  ) => {
+    const filter = {};
 
-    const onChangeDates = (ranges) => {
-      const { selection } = ranges;
-      console.log(selection);
-      setDaterange([selection]);
-    };
+    filter.date = searchParams.get("date")
+      ? searchParams.get("date").split(",")
+      : null;
 
-    const applyDateRange = () => {
-      const { endDate, startDate } = dateRange[0];
+    if (filter.date) {
 
-      setDateTime({
-        startDate: startDate.getTime(),
-        endDate: endDate.getTime(),
-      });
-
-      setCalendarFilter({
-        startDate: Math.floor(startDate.getTime() / 1000),
-        endDate: Math.floor(endDate.getTime() / 1000),
-      });
-
-      const dateApply = [
-        Math.floor(startDate.getTime() / 1000),
-        Math.floor(endDate.getTime() / 1000)
-      ];
-
-      applyFilter('date', dateApply)
-    };
-
-    const clearDateRange = () => {
-      const { endDate, startDate } = dateRange[0];
-
-      setDateTime({
-        startDate: startDate.getTime(),
-        endDate: endDate.getTime(),
-      });
-
-      setCalendarFilter({
-        startDate: startDate.getTime(),
-        endDate: endDate.getTime(),
-      });
-
-      applyFilter('date', [])
-    };
-
-
-    useEffect(() => {
-    
-        setCopy(JSON.stringify(calendarFilter));
-        
-        filterBySearchParams(calendarFilterHolder,setCalendarFilterHolder);
-        const news = filterBySearchParams(calendarFilterHolder,setCalendarFilterHolder);
-        if(news) {
-          setCalendarFilterHolder({...calendarFilter, filters: news})
-          return
-        } else {
-          setCalendarFilterHolder(calendarFilter);
-        }
-    
-      }, [copy])
-
-      const filterBySearchParams = (calendarFilterHolder,setCalendarFilterHolder) => {
-  
-        const filter = {};
-        
-        filter.date = searchParams.get("status")? searchParams.get("status").split(",") : null ;
-        
-        if(filter.date && calendarFilterHolder.filters) {
-          const def =  calendarFilterHolder.filters.filter(item => !filter.date.includes(item.label));
-          const news = calendarFilterHolder.filters.map((f)=>{
-            if( filter.date.includes(f.label)) return {...f,active:true}
-            return f
-          } )
-          return news;
-        }    
-    };
-
+      console.log("HOLa", filter);
+      setDateRange([
+        {
+          startDate: new Date( parseInt(filter.date[0])) ,
+          endDate: new Date( parseInt(filter.date[1])) ,
+          key: 'selection'
+        },
+      ]);
+    }
+  };
 
   return (
     <div>
-      <DateRangePicker 
+      <DateRangePicker
         showSelectionPreview={true}
         moveRangeOnFirstSelection={false}
         months={2}
         ranges={dateRange}
         onChange={onChangeDates}
-        color="#1b112f"
-        rangeColors={["#046148", "#00ff9d", "#00692c"]} />
-      <div className="dt-filters__box-buttons">
-        <button className="btn text-m-bold">Cancel</button>
-        <button onClick={() => {
-          clearDateRange();
-        }} className="btn text-m-bold">Clear</button>
-        <button onClick={() => {
-          applyDateRange();
-        }} className="btn btn-primary text-m-bold">Apply</button>
+        color="#1B112F"
+        rangeColors={["#00A651", "#00FF9D", "#00692C"]}
+      />
+      <div className="dt-filters__box-buttons d-flex dt-modal-buttons">
+        <button onClick={()=>{
+          setOpenFilter({...openFilter,date:false})
+        }} className="btn text-m-bold">Cancel</button>
+        
+        <button
+          onClick={() => {
+            applyDateRange();
+          }}
+          className="btn btn-primary text-m-bold"
+        >
+          Apply
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CalendarFilter
+export default CalendarFilter;

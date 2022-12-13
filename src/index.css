@@ -10,6 +10,11 @@ html {
   font-weight: 500;
 }
 
+body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .text-l {
   font-size: 24px;
   font-weight: 600;
@@ -146,6 +151,15 @@ input[type=number] {
   font-size: 14px !important;
 }
 
+.dt-logo {
+  width: 15.75rem;
+}
+.dt-overlay {
+  width: 100%;
+  height: 91vh;
+  padding: 2% 0;
+  background-color: #FAFAFA;
+}
 .dt-container {
   width: 87vw;
   margin: 2% auto;
@@ -168,8 +182,8 @@ input[type=number] {
 }
 
 .dt-filters {
-  margin: 52px 0 0 0;
-  padding: 52px 0 0 0;
+  margin: 2.5rem 0 0 0;
+  padding: 1.5rem 0 0 0;
   border-top: 1px solid #E7E7E7;
   display: flex;
   justify-content: space-between;
@@ -183,13 +197,14 @@ input[type=number] {
   border-right: 1px solid #E7E7E7;
 }
 .dt-filters-item {
+  margin: 0 1rem 0 0;
+  padding: 0.1rem 1rem;
+  border: 1px solid #E7E7E7;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   position: relative;
-  margin: 0 1rem 0 0;
-  padding: 0.1rem 1rem;
-  border-radius: 20px;
-  border: 1px solid #E7E7E7;
+  background-color: #ffffff;
   transition: all 0.5s;
 }
 .dt-filters-item:hover {
@@ -210,22 +225,52 @@ input[type=number] {
   z-index: 1;
 }
 .dt-filters__box {
-  padding: 1.1rem 1rem;
   position: absolute;
   background-color: #ffffff;
   border-radius: 20px;
+  border: 1px solid #E7E7E7;
   opacity: 0;
   top: 105%;
   right: 0;
   transition: opacity 0.5s;
+  overflow: hidden;
+  filter: drop-shadow(0px 20px 30px rgba(190, 193, 197, 0.2));
+}
+.dt-filters__box.status {
+  width: 15.25rem;
+}
+.dt-filters__box.shopper {
+  width: 23.75rem;
+}
+.dt-filters__box.date {
+  right: -205%;
 }
 .dt-filters__box--auto {
   width: auto !important;
   left: 0;
 }
+.dt-filters__box-item {
+  padding: 1rem 1rem;
+  transition: all 0.5s ease-in-out;
+}
+.dt-filters__box-item.active {
+  background-color: #F8F8F8;
+}
+.dt-filters__box-item p {
+  margin: 0;
+}
 .dt-filters__box-buttons {
+  border-top: 1px solid #E7E7E7;
+  padding: 1rem;
   display: flex;
-  width: 100%;
+  /*gap property doesnt work on safari, this is the way to replace it*/
+}
+.dt-filters__box-buttons > * + * {
+  margin-left: 0.75rem;
+}
+.dt-filters__box-buttons button {
+  border-radius: 20px;
+  padding: 12px 0 !important;
 }
 .dt-filters-icon {
   width: 1rem;
@@ -245,11 +290,12 @@ input[type=number] {
   display: flex;
 }
 .dt-filters__search {
-  display: flex;
-  justify-content: center;
   padding: 0.7rem 0.8rem;
+  display: flex;
   border: 1px solid #E7E7E7;
   border-radius: 20px;
+  justify-content: center;
+  background-color: #ffffff;
 }
 .dt-filters__status {
   display: flex;
@@ -298,7 +344,6 @@ input[type=number] {
   flex-direction: column;
 }
 .dt-modal-header {
-  width: 100%;
   padding: 0.8rem 1.2rem;
   display: flex;
   justify-content: space-between;
@@ -311,7 +356,6 @@ input[type=number] {
   width: 21%;
 }
 .dt-modal-data {
-  width: 100%;
   padding: 0.8rem 1.2rem;
   display: flex;
   flex-direction: column;
@@ -322,7 +366,22 @@ input[type=number] {
   justify-content: space-between;
   align-items: center;
 }
+.dt-modal-buttons {
+  margin: 2.25rem 0 0 0;
+  justify-content: flex-end;
+}
+.dt-modal-buttons > * + * {
+  margin-left: 0.75rem;
+}
+.dt-modal-buttons button {
+  width: 22%;
+  border-radius: 20px;
+  padding: 12px 0 !important;
+}
 
+[data-modal=true] {
+  background: rgba(0, 0, 0, 0.1411764706) !important;
+}
 [data-modal=true] > div:first-child {
   width: 520px !important;
   border-radius: 12px;
@@ -333,8 +392,14 @@ input[type=number] {
 .rdt_TableHeadRow {
   background-color: #00A651 !important;
   color: white;
-  border-radius: 12px 12px 0 0;
+}
+
+.rdt_Table {
+  padding: 0;
   margin: 50px 0 0 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0px 20px 30px -4px rgba(190, 193, 197, 0.1);
 }
 
 .ljzry {

@@ -56,26 +56,34 @@ const StatusFilters = ({
 
   return (
     <>
-      {statusFilterHolder?.filters &&
-        statusFilterHolder?.filters.map((filter, index) => (
-          <label key={index} className="dt-filters__status">
-            <input
-              onChange={() => {
-                statusFilterHolder.filters[index].active =
-                  !statusFilterHolder.filters[index].active;
+      <div className="dt-filters__box-items">
+        {statusFilterHolder?.filters &&
+          statusFilterHolder?.filters.map((filter, index) => (
+            <label
+              key={index}
+              className={
+                "dt-filters__status dt-filters__box-item " +
+                (filter.active ? "active" : "")
+              }
+            >
+              <input
+                onChange={() => {
+                  statusFilterHolder.filters[index].active =
+                    !statusFilterHolder.filters[index].active;
 
-                setStatusFilterHolder({ ...statusFilterHolder });
-              }}
-              checked={filter.active}
-              type="checkbox"
-              name=""
-              id=""
-            />
-            <p className="text-m">
-              {filter.label} ({filter.count})
-            </p>
-          </label>
-        ))}
+                  setStatusFilterHolder({ ...statusFilterHolder });
+                }}
+                checked={filter.active}
+                type="checkbox"
+                name=""
+                id=""
+              />
+              <p className="text-m">
+                {filter.label} ({filter.count})
+              </p>
+            </label>
+          ))}
+      </div>
       <div className="dt-filters__box-buttons">
         <button
           onClick={() => {
@@ -153,27 +161,35 @@ const ShopperFilters = ({
 
   return (
     <>
-      {shopperFilterHolder.length > 0 &&
-        shopperFilterHolder.map((filter, index) => (
-          <label key={index} className="dt-filters__status">
-            <input
-              onChange={() => {
-                shopperFilterHolder[index].active =
-                  !shopperFilterHolder[index].active;
+      <div className="dt-filters__box-items">
+        {shopperFilterHolder.length > 0 &&
+          shopperFilterHolder.map((filter, index) => (
+            <label
+              key={index}
+              className={
+                "dt-filters__status dt-filters__box-item " +
+                (filter.active ? "active" : "")
+              }
+            >
+              <input
+                onChange={() => {
+                  shopperFilterHolder[index].active =
+                    !shopperFilterHolder[index].active;
 
-                setShopperFilterHolder([...shopperFilterHolder]);
-              }}
-              checked={filter.active}
-              type="checkbox"
-              name=""
-              id=""
-            />
-            <span className="d-flex">
-              <p className="text-m">{filter.name}</p>
-              <p className="text-m">{filter.phone}</p>
-            </span>
-          </label>
-        ))}
+                  setShopperFilterHolder([...shopperFilterHolder]);
+                }}
+                checked={filter.active}
+                type="checkbox"
+                name=""
+                id=""
+              />
+              <span className="d-flex">
+                <p className="text-m">{filter.name}</p>
+                <p className="text-m">{filter.phone}</p>
+              </span>
+            </label>
+          ))}
+      </div>
       <div className="dt-filters__box-buttons">
         <button
           onClick={() => {
@@ -253,7 +269,6 @@ export const DataListFilter = ({
 
   return (
     <>
-      <pre>{JSON.stringify(calendarFilter)}</pre>
       <div className="dt-filters">
         <div className="dt-filters__col">
           <div className="dt-filters__label">
@@ -276,7 +291,7 @@ export const DataListFilter = ({
               <h2 className="text-m-bold">Order status</h2>
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
-            <div className="dt-filters__box">
+            <div className="dt-filters__box status">
               {openFilter.status && (
                 <StatusFilters
                   statusFilters={statusFilter}
@@ -304,7 +319,7 @@ export const DataListFilter = ({
               <h2 className="text-m-bold">Delivery date</h2>
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
-            <div className="dt-filters__box dt-filters__box--auto">
+            <div className="dt-filters__box date">
               {openFilter.date && (
                 <CalendarFilter
                   calendarFilter={calendarFilter}
@@ -334,7 +349,7 @@ export const DataListFilter = ({
               <h2 className="text-m-bold">Assigned shopper</h2>
               <img className="dt-filters-arrow-icon" src={filterArrow} alt="" />
             </div>
-            <div className="dt-filters__box">
+            <div className="dt-filters__box shopper">
               {openFilter.shopper && (
                 <ShopperFilters
                   shopperFilter={shopperFilter}

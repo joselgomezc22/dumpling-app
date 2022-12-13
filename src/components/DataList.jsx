@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
-import logo from "/src/images/dumpling_logo.png";
+import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
 
 import { DataListFilter } from "./DataListFilter";
@@ -146,9 +146,7 @@ export const DataList = ({
       case "shopper":
         const shopperFilterSet = object.filter((f) => f.active === true);
         if (shopperFilterSet.length > 0) {
-          const shopperFilterSetArray = shopperFilterSet.map(
-            ({ id }) => id
-          );
+          const shopperFilterSetArray = shopperFilterSet.map(({ id }) => id);
           const string = String(shopperFilterSetArray);
           let urlParamsCopy = {};
           searchParams.forEach((value, key) => {
@@ -167,6 +165,34 @@ export const DataList = ({
           setSearchParams({
             ...urlParamsCopy,
             shopper: [],
+          });
+          navigate(0);
+        }
+        break;
+      case "date":
+        const dateFilterSet = object;
+        console.log(dateFilterSet);
+        //return;
+        if (object.length > 0) {
+          const string = String(dateFilterSet);
+          console.log(string);
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            date: String(dateFilterSet),
+          });
+          navigate(0);
+        } else {
+          let urlParamsCopy = {};
+          searchParams.forEach((value, key) => {
+            urlParamsCopy[key] = value;
+          });
+          setSearchParams({
+            ...urlParamsCopy,
+            date: [],
           });
           navigate(0);
         }
@@ -205,62 +231,64 @@ export const DataList = ({
   };
 
   return (
-    <div className="dt-container">
-      <img className="" src={logo} />
-
-      <DataListFilter
-        shoppers={shoppers}
-        applyFilter={applyFilter}
-        search={searchTerm}
-        setSearch={applySearch}
-      />
-      <div
-        className={
-          "dt-assign " + (selectedRows.selectedCount != 0 ? "active" : "")
-        }
-      >
-        {selectedRows.selectedCount != 0 && (
-          <>
-            <span className="text-m-bold">
-              {selectedRows.selectedCount} selected
-            </span>
-            <button
-              onClick={() => {
-                setOpenAssignModal(!openAssignModal);
-              }}
-              className={
-                "dt-assign__btn btn btn-primary " +
-                (selectedRows.selectedCount != 0 ? "active" : "")
-              }
-            >
-              <img src={userIcon} alt="user icon" /> Assign orders to shopper
-            </button>
-          </>
-        )}
-      </div>
-
-      <DataTable
-        columns={columns}
-        data={listData}
-        expandableRows
-        defaultSortFieldId={1}
-        selectableRows
-        onSelectedRowsChange={setSelectedRows}
-        expandableRowsComponent={ExpandedComponent}
-      />
-      <Modal
-        show={openAssignModal}
-        onClose={() => {
-          setOpenAssignModal(!openAssignModal);
-        }}
-        transitionSpeed
-      >
-        <ShopperAssignModal
-          setShopperToOrder={setShopperToOrder}
+    <div className="dt-overlay">
+      
+      <img className="dt-logo" src={logo} />
+      <div className="dt-container">
+        <DataListFilter
           shoppers={shoppers}
-          setOpenAssignModal={setOpenAssignModal}
+          applyFilter={applyFilter}
+          search={searchTerm}
+          setSearch={applySearch}
         />
-      </Modal>
+        <div
+          className={
+            "dt-assign " + (selectedRows.selectedCount != 0 ? "active" : "")
+          }
+        >
+          {selectedRows.selectedCount != 0 && (
+            <>
+              <span className="text-m-bold">
+                {selectedRows.selectedCount} selected
+              </span>
+              <button
+                onClick={() => {
+                  setOpenAssignModal(!openAssignModal);
+                }}
+                className={
+                  "dt-assign__btn btn btn-primary " +
+                  (selectedRows.selectedCount != 0 ? "active" : "")
+                }
+              >
+                <img src={userIcon} alt="user icon" /> Assign orders to shopper
+              </button>
+            </>
+          )}
+        </div>
+
+        <DataTable
+          columns={columns}
+          data={listData}
+          expandableRows
+          defaultSortFieldId={1}
+          selectableRows
+          onSelectedRowsChange={setSelectedRows}
+          expandableRowsComponent={ExpandedComponent}
+        />
+        <Modal
+          show={openAssignModal}
+          onClose={() => {
+            setOpenAssignModal(!openAssignModal);
+          }}
+          transitionSpeed
+        >
+          <ShopperAssignModal
+            setShopperToOrder={setShopperToOrder}
+            shoppers={shoppers}
+            setOpenAssignModal={setOpenAssignModal}
+          />
+        </Modal>
+      </div>
     </div>
   );
 };

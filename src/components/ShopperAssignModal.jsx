@@ -55,7 +55,7 @@ const ShopperAssignModal = ({
           </>
         ))}
       </div>
-      <div className="d-flex">
+      <div className="d-flex dt-modal-buttons">
         <button
           onClick={() => {
             Cancel();

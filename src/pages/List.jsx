@@ -140,9 +140,9 @@ const List = () => {
   
   if(filter['date']?.length){
     filter['date']?.map((date, index) => {
-      const operator = index === 0 ? "GTE" : "GTE";
+      const operator = index === 0 ? "GTE" : "LTE";
       queryFilter.push(
-        {property: "deliveryTimestamp", 'operator': operator, values: [parseInt(date)]}
+        {property: "deliveryTimestamp", 'operator': operator, values: [date]}
       );
     });
   }
@@ -189,9 +189,9 @@ const List = () => {
 
   return (
     <>
-      <pre>
-        {JSON.stringify(filter)}
-      </pre>
+      
+        {/*JSON.stringify(filter)*/}
+      
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
