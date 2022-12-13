@@ -59,7 +59,13 @@ const CalendarFilter = ({
       endDate: endDate.getTime(),
     });
 
-    applyFilter("date", [startDate.getTime(), endDate.getTime()]);
+    const dateApply = [
+      Math.floor(startDate.getTime() / 1000),
+      Math.floor(endDate.getTime() / 1000)
+    ];
+
+    applyFilter("date", dateApply);
+    filterBySearchParams(null, null);
   };
 
   const clearDateRange = () => {
@@ -82,6 +88,7 @@ const CalendarFilter = ({
     setCopy(JSON.stringify(calendarFilter));
 
     filterBySearchParams(calendarFilterHolder, setCalendarFilterHolder);
+
     const news = filterBySearchParams(
       calendarFilterHolder,
       setCalendarFilterHolder
@@ -92,7 +99,7 @@ const CalendarFilter = ({
     } else {
       setCalendarFilterHolder(calendarFilter);
     }
-  }, [copy]);
+  }, []);
 
   const filterBySearchParams = (
     calendarFilterHolder,
@@ -104,9 +111,9 @@ const CalendarFilter = ({
       ? searchParams.get("date").split(",")
       : null;
 
-    if (filter.date && calendarFilterHolder) {
+    if (filter.date) {
 
-      //setDateRange({ startDate: filter.date[0], endDate: filter.date[1] , key:'selection' });
+      console.log("HOLa", filter);
       setDateRange([
         {
           startDate: new Date( parseInt(filter.date[0])) ,
@@ -114,15 +121,6 @@ const CalendarFilter = ({
           key: 'selection'
         },
       ]);
-
-      /*console.log({
-        startDate: Math.floor(new Date( parseInt(filter.date[0])).getTime() / 1000) ,
-        endDate: Math.floor(new Date( parseInt(filter.date[1])).getTime() / 1000) ,
-        key: 'selection'
-      })*/
-
-      //const news = def;
-      //return news;
     }
   };
 
