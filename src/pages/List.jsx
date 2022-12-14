@@ -12,7 +12,9 @@ const List = () => {
     property: "id",
     direction: "DESC",
   });
-
+  
+  useEffect(() => {}, [filter]);
+  
   const navigate = useNavigate();
 
   const filterChange = async () => {};
