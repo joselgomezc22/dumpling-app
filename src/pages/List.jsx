@@ -12,9 +12,9 @@ const List = () => {
     property: "id",
     direction: "DESC",
   });
-  
+
   useEffect(() => {}, [filter]);
-  
+
   const navigate = useNavigate();
 
   const filterChange = async () => {};
@@ -27,25 +27,29 @@ const List = () => {
   /**obtener ordenes */
 
   const handleSort = (column, sortDirection) => {
-    let urlParamsCopy = {};
-    searchParams.forEach((value, key) => {
-      urlParamsCopy[key] = value;
-    });
-    setSearchParams({
-      ...urlParamsCopy,
-      sort: column.sortField + ":" + sortDirection.toUpperCase(),
-    });
+    if (column.sortField) {
+      let urlParamsCopy = {};
+      searchParams.forEach((value, key) => {
+        urlParamsCopy[key] = value;
+      });
+      setSearchParams({
+        ...urlParamsCopy,
+        sort: column.sortField + ":" + sortDirection.toUpperCase(),
+      });
 
-    setSort({
-      property: column.sortField,
-      direction: sortDirection.toUpperCase(),
-    });
-
-    //navigate(0);
+      setSort({
+        property: column.sortField,
+        direction: sortDirection.toUpperCase(),
+      });
+    }
   };
 
   const GET_ORDERS = gql`
-    query getOrders($filter: [QueryFilterInput!]!, $term: String!, $sort: QuerySortInput!) {
+    query getOrders(
+      $filter: [QueryFilterInput!]!
+      $term: String!
+      $sort: QuerySortInput!
+    ) {
       getBossBuddies {
         bossBuddyProfiles {
           id
@@ -144,6 +148,11 @@ const List = () => {
     });
   };
 
+ setTimeout(() => {
+  
+ }, 500);
+  
+
   const queryFilter = [];
 
   if (filter["status"]?.length) {
@@ -181,7 +190,7 @@ const List = () => {
     variables: {
       filter: queryFilter,
       term: searchTerm,
-      sort: sort
+      sort: sort,
     },
   });
 
@@ -214,13 +223,12 @@ const List = () => {
 
   return (
     <>
-      {JSON.stringify(filter)}
-
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
         globalFilter={[]}
         setFilter={setFilter}
+        filter={filter}
         filterChange={filterChange}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}

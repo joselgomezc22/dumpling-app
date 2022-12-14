@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
 import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
+import sortIcon from "/src/images/sort-icon.svg";
 
 import { DataListFilter } from "./DataListFilter";
 import ShopperAssignModal from "./ShopperAssignModal";
@@ -27,6 +28,7 @@ export const DataList = ({
   orders,
   nextToken,
   nextPage,
+  filter,
   setFilter,
   globalFilter,
   filterChange,
@@ -64,7 +66,7 @@ export const DataList = ({
     },
     {
       name: "Delivery date",
-      sortField: "deliveryDate",
+      sortField: "deliveryTimestamp",
       selector: (row) => row.deliveryDate,
       sortable: true,
     },
@@ -133,6 +135,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: String(statusFilterSetArray),
           });
+          setFilter({...filter,status:statusFilterSetArray});
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -143,6 +146,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: [],
           });
+          setFilter({...filter,status:null})
           navigate(0);
         }
       case "shopper":
@@ -158,6 +162,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: String(shopperFilterSetArray),
           });
+          setFilter({...filter,shopper:shopperFilterSetArray});
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -168,6 +173,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: [],
           });
+          setFilter({...filter,shopper:[]});
           navigate(0);
         }
         break;
@@ -186,6 +192,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: String(dateFilterSet),
           });
+          setFilter({...filter,date:dateFilterSet});
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -196,6 +203,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: [],
           });
+          setFilter({...filter,date:[]});
           navigate(0);
         }
         break;
@@ -271,10 +279,11 @@ export const DataList = ({
         <DataTable
           columns={columns}
           data={listData}
-          defaultSortFieldId={1}
           selectableRows
           onSelectedRowsChange={setSelectedRows}
           onSort={handleSort}
+          
+          sortServer
         />
         <Modal
           show={openAssignModal}
