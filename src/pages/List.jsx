@@ -2,13 +2,16 @@ import React, { useEffect, useContext, useState } from "react";
 import { DataList } from "../components/DataList";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { apolloClient } from "../hooks/useRequest";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 const List = () => {
   const [filter, setFilter] = useState([]);
-
+  let [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState({
+    property: "orderDateTime",
+    direction: "DESC",
+  });
 
   const navigate = useNavigate();
 
@@ -22,9 +25,20 @@ const List = () => {
   /**obtener ordenes */
 
   const handleSort = (column, sortDirection) => {
-    console.log(column.name+' '+ sortDirection)
-  };
+    let urlParamsCopy = {};
+    searchParams.forEach((value, key) => {
+      urlParamsCopy[key] = value;
+    });
+    setSearchParams({
+      ...urlParamsCopy,
+      sort: column.sortField + ":" + sortDirection.toUpperCase(),
+    });
 
+    setSort({
+      property: column.sortField,
+      direction: sortDirection.toUpperCase(),
+    });
+  };
 
   const GET_ORDERS = gql`
     query getOrders($filter: [QueryFilterInput!]!, $term: String!) {

@@ -52,38 +52,39 @@ export const DataList = ({
   const columns = [
     {
       name: "Customer",
+      sortField: "firstName",
       selector: (row) => row.firstName + " " + row.lastName,
       sortable: true,
     },
     {
       name: "Order status",
+      sortField: "orderStatus",
       selector: (row) => <StatusBox status={row.orderStatus} />,
       sortable: true,
     },
     {
       name: "Delivery date",
+      sortField: "deliveryDate",
       selector: (row) => row.deliveryDate,
       sortable: true,
     },
     {
       name: "Delivery time",
       selector: (row) => row.deliveryTime,
-      sortable: true,
     },
     {
       name: "Assigned shopper (id)",
+      sortField: "assignedTo",
       selector: (row) => renderShopper(shoppers, row.assignedTo),
       sortable: true,
     },
     {
       name: "Delivery Address ", //null
-      selector: (row) => "",
-      sortable: true,
+      selector: (row) => row.deliveryTime.deliveryAddress ,
     },
     {
       name: "Gratuity", //null
-      selector: (row) => "",
-      sortable: true,
+      selector: (row) => row.deliveryTime.deliveryFee,
     },
   ];
 
