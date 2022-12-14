@@ -9,7 +9,7 @@ const List = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState({
-    property: "orderDateTime",
+    property: "id",
     direction: "DESC",
   });
 
@@ -38,10 +38,12 @@ const List = () => {
       property: column.sortField,
       direction: sortDirection.toUpperCase(),
     });
+
+    //navigate(0);
   };
 
   const GET_ORDERS = gql`
-    query getOrders($filter: [QueryFilterInput!]!, $term: String!) {
+    query getOrders($filter: [QueryFilterInput!]!, $term: String!, $sort: QuerySortInput!) {
       getBossBuddies {
         bossBuddyProfiles {
           id
@@ -54,7 +56,7 @@ const List = () => {
         count: 10
         filters: $filter
         text: $term
-        sort: null
+        sort: $sort
       ) {
         orders {
           version
@@ -177,6 +179,7 @@ const List = () => {
     variables: {
       filter: queryFilter,
       term: searchTerm,
+      sort: sort
     },
   });
 
