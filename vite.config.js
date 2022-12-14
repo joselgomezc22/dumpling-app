@@ -4,9 +4,6 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  define: {
-    "global": {},
-  },
   /*server: {
     port: 2013,
     host: "128.199.2.102"
@@ -15,5 +12,14 @@ export default defineConfig({
     alias: {
       './runtimeConfig': './runtimeConfig.browser',
     },
+  },
+  optimizeDeps: {
+    include: [
+        '@apollo/client/core',
+        '@apollo/client/cache'
+    ]
+  },
+  rollupInputOptions: {
+    external: ['react']
   }
 })
