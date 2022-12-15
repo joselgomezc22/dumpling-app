@@ -3,6 +3,9 @@ import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
 import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
+import sortIcon from "/src/images/sort-icon.svg";
+import leftArrow from "/src/images/left-icon.svg";
+import rightArrow from "/src/images/right-icon.svg";
 
 import { DataListFilter } from "./DataListFilter";
 import ShopperAssignModal from "./ShopperAssignModal";
@@ -11,6 +14,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
 const StatusBox = ({ status }) => {
+  if (status == "Created") status = "Open";
   return <span className={"dt-status " + status}>{status} </span>;
 };
 
@@ -27,6 +31,7 @@ export const DataList = ({
   orders,
   nextToken,
   nextPage,
+  filter,
   setFilter,
   globalFilter,
   filterChange,
@@ -34,7 +39,7 @@ export const DataList = ({
   searchTerm,
   setSearchTerm,
   assignedAction,
-  handleSort
+  handleSort,
 }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
@@ -48,48 +53,49 @@ export const DataList = ({
   useEffect(() => {
     filterBySearchParams();
   }, []);
-  
+
   const columns = [
     {
       name: "Customer",
+      sortField: "firstName",
       selector: (row) => row.firstName + " " + row.lastName,
       sortable: true,
     },
     {
       name: "Order status",
+      sortField: "orderStatus",
       selector: (row) => <StatusBox status={row.orderStatus} />,
       sortable: true,
     },
     {
       name: "Delivery date",
+      sortField: "deliveryTimestamp",
       selector: (row) => row.deliveryDate,
       sortable: true,
     },
     {
       name: "Delivery time",
       selector: (row) => row.deliveryTime,
-      sortable: true,
     },
     {
       name: "Assigned shopper (id)",
+      sortField: "assignedTo",
       selector: (row) => renderShopper(shoppers, row.assignedTo),
       sortable: true,
     },
     {
       name: "Delivery Address ", //null
-      selector: (row) => "",
-      sortable: true,
+      selector: (row) => row.deliveryTime.deliveryAddress,
     },
     {
       name: "Gratuity", //null
-      selector: (row) => "",
-      sortable: true,
+      selector: (row) => row.deliveryTime.deliveryFee,
     },
   ];
 
   const navigate = useNavigate();
   const filterBySearchParams = () => {
-    const filter = {};
+    /*const filter = {};
     const termSearch = searchParams.get("q")
       ? searchParams.get("q")
       : searchTerm;
@@ -105,8 +111,10 @@ export const DataList = ({
     filter.date = searchParams.get("DeliveryDate")
       ? searchParams.get("DeliveryDate").split(",")
       : null;
-
-    setFilter(filter);
+    filter.sort = searchParams.get("sort")
+      ? searchParams.get("sort")
+      : null;
+*/
   };
 
   /**
@@ -132,6 +140,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: String(statusFilterSetArray),
           });
+          setFilter({ ...filter, status: statusFilterSetArray });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -142,6 +151,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: [],
           });
+          setFilter({ ...filter, status: null });
           navigate(0);
         }
       case "shopper":
@@ -157,6 +167,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: String(shopperFilterSetArray),
           });
+          setFilter({ ...filter, shopper: shopperFilterSetArray });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -167,6 +178,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: [],
           });
+          setFilter({ ...filter, shopper: [] });
           navigate(0);
         }
         break;
@@ -185,6 +197,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: String(dateFilterSet),
           });
+          setFilter({ ...filter, date: dateFilterSet });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -195,6 +208,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: [],
           });
+          setFilter({ ...filter, date: [] });
           navigate(0);
         }
         break;
@@ -233,8 +247,14 @@ export const DataList = ({
 
   return (
     <div className="dt-overlay">
-      
-      <img onClick={()=>{setSearchParams({});navigate(0)}} className="dt-logo" src={logo} />
+      <img
+        onClick={() => {
+          setSearchParams({});
+          navigate(0);
+        }}
+        className="dt-logo"
+        src={logo}
+      />
       <div className="dt-container">
         <DataListFilter
           shoppers={shoppers}
@@ -242,12 +262,16 @@ export const DataList = ({
           search={searchTerm}
           setSearch={applySearch}
         />
+
         <div
           className={
-            "dt-assign " + (selectedRows.selectedCount != 0 ? "active" : "")
+            "dt-assign " +
+            (selectedRows.selectedCount && selectedRows.selectedCount > 0
+              ? "active"
+              : "")
           }
         >
-          {selectedRows.selectedCount != 0 && (
+          {selectedRows.selectedCount && selectedRows.selectedCount > 0 && (
             <>
               <span className="text-m-bold">
                 {selectedRows.selectedCount} selected
@@ -258,7 +282,10 @@ export const DataList = ({
                 }}
                 className={
                   "dt-assign__btn btn btn-primary " +
-                  (selectedRows.selectedCount != 0 ? "active" : "")
+                  (selectedRows.selectedCount &&
+                  selectedRows.selectedCount > 0 != 0
+                    ? "active"
+                    : "")
                 }
               >
                 <img src={userIcon} alt="user icon" /> Assign orders to shopper
@@ -270,11 +297,32 @@ export const DataList = ({
         <DataTable
           columns={columns}
           data={listData}
-          defaultSortFieldId={1}
           selectableRows
           onSelectedRowsChange={setSelectedRows}
           onSort={handleSort}
+          sortServer
         />
+
+        <div className="dt-pagination">
+            <div>
+              <button onClick={() => {
+                if(orders.prevToken || orders.prevToken == ""){
+                  nextPage(orders.prevToken);
+                }
+              }} className={"btn btn-primary"+(orders.nextToken? " disabled": "  ")}>
+                <img src={leftArrow} alt="" />
+              </button>
+            </div>
+          
+            <button onClick={() => {
+              if(orders.nextToken ){
+                nextPage(orders.nextToken);
+              }
+            }} className={"btn btn-primary"+(orders.prevToken || orders.prevToken == ""? " disabled": "  ")}>
+              <img src={rightArrow} alt="" />
+            </button>
+          
+        </div>
         <Modal
           show={openAssignModal}
           onClose={() => {

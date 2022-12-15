@@ -2,13 +2,67 @@ import React, { useEffect, useContext, useState } from "react";
 import { DataList } from "../components/DataList";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { apolloClient } from "../hooks/useRequest";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const List = () => {
-  const [filter, setFilter] = useState([]);
+  const MySwal = withReactContent(Swal);
+
+  let [searchParams, setSearchParams] = useSearchParams();
+  const [filter, setFilter] = useState({
+    status: searchParams.get("status")
+      ? searchParams.get("status").split(",")
+      : null,
+    shopper: searchParams.get("shopper")
+      ? searchParams.get("shopper").split(",")
+      : null,
+    date: searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
+      : null,
+    sort: searchParams.get("sort") ? searchParams.get("sort") : null,
+  });
 
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState({
+    property: searchParams.get("sort")
+      ? searchParams.get("sort").split(":")[0]
+      : "id",
+    direction: searchParams.get("sort")
+      ? searchParams.get("sort").split(":")[1].replace(" ","")
+      : "DESC",
+  });
+
+  const [nextToken, setNextToken] = useState({
+    value: localStorage.getItem("nextToken") ? localStorage.getItem("nextToken") : "" 
+  })
+
+  const filterBySearchParams = () => {
+    const filter = {};
+    const termSearch = searchParams.get("q")
+      ? searchParams.get("q")
+      : searchTerm;
+
+    setSearchTerm(termSearch);
+
+    filter.status = searchParams.get("status")
+      ? searchParams.get("status").split(",")
+      : null;
+    filter.shopper = searchParams.get("shopper")
+      ? searchParams.get("shopper").split(",")
+      : null;
+    filter.date = searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
+      : null;
+    filter.sort = searchParams.get("sort") ? searchParams.get("sort") : null;
+
+    setFilter(filter);
+  };
+
+  useEffect(() => {
+    //filterBySearchParams()
+  }, []);
 
   const navigate = useNavigate();
 
@@ -19,15 +73,66 @@ const List = () => {
     window.location.reload();
   };
 
+  const nextTokenSet = (value) => {
+    localStorage.setItem("nextToken", value);
+    setTimeout(() => {
+      navigate(0);
+    }, 500);
+  };
+
   /**obtener ordenes */
 
   const handleSort = (column, sortDirection) => {
-    console.log(column.name+' '+ sortDirection)
+    if (column.sortField) {
+      let urlParamsCopy = {};
+      searchParams.forEach((value, key) => {
+        urlParamsCopy[key] = value;
+      });
+
+      if (searchParams.get("sort")) {
+        let urlParams = searchParams.get("sort").split(":");
+        let key = urlParams[0];
+        let value = urlParams[1];
+        if (
+          key == column.sortField &&
+          sortDirection == "asc" &&
+          value == "ASC"
+        ) {
+          let str = column.sortField + ": DESC";
+          setSearchParams({
+            ...urlParamsCopy,
+            sort: str,
+          });
+          setSort({
+            property: column.sortField,
+            direction: "DESC",
+          });
+          navigate(0);
+          return;
+        }
+      }
+      setSearchParams({
+        ...urlParamsCopy,
+        sort: column.sortField + ":" + sortDirection.toUpperCase(),
+      });
+
+      setSort({
+        property: column.sortField,
+        direction: sortDirection.toUpperCase(),
+      });
+      navigate(0);
+
+      //navigate(0);
+    }
   };
 
-
   const GET_ORDERS = gql`
-    query getOrders($filter: [QueryFilterInput!]!, $term: String!) {
+    query getOrders(
+      $filter: [QueryFilterInput!]!
+      $term: String!
+      $sort: QuerySortInput!
+      $nextToken: String!
+    ) {
       getBossBuddies {
         bossBuddyProfiles {
           id
@@ -40,7 +145,8 @@ const List = () => {
         count: 10
         filters: $filter
         text: $term
-        sort: null
+        sort: $sort,
+        nextToken: $nextToken
       ) {
         orders {
           version
@@ -65,7 +171,9 @@ const List = () => {
           deliveryFee
           assignedTo
         }
-        nextToken
+        nextToken,
+        prevToken,
+        pageNumber
       }
     }
   `;
@@ -163,50 +271,70 @@ const List = () => {
     variables: {
       filter: queryFilter,
       term: searchTerm,
+      sort: sort,
+      nextToken: nextToken["value"]
     },
   });
 
   if (error) {
     console.log("error", { error });
-    return (
-      <>
-        <h1 className="text-center">{error.message}</h1>
-        <Link to="/">Go to back</Link>
-      </>
-    );
-  }
 
+    MySwal.fire({
+      title: "",
+      text: error,
+      confirmButtonColor: "#00A651",
+      icon: "error",
+    }).then(function (result) {
+      if (true) {
+        navigate("/");
+      }
+    });
+    return <></>;
+  }
+  let sw = MySwal.mixin({
+    title: "Loading!",
+    showSpinner: true,
+    showConfirmButton: false,
+  });
   if (loading) {
-    return (
-      <>
-        <h1>Loading data</h1>
-      </>
-    );
+    sw.fire();
+    sw.showLoading();
+    if (!loading) {
+    }
+    return <></>;
+  } else {
+    sw.close();
   }
 
   if (data.filteredLinkedOrders.orders.length > 10) {
-    return (
-      <>
-        <h1 className="text-center">Error on server</h1>
-        <Link to="/">Go to back</Link>
-      </>
-    );
+    MySwal.fire({
+      title: "Acces Expired",
+      text: "Login again",
+      confirmButtonColor: "#00A651",
+      icon: "error",
+    }).then(function (result) {
+      if (true) {
+        navigate("/");
+      }
+    });
+    return <></>;
   }
 
   return (
     <>
-      {JSON.stringify(filter)}
-
+      
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
         globalFilter={[]}
         setFilter={setFilter}
+        filter={filter}
         filterChange={filterChange}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         assignedAction={assignedShoppers}
         handleSort={handleSort}
+        nextPage={nextTokenSet}
       />
     </>
   );
