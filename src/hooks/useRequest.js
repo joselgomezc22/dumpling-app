@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { GraphQLClient, gql } from "graphql-request";
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
-const API_URL = `https://bsr67l2a4jdkxci4w4dwdv7mf4.appsync-api.us-east-2.amazonaws.com/graphql`;
+const API_URL = `https://gesdj677ineclehej6lpbulah4.appsync-api.us-east-2.amazonaws.com/graphql`;
 
 const graphQLClient = new GraphQLClient(API_URL, {
   headers: {
