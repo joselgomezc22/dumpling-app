@@ -34,6 +34,10 @@ const List = () => {
       : "DESC",
   });
 
+  const [nextToken, setNextToken] = useState({
+    value: localStorage.getItem("nextToken") ? localStorage.getItem("nextToken") : "" 
+  })
+
   const filterBySearchParams = () => {
     const filter = {};
     const termSearch = searchParams.get("q")
@@ -67,6 +71,13 @@ const List = () => {
   const nextPage = (token) => {
     window.localStorage.setItem("Auth", token);
     window.location.reload();
+  };
+
+  const nextTokenSet = (value) => {
+    localStorage.setItem("nextToken", value);
+    setTimeout(() => {
+      navigate(0);
+    }, 500);
   };
 
   /**obtener ordenes */
@@ -120,6 +131,7 @@ const List = () => {
       $filter: [QueryFilterInput!]!
       $term: String!
       $sort: QuerySortInput!
+      $nextToken: String!
     ) {
       getBossBuddies {
         bossBuddyProfiles {
@@ -133,7 +145,8 @@ const List = () => {
         count: 10
         filters: $filter
         text: $term
-        sort: $sort
+        sort: $sort,
+        nextToken: $nextToken
       ) {
         orders {
           version
@@ -158,7 +171,9 @@ const List = () => {
           deliveryFee
           assignedTo
         }
-        nextToken
+        nextToken,
+        prevToken,
+        pageNumber
       }
     }
   `;
@@ -219,8 +234,6 @@ const List = () => {
     });
   };
 
-  setTimeout(() => {}, 500);
-
   const queryFilter = [];
 
   if (filter["status"]?.length) {
@@ -259,6 +272,7 @@ const List = () => {
       filter: queryFilter,
       term: searchTerm,
       sort: sort,
+      nextToken: nextToken["value"]
     },
   });
 
@@ -308,6 +322,16 @@ const List = () => {
 
   return (
     <>
+      {(data.filteredLinkedOrders.nextToken) && (
+        <div><button onClick={() => {
+          nextTokenSet(data.filteredLinkedOrders.nextToken)
+        }} type="button">NEXT</button></div>
+      )}
+      {(data.filteredLinkedOrders.prevToken || data.filteredLinkedOrders.prevToken == "") && (
+        <div><button onClick={() => {
+          nextTokenSet(data.filteredLinkedOrders.prevToken)
+        }} type="button">PREV</button></div>
+      )}
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
