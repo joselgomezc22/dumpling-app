@@ -4,6 +4,8 @@ import Modal, { closeStyle } from "simple-react-modal";
 import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
 import sortIcon from "/src/images/sort-icon.svg";
+import leftArrow from "/src/images/left-icon.svg";
+import rightArrow from "/src/images/right-icon.svg";
 
 import { DataListFilter } from "./DataListFilter";
 import ShopperAssignModal from "./ShopperAssignModal";
@@ -12,7 +14,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
 const StatusBox = ({ status }) => {
-  if(status == "Created") status = "Open";
+  if (status == "Created") status = "Open";
   return <span className={"dt-status " + status}>{status} </span>;
 };
 
@@ -37,7 +39,7 @@ export const DataList = ({
   searchTerm,
   setSearchTerm,
   assignedAction,
-  handleSort
+  handleSort,
 }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
@@ -51,7 +53,7 @@ export const DataList = ({
   useEffect(() => {
     filterBySearchParams();
   }, []);
-  
+
   const columns = [
     {
       name: "Customer",
@@ -83,7 +85,7 @@ export const DataList = ({
     },
     {
       name: "Delivery Address ", //null
-      selector: (row) => row.deliveryTime.deliveryAddress ,
+      selector: (row) => row.deliveryTime.deliveryAddress,
     },
     {
       name: "Gratuity", //null
@@ -138,7 +140,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: String(statusFilterSetArray),
           });
-          setFilter({...filter,status:statusFilterSetArray});
+          setFilter({ ...filter, status: statusFilterSetArray });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -149,7 +151,7 @@ export const DataList = ({
             ...urlParamsCopy,
             status: [],
           });
-          setFilter({...filter,status:null})
+          setFilter({ ...filter, status: null });
           navigate(0);
         }
       case "shopper":
@@ -165,7 +167,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: String(shopperFilterSetArray),
           });
-          setFilter({...filter,shopper:shopperFilterSetArray});
+          setFilter({ ...filter, shopper: shopperFilterSetArray });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -176,7 +178,7 @@ export const DataList = ({
             ...urlParamsCopy,
             shopper: [],
           });
-          setFilter({...filter,shopper:[]});
+          setFilter({ ...filter, shopper: [] });
           navigate(0);
         }
         break;
@@ -195,7 +197,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: String(dateFilterSet),
           });
-          setFilter({...filter,date:dateFilterSet});
+          setFilter({ ...filter, date: dateFilterSet });
           navigate(0);
         } else {
           let urlParamsCopy = {};
@@ -206,7 +208,7 @@ export const DataList = ({
             ...urlParamsCopy,
             DeliveryDate: [],
           });
-          setFilter({...filter,date:[]});
+          setFilter({ ...filter, date: [] });
           navigate(0);
         }
         break;
@@ -245,8 +247,14 @@ export const DataList = ({
 
   return (
     <div className="dt-overlay">
-      
-      <img onClick={()=>{setSearchParams({});navigate(0)}} className="dt-logo" src={logo} />
+      <img
+        onClick={() => {
+          setSearchParams({});
+          navigate(0);
+        }}
+        className="dt-logo"
+        src={logo}
+      />
       <div className="dt-container">
         <DataListFilter
           shoppers={shoppers}
@@ -254,10 +262,13 @@ export const DataList = ({
           search={searchTerm}
           setSearch={applySearch}
         />
-   
+
         <div
           className={
-            "dt-assign " + ( selectedRows.selectedCount && selectedRows.selectedCount > 0 ? "active" : "")
+            "dt-assign " +
+            (selectedRows.selectedCount && selectedRows.selectedCount > 0
+              ? "active"
+              : "")
           }
         >
           {selectedRows.selectedCount && selectedRows.selectedCount > 0 && (
@@ -271,7 +282,10 @@ export const DataList = ({
                 }}
                 className={
                   "dt-assign__btn btn btn-primary " +
-                  (selectedRows.selectedCount && selectedRows.selectedCount > 0 != 0 ? "active" : "")
+                  (selectedRows.selectedCount &&
+                  selectedRows.selectedCount > 0 != 0
+                    ? "active"
+                    : "")
                 }
               >
                 <img src={userIcon} alt="user icon" /> Assign orders to shopper
@@ -286,9 +300,29 @@ export const DataList = ({
           selectableRows
           onSelectedRowsChange={setSelectedRows}
           onSort={handleSort}
-          
           sortServer
         />
+
+        <div className="dt-pagination">
+            <div>
+              <button onClick={() => {
+                if(orders.prevToken || orders.prevToken == ""){
+                  nextPage(orders.prevToken);
+                }
+              }} className={"btn btn-primary"+(orders.nextToken? " disabled": "  ")}>
+                <img src={leftArrow} alt="" />
+              </button>
+            </div>
+          
+            <button onClick={() => {
+              if(orders.nextToken ){
+                nextPage(orders.nextToken);
+              }
+            }} className={"btn btn-primary"+(orders.prevToken || orders.prevToken == ""? " disabled": "  ")}>
+              <img src={rightArrow} alt="" />
+            </button>
+          
+        </div>
         <Modal
           show={openAssignModal}
           onClose={() => {
