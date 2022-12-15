@@ -285,7 +285,8 @@ export const DataListFilter = ({
               className="dt-filters-item-cl"
               onClick={() => {
                 setOpenFilter({
-                  ...openFilter,
+                  date:false,
+                  shopper:false,
                   status: !openFilter.status,
                 });
               }}
@@ -313,8 +314,9 @@ export const DataListFilter = ({
               className="dt-filters-item-cl"
               onClick={() => {
                 setOpenFilter({
-                  ...openFilter,
-                  date: !openFilter.date,
+                  date:!openFilter.date,
+                  shopper:false,
+                  status: false,
                 });
               }}
             >
@@ -343,8 +345,9 @@ export const DataListFilter = ({
               className="dt-filters-item-cl"
               onClick={() => {
                 setOpenFilter({
-                  ...openFilter,
-                  shopper: !openFilter.shopper,
+                  date:false,
+                  shopper:!openFilter.shopper,
+                  status: false,
                 });
               }}
             >

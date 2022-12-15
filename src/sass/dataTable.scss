@@ -87,7 +87,7 @@
         border-radius: 20px;
         border: 1px solid #E7E7E7;
         opacity: 0;
-        top: 105%;
+        top: 115%;
         right: 0;
         transition: opacity 0.5s;
         overflow: hidden;
@@ -294,4 +294,8 @@ input[type='checkbox'] {
 }
 input[type='checkbox']:checked { 
     background: $dumpling;
+}
+
+.swal2-loader {
+    border-color: #00A651 rgba(0,0,0,0) #00A651 rgba(0,0,0,0);
 }
