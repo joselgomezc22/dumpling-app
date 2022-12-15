@@ -279,7 +279,7 @@ const List = () => {
   if (error) {
     console.log("error", { error });
 
-    /*MySwal.fire({
+    MySwal.fire({
       title: "",
       text: error,
       confirmButtonColor: "#00A651",
@@ -288,7 +288,7 @@ const List = () => {
       if (true) {
         navigate("/");
       }
-    });*/
+    });
     return <></>;
   }
   let sw = MySwal.mixin({
@@ -322,16 +322,7 @@ const List = () => {
 
   return (
     <>
-      {(data.filteredLinkedOrders.nextToken) && (
-        <div><button onClick={() => {
-          nextTokenSet(data.filteredLinkedOrders.nextToken)
-        }} type="button">NEXT</button></div>
-      )}
-      {(data.filteredLinkedOrders.prevToken || data.filteredLinkedOrders.prevToken == "") && (
-        <div><button onClick={() => {
-          nextTokenSet(data.filteredLinkedOrders.prevToken)
-        }} type="button">PREV</button></div>
-      )}
+      
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
@@ -343,6 +334,7 @@ const List = () => {
         setSearchTerm={setSearchTerm}
         assignedAction={assignedShoppers}
         handleSort={handleSort}
+        nextPage={nextTokenSet}
       />
     </>
   );
