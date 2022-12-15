@@ -302,17 +302,26 @@ export const DataList = ({
           onSort={handleSort}
           sortServer
         />
+
         <div className="dt-pagination">
-          <button onClick={()=>{
-            
-          }} className="btn btn-primary">
-            <img src={leftArrow} alt="" />
-          </button>
-          <button onClick={()=>{
-            
-          }} className="btn btn-primary">
-            <img src={rightArrow} alt="" />
-          </button>
+            <div>
+              <button onClick={() => {
+                if(orders.prevToken || orders.prevToken == ""){
+                  nextPage(orders.prevToken);
+                }
+              }} className={"btn btn-primary"+(orders.nextToken? " disabled": "  ")}>
+                <img src={leftArrow} alt="" />
+              </button>
+            </div>
+          
+            <button onClick={() => {
+              if(orders.nextToken ){
+                nextPage(orders.nextToken);
+              }
+            }} className={"btn btn-primary"+(orders.prevToken || orders.prevToken == ""? " disabled": "  ")}>
+              <img src={rightArrow} alt="" />
+            </button>
+          
         </div>
         <Modal
           show={openAssignModal}

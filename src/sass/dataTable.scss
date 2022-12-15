@@ -4,6 +4,7 @@
         width: 15.75rem;
     }
     &-overlay{
+        min-height: 91vh;
         padding: 2% 0;
         background-color: #FAFAFA;
     }
@@ -46,6 +47,15 @@
         align-items: center;
         justify-content: center;
         transition: all 0.5s;
+
+        &.disabled {
+            background-color: $dumpling-gray;
+
+            &:hover{
+                transform: scale(1) !important;
+                cursor:not-allowed;
+            } 
+        }
 
         &:hover{
             transform: scale(1.1);

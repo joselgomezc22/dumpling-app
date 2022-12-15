@@ -184,6 +184,7 @@ input[type=number] {
   width: 15.75rem;
 }
 .dt-overlay {
+  min-height: 91vh;
   padding: 2% 0;
   background-color: #FAFAFA;
 }
@@ -227,6 +228,13 @@ input[type=number] {
   align-items: center;
   justify-content: center;
   transition: all 0.5s;
+}
+.dt-pagination button.disabled {
+  background-color: #E7E7E7;
+}
+.dt-pagination button.disabled:hover {
+  transform: scale(1) !important;
+  cursor: not-allowed;
 }
 .dt-pagination button:hover {
   transform: scale(1.1);
