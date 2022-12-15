@@ -7,10 +7,10 @@ export default defineConfig({
   /*server: {
     port: 2013,
     host: "128.199.2.102"
-  },*/
+  },
   define: {
     global: {}
-  },
+  },*/
   resolve: {
     alias: {
       './runtimeConfig': './runtimeConfig.browser',
