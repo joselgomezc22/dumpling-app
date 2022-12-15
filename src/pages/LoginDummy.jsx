@@ -72,7 +72,7 @@ const LoginDummy = () => {
         <img className="login-logo" src={logo} />
         <h2 className="text-l">Log in to your account.</h2>
         {!showValidate && <NumberForm number={number} setNumber={setNumber} setShowValidate={setShowValidate} login={signIn} />}
-        {showValidate && <VerifyCodeForm number={number} action={verifyCodeAction} verifyCode={verifyCode} setVerifyCode={setVerifyCode} />}
+        {showValidate && <VerifyCodeForm signIn={signIn} number={number} action={verifyCodeAction} verifyCode={verifyCode} setVerifyCode={setVerifyCode} />}
       </div> 
     </div>
   );

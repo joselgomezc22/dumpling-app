@@ -12,6 +12,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data)}</pre>;
 
 const StatusBox = ({ status }) => {
+  if(status == "Created") status = "Open";
   return <span className={"dt-status " + status}>{status} </span>;
 };
 
@@ -92,7 +93,7 @@ export const DataList = ({
 
   const navigate = useNavigate();
   const filterBySearchParams = () => {
-    const filter = {};
+    /*const filter = {};
     const termSearch = searchParams.get("q")
       ? searchParams.get("q")
       : searchTerm;
@@ -108,8 +109,10 @@ export const DataList = ({
     filter.date = searchParams.get("DeliveryDate")
       ? searchParams.get("DeliveryDate").split(",")
       : null;
-
-    setFilter(filter);
+    filter.sort = searchParams.get("sort")
+      ? searchParams.get("sort")
+      : null;
+*/
   };
 
   /**
@@ -251,12 +254,13 @@ export const DataList = ({
           search={searchTerm}
           setSearch={applySearch}
         />
+   
         <div
           className={
-            "dt-assign " + (selectedRows.selectedCount != 0 ? "active" : "")
+            "dt-assign " + ( selectedRows.selectedCount && selectedRows.selectedCount > 0 ? "active" : "")
           }
         >
-          {selectedRows.selectedCount != 0 && (
+          {selectedRows.selectedCount && selectedRows.selectedCount > 0 && (
             <>
               <span className="text-m-bold">
                 {selectedRows.selectedCount} selected
@@ -267,7 +271,7 @@ export const DataList = ({
                 }}
                 className={
                   "dt-assign__btn btn btn-primary " +
-                  (selectedRows.selectedCount != 0 ? "active" : "")
+                  (selectedRows.selectedCount && selectedRows.selectedCount > 0 != 0 ? "active" : "")
                 }
               >
                 <img src={userIcon} alt="user icon" /> Assign orders to shopper

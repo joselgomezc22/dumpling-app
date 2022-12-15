@@ -3,17 +3,62 @@ import { DataList } from "../components/DataList";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { apolloClient } from "../hooks/useRequest";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
 const List = () => {
-  const [filter, setFilter] = useState([]);
+  const MySwal = withReactContent(Swal);
+
   let [searchParams, setSearchParams] = useSearchParams();
+  const [filter, setFilter] = useState({
+    status: searchParams.get("status")
+      ? searchParams.get("status").split(",")
+      : null,
+    shopper: searchParams.get("shopper")
+      ? searchParams.get("shopper").split(",")
+      : null,
+    date: searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
+      : null,
+    sort: searchParams.get("sort") ? searchParams.get("sort") : null,
+  });
+
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState({
-    property: "id",
-    direction: "DESC",
+    property: searchParams.get("sort")
+      ? searchParams.get("sort").split(":")[0]
+      : "id",
+    direction: searchParams.get("sort")
+      ? searchParams.get("sort").split(":")[1].replace(" ","")
+      : "DESC",
   });
 
-  useEffect(() => {}, [filter]);
+  const filterBySearchParams = () => {
+    const filter = {};
+    const termSearch = searchParams.get("q")
+      ? searchParams.get("q")
+      : searchTerm;
+
+    setSearchTerm(termSearch);
+
+    filter.status = searchParams.get("status")
+      ? searchParams.get("status").split(",")
+      : null;
+    filter.shopper = searchParams.get("shopper")
+      ? searchParams.get("shopper").split(",")
+      : null;
+    filter.date = searchParams.get("DeliveryDate")
+      ? searchParams.get("DeliveryDate").split(",")
+      : null;
+    filter.sort = searchParams.get("sort") ? searchParams.get("sort") : null;
+
+    setFilter(filter);
+  };
+
+  useEffect(() => {
+    //filterBySearchParams()
+  }, []);
 
   const navigate = useNavigate();
 
@@ -32,6 +77,29 @@ const List = () => {
       searchParams.forEach((value, key) => {
         urlParamsCopy[key] = value;
       });
+
+      if (searchParams.get("sort")) {
+        let urlParams = searchParams.get("sort").split(":");
+        let key = urlParams[0];
+        let value = urlParams[1];
+        if (
+          key == column.sortField &&
+          sortDirection == "asc" &&
+          value == "ASC"
+        ) {
+          let str = column.sortField + ": DESC";
+          setSearchParams({
+            ...urlParamsCopy,
+            sort: str,
+          });
+          setSort({
+            property: column.sortField,
+            direction: "DESC",
+          });
+          navigate(0);
+          return;
+        }
+      }
       setSearchParams({
         ...urlParamsCopy,
         sort: column.sortField + ":" + sortDirection.toUpperCase(),
@@ -41,6 +109,9 @@ const List = () => {
         property: column.sortField,
         direction: sortDirection.toUpperCase(),
       });
+      navigate(0);
+
+      //navigate(0);
     }
   };
 
@@ -148,10 +219,7 @@ const List = () => {
     });
   };
 
- setTimeout(() => {
-  
- }, 500);
-  
+  setTimeout(() => {}, 500);
 
   const queryFilter = [];
 
@@ -196,29 +264,46 @@ const List = () => {
 
   if (error) {
     console.log("error", { error });
-    return (
-      <>
-        <h1 className="text-center">{error.message}</h1>
-        <Link to="/">Go to back</Link>
-      </>
-    );
-  }
 
+    /*MySwal.fire({
+      title: "",
+      text: error,
+      confirmButtonColor: "#00A651",
+      icon: "error",
+    }).then(function (result) {
+      if (true) {
+        navigate("/");
+      }
+    });*/
+    return <></>;
+  }
+  let sw = MySwal.mixin({
+    title: "Loading!",
+    showSpinner: true,
+    showConfirmButton: false,
+  });
   if (loading) {
-    return (
-      <>
-        <h1>Loading data</h1>
-      </>
-    );
+    sw.fire();
+    sw.showLoading();
+    if (!loading) {
+    }
+    return <></>;
+  } else {
+    sw.close();
   }
 
   if (data.filteredLinkedOrders.orders.length > 10) {
-    return (
-      <>
-        <h1 className="text-center">Error on server</h1>
-        <Link to="/">Go to back</Link>
-      </>
-    );
+    MySwal.fire({
+      title: "Acces Expired",
+      text: "Login again",
+      confirmButtonColor: "#00A651",
+      icon: "error",
+    }).then(function (result) {
+      if (true) {
+        navigate("/");
+      }
+    });
+    return <></>;
   }
 
   return (
