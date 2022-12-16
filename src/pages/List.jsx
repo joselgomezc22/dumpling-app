@@ -25,14 +25,26 @@ const List = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState({
+  
+  /*const [sort, setSort] = useState({
     property: searchParams.get("sort")
       ? searchParams.get("sort").split(":")[0]
       : "id",
     direction: searchParams.get("sort")
       ? searchParams.get("sort").split(":")[1].replace(" ", "")
       : "DESC",
-  });
+  });*/
+
+  let sortValue = null;
+
+  if (searchParams.get("sort")){
+    sortValue = {
+      property: searchParams.get("sort").split(":")[0],
+      direction: searchParams.get("sort").split(":")[1].replace(" ", "")
+    }
+  }
+
+  const [sort, setSort] = useState(sortValue);
 
   const [nextToken, setNextToken] = useState({
     value: localStorage.getItem("nextToken")
@@ -139,9 +151,9 @@ const List = () => {
 
   const GET_ORDERS = gql`
     query getOrders(
-      $filter: [QueryFilterInput!]!
+      $filter: [QueryFilterInput!]
       $term: String!
-      $sort: QuerySortInput!
+      $sort: QuerySortInput
       $nextToken: String!,
       $authId: ID!
     ) {
@@ -154,7 +166,7 @@ const List = () => {
         }
       }
       filteredLinkedOrders(
-        count: 5
+        count: 10
         filters: $filter
         text: $term
         sort: $sort
