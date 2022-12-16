@@ -109,7 +109,8 @@ export const DataList = ({
     },
     {
       name: "Delivery Address ", //null
-      selector: (row) => row.deliveryAddress.addressLine1,
+      selector: (row) => <p title={row.deliveryAddress.addressLine1}>{row.deliveryAddress.addressLine1}</p> ,
+      width: '28%'
     },
     {
       name: "Gratuity", //null
@@ -329,16 +330,18 @@ export const DataList = ({
 
         <div className="dt-pagination">
           <div>
+          
             <button
               onClick={() => {
-                if (orders.prevToken) {
+                if (orders.pageNumber != 0 ) {
                   nextPage(orders.prevToken);
                 }
               }}
               className={
-                "btn btn-primary" + ((!orders.prevToken || orders.prevToken == "") ? " disabled" : "  ")
+                "btn btn-primary" + ((orders.pageNumber == 0 ) ? " disabled" : "  ")
               }
             >
+              
               <img src={leftArrow} alt="" />
             </button>
           </div>
