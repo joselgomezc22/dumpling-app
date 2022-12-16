@@ -361,6 +361,12 @@ const List = () => {
 
   return (
     <>
+      {(!isLoadingImage) && (dataImage.shopperBusinessProfile.shopper.image) && (
+        <>
+          <img src={dataImage.shopperBusinessProfile.shopper.image} />
+        </>
+      )}
+
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}

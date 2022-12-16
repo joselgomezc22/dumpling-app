@@ -69,6 +69,7 @@ const LoginDummy = () => {
       window.localStorage.setItem("Auth", jwtToken);
       window.localStorage.setItem("AuthRefresh", token);
       window.localStorage.setItem("shoperIdAuth", sub);
+      window.localStorage.setItem("nextToken", "");
 
       window.location.href = "/list";
     } catch(error) {
