@@ -97,6 +97,7 @@ const StatusFilters = ({
         <button
           onClick={() => {
             //return;
+            localStorage.setItem("nextToken", "");
             applyFilter("status", statusFilterHolder);
             setOpenFilter({ ...openFilter, status: false });
           }}
@@ -202,7 +203,7 @@ const ShopperFilters = ({
         </button>
         <button
           onClick={() => {
-            //return;
+            localStorage.setItem("nextToken", "");
             applyFilter("shopper", shopperFilterHolder);
             setOpenFilter({ ...openFilter, shopper: false });
           }}
@@ -263,6 +264,7 @@ export const DataListFilter = ({
 
   const onPressSearch = (e) => {
     if (e.key === "Enter") {
+      localStorage.setItem("nextToken", "");
       setSearch(inputSearch);
     }
   };

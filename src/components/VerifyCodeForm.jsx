@@ -1,4 +1,4 @@
-import { useContext, useState , useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DataContext } from "../context/DataContext";
 import ReactInputVerificationCode from "react-input-verification-code";
 import Swal from "sweetalert2";
@@ -17,23 +17,27 @@ const VerifyCodeForm = ({
     await action(number, verifyCode);
   };
 
-  const [showMessage, setShowMessage] = useState(true)
+  const [showMessage, setShowMessage] = useState(true);
 
-  const messageTime = ()=> {
+  const messageTime = () => {
     setTimeout(() => {
       setShowMessage(false);
     }, 3000);
-  }
+  };
 
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     messageTime();
-  }, [])
-  
+  }, []);
+
   return (
     <div>
-      <div className={"login-form-message text-m-bold "+(showMessage?'active':'')}>
+      <div
+        className={
+          "login-form-message text-m-bold " + (showMessage ? "active" : "")
+        }
+      >
         <img className="login-form-message-icon" src={successIcon} alt="" />{" "}
         Verification code sent
       </div>
@@ -42,6 +46,7 @@ const VerifyCodeForm = ({
       </h3>
       <form className="login-form" onSubmit={handleSubmit}>
         <ReactInputVerificationCode
+          autoFocus={true}
           onChange={setVerifyCode}
           value={verifyCode}
           type="number"

@@ -142,6 +142,7 @@ const CalendarFilter = ({
         
         <button
           onClick={() => {
+            localStorage.setItem("nextToken", "");
             applyDateRange();
           }}
           className="btn btn-primary text-m-bold"

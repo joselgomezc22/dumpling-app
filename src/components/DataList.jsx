@@ -247,7 +247,7 @@ export const DataList = ({
     setSearchParams({
       status: searchParams.getAll("status"),
       shopper: searchParams.getAll("shopper"),
-      date: searchParams.getAll("DeliveryDate"),
+      DeliveryDate: searchParams.getAll("DeliveryDate"),
       q: String(value),
     });
     navigate(0);
