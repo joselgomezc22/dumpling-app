@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
-import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
 import sortIcon from "/src/images/sort-icon.svg";
 import leftArrow from "/src/images/left-icon.svg";
@@ -64,6 +63,7 @@ export const DataList = ({
   setSearchTerm,
   assignedAction,
   handleSort,
+  logo
 }) => {
   const [selectedRows, setSelectedRows] = useState({});
 

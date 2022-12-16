@@ -1,7 +1,12 @@
 .dt {
 
     &-logo{
-        width: 15.75rem;
+
+        width: 6rem;
+        border: solid 3px $dumpling;
+        border-radius: 50px;
+        object-fit: cover;
+        margin: 0 0 0 6vw;
     }
     &-overlay{
         min-height: 91vh;

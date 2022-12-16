@@ -181,7 +181,11 @@ input[type=number] {
 }
 
 .dt-logo {
-  width: 15.75rem;
+  width: 6rem;
+  border: solid 3px #00A651;
+  border-radius: 50px;
+  object-fit: cover;
+  margin: 0 0 0 6vw;
 }
 .dt-overlay {
   min-height: 91vh;
