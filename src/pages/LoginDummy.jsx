@@ -26,9 +26,13 @@ const LoginDummy = () => {
 
   const [showValidate, setShowValidate] = useState(false);
 
-  const signIn = async (numberPhone) => {
+  const signIn = async (phoneNumber) => {
     try {
-      const userAuth = await Auth.signIn(numberPhone);
+    
+      let num = "+1"+phoneNumber.replace(/[^0-9]+/g, "")
+
+
+      const userAuth = await Auth.signIn(num);
       setAuth(userAuth);
       console.log(userAuth);
     } catch(error) {

@@ -213,14 +213,18 @@ input[type=number] {
   display: flex;
   justify-content: center;
   margin: 1rem 0 1rem 0;
+  align-items: center;
   /* gap */
 }
 .dt-pagination > * + * {
-  margin-left: 3rem;
+  margin-left: 1.2rem;
+}
+.dt-pagination div {
+  color: rgba(71, 69, 69, 0.8039215686);
 }
 .dt-pagination button {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   display: flex;
   color: white;
