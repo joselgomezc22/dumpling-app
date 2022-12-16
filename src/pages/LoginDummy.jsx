@@ -26,9 +26,13 @@ const LoginDummy = () => {
 
   const [showValidate, setShowValidate] = useState(false);
 
-  const signIn = async (numberPhone) => {
+  const signIn = async (phoneNumber) => {
     try {
-      const userAuth = await Auth.signIn(numberPhone);
+    
+      let num = "+1"+phoneNumber.replace(/[^0-9]+/g, "")
+
+
+      const userAuth = await Auth.signIn(num);
       setAuth(userAuth);
       console.log(userAuth);
     } catch(error) {
@@ -47,10 +51,27 @@ const LoginDummy = () => {
   const verifyCodeAction = async (number, code) => {
     try {
       const validate = await Auth.sendCustomChallengeAnswer(auth, code);
-      const { signInUserSession: { accessToken: { jwtToken }, refreshToken: { token } } } = validate;
+      console.log(validate);
+      const { 
+        signInUserSession: { 
+          accessToken: { 
+            jwtToken 
+          }, 
+          refreshToken: {
+            token
+          } 
+        },
+        attributes: {
+          sub
+        }
+      } = validate;
+
       window.localStorage.setItem("Auth", jwtToken);
       window.localStorage.setItem("AuthRefresh", token);
-      window.location.href = "/list";
+      window.localStorage.setItem("shoperIdAuth", sub);
+      window.localStorage.setItem("nextToken", "");
+
+      window.location.href = "/list?status=Open";
     } catch(error) {
       console.log({error});
       MySwal.fire({

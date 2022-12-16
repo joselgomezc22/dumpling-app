@@ -181,7 +181,11 @@ input[type=number] {
 }
 
 .dt-logo {
-  width: 15.75rem;
+  width: 6rem;
+  border: solid 3px #00A651;
+  border-radius: 50px;
+  object-fit: cover;
+  margin: 0 0 0 6vw;
 }
 .dt-overlay {
   min-height: 91vh;
@@ -213,14 +217,18 @@ input[type=number] {
   display: flex;
   justify-content: center;
   margin: 1rem 0 1rem 0;
+  align-items: center;
   /* gap */
 }
 .dt-pagination > * + * {
-  margin-left: 3rem;
+  margin-left: 1.2rem;
+}
+.dt-pagination div {
+  color: rgba(71, 69, 69, 0.8039215686);
 }
 .dt-pagination button {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   display: flex;
   color: white;
@@ -491,7 +499,7 @@ input[type=checkbox]:checked {
 }
 
 .swal2-loader {
-  border-color: #00A651 rgba(0, 0, 0, 0) #00A651 rgba(0, 0, 0, 0);
+  border-color: #00A651 rgba(0, 0, 0, 0) #00A651 rgba(0, 0, 0, 0) !important;
 }
 
 /*# sourceMappingURL=index.css.map */

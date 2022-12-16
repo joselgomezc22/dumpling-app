@@ -79,7 +79,7 @@ const StatusFilters = ({
                 id=""
               />
               <p className="text-m">
-                {filter.label} ({filter.count})
+                {filter.label} 
               </p>
             </label>
           ))}
@@ -97,6 +97,7 @@ const StatusFilters = ({
         <button
           onClick={() => {
             //return;
+            localStorage.setItem("nextToken", "");
             applyFilter("status", statusFilterHolder);
             setOpenFilter({ ...openFilter, status: false });
           }}
@@ -202,7 +203,7 @@ const ShopperFilters = ({
         </button>
         <button
           onClick={() => {
-            //return;
+            localStorage.setItem("nextToken", "");
             applyFilter("shopper", shopperFilterHolder);
             setOpenFilter({ ...openFilter, shopper: false });
           }}
@@ -233,19 +234,16 @@ export const DataListFilter = ({
       {
         label: "Open",
         key: "Created",
-        count: 30,
         active: false,
       },
       {
         label: "Complete",
         key: "Complete",
-        count: 40,
         active: false,
       },
       {
         label: "Canceled",
         key: "Canceled",
-        count: 10,
         active: false,
       },
     ],
@@ -262,11 +260,12 @@ export const DataListFilter = ({
     );
   }, []);
 
-  const [inputSearch, setInputSearch] = useState(searchParams.get("q") || '');
+  const [inputSearch, setInputSearch] = useState(search || "");
 
   const onPressSearch = (e) => {
     if (e.key === "Enter") {
       setSearch(inputSearch);
+      localStorage.setItem("nextToken", "");
     }
   };
 
@@ -368,18 +367,18 @@ export const DataListFilter = ({
             </div>
           </div>
         </div>
+        <pre>
+          {search}
+        </pre>
         <div className="dt-filters__col">
           <label className="dt-filters__search">
             <img className="dt-filters-search-icon" src={searchIcon} alt="" />
             <input
               placeholder="Search"
               className="dt-filters__search-input"
-              type="text"
+              type="search"
               value={inputSearch}
-              onChange={(e) => {
-                console.log(e);
-                setInputSearch(e.target.value);
-              }}
+              onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={onPressSearch}
             />
           </label>

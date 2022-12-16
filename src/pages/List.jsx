@@ -23,20 +23,43 @@ const List = () => {
     sort: searchParams.get("sort") ? searchParams.get("sort") : null,
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
+  let searhQuery = "";
+  if(searchParams.get("q")){
+    searhQuery = searchParams.get("q");
+  }
+
+  const [searchTerm, setSearchTerm] = useState(searhQuery);
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState({
+  
+  /*const [sort, setSort] = useState({
     property: searchParams.get("sort")
       ? searchParams.get("sort").split(":")[0]
       : "id",
     direction: searchParams.get("sort")
-      ? searchParams.get("sort").split(":")[1].replace(" ","")
+      ? searchParams.get("sort").split(":")[1].replace(" ", "")
       : "DESC",
-  });
+  });*/
+
+  let sortValue = null;
+
+  if (searchParams.get("sort")){
+    sortValue = {
+      property: searchParams.get("sort").split(":")[0],
+      direction: searchParams.get("sort").split(":")[1].replace(" ", "")
+    }
+  }
+
+  const [sort, setSort] = useState(sortValue);
 
   const [nextToken, setNextToken] = useState({
-    value: localStorage.getItem("nextToken") ? localStorage.getItem("nextToken") : "" 
-  })
+    value: localStorage.getItem("nextToken")
+      ? localStorage.getItem("nextToken")
+      : "",
+  });
+  
+  const [shoperIdAuth, setShoperIdAuth] = useState({
+    value: localStorage.getItem("shoperIdAuth"),
+  });
 
   const filterBySearchParams = () => {
     const filter = {};
@@ -67,11 +90,6 @@ const List = () => {
   const navigate = useNavigate();
 
   const filterChange = async () => {};
-
-  const nextPage = (token) => {
-    window.localStorage.setItem("Auth", token);
-    window.location.reload();
-  };
 
   const nextTokenSet = (value) => {
     localStorage.setItem("nextToken", value);
@@ -121,17 +139,28 @@ const List = () => {
         direction: sortDirection.toUpperCase(),
       });
       navigate(0);
-
+      window.localStorage.setItem("nextToken", "");
       //navigate(0);
     }
   };
 
+  const GET_IMAGE = gql`
+    query getShopperImage($id: ID!){
+      shopperBusinessProfile(id: $id) {
+        shopper {
+          image
+        }
+      }
+    }
+  `;
+
   const GET_ORDERS = gql`
     query getOrders(
-      $filter: [QueryFilterInput!]!
+      $filter: [QueryFilterInput!]
       $term: String!
-      $sort: QuerySortInput!
-      $nextToken: String!
+      $sort: QuerySortInput
+      $nextToken: String!,
+      $authId: ID!
     ) {
       getBossBuddies {
         bossBuddyProfiles {
@@ -145,7 +174,7 @@ const List = () => {
         count: 10
         filters: $filter
         text: $term
-        sort: $sort,
+        sort: $sort
         nextToken: $nextToken
       ) {
         orders {
@@ -170,10 +199,30 @@ const List = () => {
           feeAndPreGratuityDisplay
           deliveryFee
           assignedTo
+          deliveryAddress {
+            addressLine1
+            addressLine2
+            city
+            state
+            zipcode
+            country
+          }
+          pricingModel {
+            preTipPm {
+              chosenPercent
+              chosenFixedGratuity
+            }
+          }
         }
-        nextToken,
-        prevToken,
+
+        nextToken
+        prevToken
         pageNumber
+      }
+      shopperBusinessProfile(id: $authId) {
+        shopper {
+          image
+        }
       }
     }
   `;
@@ -272,7 +321,8 @@ const List = () => {
       filter: queryFilter,
       term: searchTerm,
       sort: sort,
-      nextToken: nextToken["value"]
+      nextToken: nextToken["value"],
+      authId: shoperIdAuth["value"]
     },
   });
 
@@ -306,7 +356,7 @@ const List = () => {
     sw.close();
   }
 
-  if (data.filteredLinkedOrders.orders.length > 10) {
+  if (data.filteredLinkedOrders.orders.length > 20) {
     MySwal.fire({
       title: "Acces Expired",
       text: "Login again",
@@ -323,6 +373,7 @@ const List = () => {
   return (
     <>
       
+  
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
@@ -335,6 +386,7 @@ const List = () => {
         assignedAction={assignedShoppers}
         handleSort={handleSort}
         nextPage={nextTokenSet}
+        logo={data.shopperBusinessProfile.shopper.image}
       />
     </>
   );
