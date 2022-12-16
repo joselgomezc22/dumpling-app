@@ -41,9 +41,7 @@ const List = () => {
   });
   
   const [shoperIdAuth, setShoperIdAuth] = useState({
-    value: localStorage.getItem("shoperIdAuth")
-      ? localStorage.getItem("shoperIdAuth")
-      : null,
+    value: localStorage.getItem("shoperIdAuth"),
   });
 
   const filterBySearchParams = () => {
@@ -361,12 +359,8 @@ const List = () => {
 
   return (
     <>
-      {(!isLoadingImage) && (dataImage.shopperBusinessProfile.shopper.image) && (
-        <>
-          <img src={dataImage.shopperBusinessProfile.shopper.image} />
-        </>
-      )}
-
+      
+  
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
@@ -379,6 +373,7 @@ const List = () => {
         assignedAction={assignedShoppers}
         handleSort={handleSort}
         nextPage={nextTokenSet}
+        logo={dataImage.shopperBusinessProfile.shopper.image}
       />
     </>
   );
