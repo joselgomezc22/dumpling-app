@@ -74,11 +74,6 @@ const List = () => {
 
   const filterChange = async () => {};
 
-  const nextPage = (token) => {
-    window.localStorage.setItem("Auth", token);
-    window.location.reload();
-  };
-
   const nextTokenSet = (value) => {
     localStorage.setItem("nextToken", value);
     setTimeout(() => {
@@ -127,7 +122,7 @@ const List = () => {
         direction: sortDirection.toUpperCase(),
       });
       navigate(0);
-
+      window.localStorage.setItem("nextToken", "");
       //navigate(0);
     }
   };
@@ -159,7 +154,7 @@ const List = () => {
         }
       }
       filteredLinkedOrders(
-        count: 20
+        count: 5
         filters: $filter
         text: $term
         sort: $sort
