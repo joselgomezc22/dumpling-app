@@ -23,7 +23,12 @@ const List = () => {
     sort: searchParams.get("sort") ? searchParams.get("sort") : null,
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
+  let searhQuery = "";
+  if(searchParams.get("q")){
+    searhQuery = searchParams.get("q");
+  }
+
+  const [searchTerm, setSearchTerm] = useState(searhQuery);
   const [page, setPage] = useState(1);
   
   /*const [sort, setSort] = useState({

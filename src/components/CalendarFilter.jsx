@@ -27,7 +27,7 @@ const CalendarFilter = ({
 
   const [dateRange, setDateRange] = useState([
     {
-      startDate: subDays(changeTimezone(new Date(), "America/Los_Angeles"), 7),
+      startDate: subDays(changeTimezone(new Date(), "America/Los_Angeles"), 1),
       endDate: addDays(changeTimezone(new Date(), "America/Los_Angeles"), 1),
       key: "selection",
     },
@@ -58,10 +58,10 @@ const CalendarFilter = ({
       startDate: startDate.getTime(),
       endDate: endDate.getTime(),
     });
-
+   
     const dateApply = [
       Math.floor(startDate.getTime() / 1000),
-      Math.floor(endDate.getTime() / 1000)
+      Math.floor(endDate.setHours(24) / 1000)
     ];
 
     applyFilter("date", dateApply);
@@ -113,11 +113,11 @@ const CalendarFilter = ({
 
     if (filter.date) {
 
-      console.log("HOLa", filter);
+  
       setDateRange([
         {
           startDate: new Date( parseInt(filter.date[0]) * 1000) ,
-          endDate: new Date( parseInt(filter.date[1])* 1000) ,
+          endDate: new Date( parseInt(filter.date[1])* 1000) - 0.5,
           key: 'selection'
         },
       ]);

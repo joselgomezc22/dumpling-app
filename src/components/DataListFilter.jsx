@@ -260,12 +260,12 @@ export const DataListFilter = ({
     );
   }, []);
 
-  const [inputSearch, setInputSearch] = useState(searchParams.get("q") || '');
+  const [inputSearch, setInputSearch] = useState(search || "");
 
   const onPressSearch = (e) => {
     if (e.key === "Enter") {
-      localStorage.setItem("nextToken", "");
       setSearch(inputSearch);
+      localStorage.setItem("nextToken", "");
     }
   };
 
@@ -367,18 +367,18 @@ export const DataListFilter = ({
             </div>
           </div>
         </div>
+        <pre>
+          {search}
+        </pre>
         <div className="dt-filters__col">
           <label className="dt-filters__search">
             <img className="dt-filters-search-icon" src={searchIcon} alt="" />
             <input
               placeholder="Search"
               className="dt-filters__search-input"
-              type="text"
+              type="search"
               value={inputSearch}
-              onChange={(e) => {
-                console.log(e);
-                setInputSearch(e.target.value);
-              }}
+              onChange={(e) => setInputSearch(e.target.value)}
               onKeyDown={onPressSearch}
             />
           </label>

@@ -11,9 +11,6 @@ export default defineConfig({
   define: {
     global: {}
   },*/
-  define: {
-    global: {}
-  },
   resolve: {
     alias: {
       './runtimeConfig': './runtimeConfig.browser',
