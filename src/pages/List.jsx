@@ -39,6 +39,12 @@ const List = () => {
       ? localStorage.getItem("nextToken")
       : "",
   });
+  
+  const [shoperIdAuth, setShoperIdAuth] = useState({
+    value: localStorage.getItem("shoperIdAuth")
+      ? localStorage.getItem("shoperIdAuth")
+      : null,
+  });
 
   const filterBySearchParams = () => {
     const filter = {};
@@ -127,6 +133,22 @@ const List = () => {
       //navigate(0);
     }
   };
+
+  const GET_IMAGE = gql`
+    query getShopperImage($id: ID!){
+      shopperBusinessProfile(id: $id) {
+        shopper {
+          image
+        }
+      }
+    }
+  `;
+
+  const { error: isErrorImage, data: dataImage, loading: isLoadingImage } = useQuery(GET_IMAGE, {
+    variables: {
+      id: shoperIdAuth["value"]
+    }
+  });
 
   const GET_ORDERS = gql`
     query getOrders(

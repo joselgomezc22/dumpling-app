@@ -51,9 +51,25 @@ const LoginDummy = () => {
   const verifyCodeAction = async (number, code) => {
     try {
       const validate = await Auth.sendCustomChallengeAnswer(auth, code);
-      const { signInUserSession: { accessToken: { jwtToken }, refreshToken: { token } } } = validate;
+      console.log(validate);
+      const { 
+        signInUserSession: { 
+          accessToken: { 
+            jwtToken 
+          }, 
+          refreshToken: {
+            token
+          } 
+        },
+        attributes: {
+          sub
+        }
+      } = validate;
+
       window.localStorage.setItem("Auth", jwtToken);
       window.localStorage.setItem("AuthRefresh", token);
+      window.localStorage.setItem("shoperIdAuth", sub);
+
       window.location.href = "/list";
     } catch(error) {
       console.log({error});
