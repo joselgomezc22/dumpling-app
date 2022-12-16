@@ -331,12 +331,12 @@ export const DataList = ({
           <div>
             <button
               onClick={() => {
-                if (orders.prevToken || orders.prevToken == "") {
+                if (orders.prevToken) {
                   nextPage(orders.prevToken);
                 }
               }}
               className={
-                "btn btn-primary" + (orders.nextToken ? " disabled" : "  ")
+                "btn btn-primary" + ((!orders.prevToken || orders.prevToken == "") ? " disabled" : "  ")
               }
             >
               <img src={leftArrow} alt="" />
@@ -351,7 +351,7 @@ export const DataList = ({
             }}
             className={
               "btn btn-primary" +
-              (orders.prevToken || orders.prevToken == "" ? " disabled" : "  ")
+              (!orders.nextToken || orders.nextToken == "" ? " disabled" : "  ")
             }
           >
             <img src={rightArrow} alt="" />
