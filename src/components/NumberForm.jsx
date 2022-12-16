@@ -14,7 +14,7 @@ export const NumberForm = ({ number, setNumber, setShowValidate, login }) => {
       </h3>
       <form className="login-form" onSubmit={handleSubmit}>
         <input
-          type="text"
+          type="tel"
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           className="login-form-input"

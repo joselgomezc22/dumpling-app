@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Modal, { closeStyle } from "simple-react-modal";
-import logo from "/src/images/dumpling_dashboard_logo.png";
 import userIcon from "/src/images/user-icon.svg";
 import sortIcon from "/src/images/sort-icon.svg";
 import leftArrow from "/src/images/left-icon.svg";
@@ -17,13 +16,37 @@ const StatusBox = ({ status }) => {
   if (status == "Created") status = "Open";
   return <span className={"dt-status " + status}>{status} </span>;
 };
+const GratuityBox = ({ obj }) => {
+  const { preTipPm } = obj;
+  const { chosenFixedGratuity, chosenPercent } = preTipPm;
+
+  if (obj) {
+    if (
+      (chosenFixedGratuity == null && chosenPercent == null) ||
+      (chosenPercent == "No tip" && chosenFixedGratuity == "No tip")
+    ) {
+      return <></>;
+    } else if (chosenPercent) {
+      return <>{chosenPercent}%</>;
+    } else if (chosenFixedGratuity) {
+      return <>
+      
+    
+      {(chosenFixedGratuity / 100).toLocaleString("en-US", {style:"currency", currency:"USD"})}
+      
+      </>;
+    } else {
+      return <></>;
+    }
+  }
+};
 
 const renderShopper = (buddies, assinedTo) => {
   return (
     assinedTo?.map((item) => {
       const data = buddies?.find((ele) => ele.id === item);
       return <p key={item}>{data.name}</p>;
-    }) || "N/A"
+    }) || ""
   );
 };
 
@@ -40,6 +63,7 @@ export const DataList = ({
   setSearchTerm,
   assignedAction,
   handleSort,
+  logo
 }) => {
   const [selectedRows, setSelectedRows] = useState({});
 
@@ -78,18 +102,18 @@ export const DataList = ({
       selector: (row) => row.deliveryTime,
     },
     {
-      name: "Assigned shopper (id)",
+      name: "Assigned shopper",
       sortField: "assignedTo",
       selector: (row) => renderShopper(shoppers, row.assignedTo),
       sortable: true,
     },
     {
       name: "Delivery Address ", //null
-      selector: (row) => row.deliveryTime.deliveryAddress,
+      selector: (row) => row.deliveryAddress.addressLine1,
     },
     {
       name: "Gratuity", //null
-      selector: (row) => row.deliveryTime.deliveryFee,
+      selector: (row) => <GratuityBox obj={row.pricingModel} />,
     },
   ];
 
@@ -304,24 +328,34 @@ export const DataList = ({
         />
 
         <div className="dt-pagination">
-            <div>
-              <button onClick={() => {
-                if(orders.prevToken || orders.prevToken == ""){
+          <div>
+            <button
+              onClick={() => {
+                if (orders.prevToken) {
                   nextPage(orders.prevToken);
                 }
-              }} className={"btn btn-primary"+(orders.nextToken? " disabled": "  ")}>
-                <img src={leftArrow} alt="" />
-              </button>
-            </div>
-          
-            <button onClick={() => {
-              if(orders.nextToken ){
+              }}
+              className={
+                "btn btn-primary" + ((!orders.prevToken || orders.prevToken == "") ? " disabled" : "  ")
+              }
+            >
+              <img src={leftArrow} alt="" />
+            </button>
+          </div>
+          <div className="text-m">{orders.pageNumber + 1}</div>
+          <button
+            onClick={() => {
+              if (orders.nextToken) {
                 nextPage(orders.nextToken);
               }
-            }} className={"btn btn-primary"+(orders.prevToken || orders.prevToken == ""? " disabled": "  ")}>
-              <img src={rightArrow} alt="" />
-            </button>
-          
+            }}
+            className={
+              "btn btn-primary" +
+              (!orders.nextToken || orders.nextToken == "" ? " disabled" : "  ")
+            }
+          >
+            <img src={rightArrow} alt="" />
+          </button>
         </div>
         <Modal
           show={openAssignModal}

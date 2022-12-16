@@ -79,7 +79,7 @@ const StatusFilters = ({
                 id=""
               />
               <p className="text-m">
-                {filter.label} ({filter.count})
+                {filter.label} 
               </p>
             </label>
           ))}
@@ -233,19 +233,16 @@ export const DataListFilter = ({
       {
         label: "Open",
         key: "Created",
-        count: 30,
         active: false,
       },
       {
         label: "Complete",
         key: "Complete",
-        count: 40,
         active: false,
       },
       {
         label: "Canceled",
         key: "Canceled",
-        count: 10,
         active: false,
       },
     ],

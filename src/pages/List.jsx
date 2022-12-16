@@ -30,13 +30,19 @@ const List = () => {
       ? searchParams.get("sort").split(":")[0]
       : "id",
     direction: searchParams.get("sort")
-      ? searchParams.get("sort").split(":")[1].replace(" ","")
+      ? searchParams.get("sort").split(":")[1].replace(" ", "")
       : "DESC",
   });
 
   const [nextToken, setNextToken] = useState({
-    value: localStorage.getItem("nextToken") ? localStorage.getItem("nextToken") : "" 
-  })
+    value: localStorage.getItem("nextToken")
+      ? localStorage.getItem("nextToken")
+      : "",
+  });
+  
+  const [shoperIdAuth, setShoperIdAuth] = useState({
+    value: localStorage.getItem("shoperIdAuth"),
+  });
 
   const filterBySearchParams = () => {
     const filter = {};
@@ -126,12 +132,23 @@ const List = () => {
     }
   };
 
+  const GET_IMAGE = gql`
+    query getShopperImage($id: ID!){
+      shopperBusinessProfile(id: $id) {
+        shopper {
+          image
+        }
+      }
+    }
+  `;
+
   const GET_ORDERS = gql`
     query getOrders(
       $filter: [QueryFilterInput!]!
       $term: String!
       $sort: QuerySortInput!
-      $nextToken: String!
+      $nextToken: String!,
+      $authId: ID!
     ) {
       getBossBuddies {
         bossBuddyProfiles {
@@ -142,10 +159,10 @@ const List = () => {
         }
       }
       filteredLinkedOrders(
-        count: 10
+        count: 20
         filters: $filter
         text: $term
-        sort: $sort,
+        sort: $sort
         nextToken: $nextToken
       ) {
         orders {
@@ -170,10 +187,30 @@ const List = () => {
           feeAndPreGratuityDisplay
           deliveryFee
           assignedTo
+          deliveryAddress {
+            addressLine1
+            addressLine2
+            city
+            state
+            zipcode
+            country
+          }
+          pricingModel {
+            preTipPm {
+              chosenPercent
+              chosenFixedGratuity
+            }
+          }
         }
-        nextToken,
-        prevToken,
+
+        nextToken
+        prevToken
         pageNumber
+      }
+      shopperBusinessProfile(id: $authId) {
+        shopper {
+          image
+        }
       }
     }
   `;
@@ -272,7 +309,8 @@ const List = () => {
       filter: queryFilter,
       term: searchTerm,
       sort: sort,
-      nextToken: nextToken["value"]
+      nextToken: nextToken["value"],
+      authId: shoperIdAuth["value"]
     },
   });
 
@@ -306,7 +344,7 @@ const List = () => {
     sw.close();
   }
 
-  if (data.filteredLinkedOrders.orders.length > 10) {
+  if (data.filteredLinkedOrders.orders.length > 20) {
     MySwal.fire({
       title: "Acces Expired",
       text: "Login again",
@@ -323,6 +361,7 @@ const List = () => {
   return (
     <>
       
+  
       <DataList
         orders={data.filteredLinkedOrders}
         shoppers={data.getBossBuddies.bossBuddyProfiles}
@@ -335,6 +374,7 @@ const List = () => {
         assignedAction={assignedShoppers}
         handleSort={handleSort}
         nextPage={nextTokenSet}
+        logo={data.shopperBusinessProfile.shopper.image}
       />
     </>
   );
