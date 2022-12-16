@@ -144,18 +144,13 @@ const List = () => {
     }
   `;
 
-  const { error: isErrorImage, data: dataImage, loading: isLoadingImage } = useQuery(GET_IMAGE, {
-    variables: {
-      id: shoperIdAuth["value"]
-    }
-  });
-
   const GET_ORDERS = gql`
     query getOrders(
       $filter: [QueryFilterInput!]!
       $term: String!
       $sort: QuerySortInput!
-      $nextToken: String!
+      $nextToken: String!,
+      $authId: ID!
     ) {
       getBossBuddies {
         bossBuddyProfiles {
@@ -204,15 +199,20 @@ const List = () => {
           }
           pricingModel {
             preTipPm {
-                  chosenPercent
-                  chosenFixedGratuity
+              chosenPercent
+              chosenFixedGratuity
             }
-        }
+          }
         }
 
         nextToken
         prevToken
         pageNumber
+      }
+      shopperBusinessProfile(id: $authId) {
+        shopper {
+          image
+        }
       }
     }
   `;
@@ -312,6 +312,7 @@ const List = () => {
       term: searchTerm,
       sort: sort,
       nextToken: nextToken["value"],
+      authId: shoperIdAuth["value"]
     },
   });
 
@@ -361,11 +362,6 @@ const List = () => {
 
   return (
     <>
-      {(!isLoadingImage) && (dataImage.shopperBusinessProfile.shopper.image) && (
-        <>
-          <img src={dataImage.shopperBusinessProfile.shopper.image} />
-        </>
-      )}
 
       <DataList
         orders={data.filteredLinkedOrders}
