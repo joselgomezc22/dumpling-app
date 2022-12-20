@@ -94,8 +94,9 @@ export const DataList = ({
     {
       name: "Delivery date",
       sortField: "deliveryTimestamp",
-      selector: (row) => row.deliveryDate,
+      selector: (row) => <p title={row.deliveryDate}>{row.deliveryDate}</p> ,
       sortable: true,
+      width: '18%'
     },
     {
       name: "Delivery time",

@@ -71,7 +71,7 @@ const LoginDummy = () => {
       window.localStorage.setItem("shoperIdAuth", sub);
       window.localStorage.setItem("nextToken", "");
 
-      window.location.href = "/list";
+      window.location.href = "/list?status=Open";
     } catch(error) {
       console.log({error});
       MySwal.fire({
