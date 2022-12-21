@@ -356,7 +356,7 @@ const List = () => {
     sw.close();
   }
 
-  if (data.filteredLinkedOrders.orders.length > 20) {
+  if (data.filteredLinkedOrders.orders.length > 50) {
     MySwal.fire({
       title: "Acces Expired",
       text: "Login again",
