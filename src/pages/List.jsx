@@ -171,7 +171,7 @@ const List = () => {
         }
       }
       filteredLinkedOrders(
-        count: 10
+        count: 50
         filters: $filter
         text: $term
         sort: $sort
@@ -398,12 +398,12 @@ const List = () => {
 
 
   
-  const { data, error, isLoading, isSuccess } = useGetOrders(filter, 10);
+  const { data, error, isLoading, isSuccess } = useGetOrders(filter, 50);
   if (error) return <h1>Something went wrong!</h1>;
   if (isLoading) return <h1>Loading...</h1>;
   
   const filterChange = async () => {
-    const { data, error, isLoading, isSuccess } = useGetOrders(filter, 10);
+    const { data, error, isLoading, isSuccess } = useGetOrders(filter, 50);
     if (error) return <h1>Something went wrong!</h1>;
     if (isLoading) return <h1>Loading...</h1>;
   }
